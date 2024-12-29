@@ -1,0 +1,84 @@
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  display: flex;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  height: 100vh;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  position: fixed;
+}
+
+.sidebar .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
+}
+
+.menu-item {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  padding: 10px 15px;
+  text-align: left;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #ff8c00;
+  box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
+  transform: scale(1.05);
+}
+
+.menu-item i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+/* Special styling for Admin-Bereich */
+.menu-item.admin-bereich {
+  background: linear-gradient(135deg, #ff8c00, #ff635d);
+  font-weight: bold;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.menu-item.admin-bereich:hover {
+  background: linear-gradient(135deg, #ff635d, #ff8c00);
+  box-shadow: 0 8px 15px rgba(255, 99, 93, 0.5);
+}
+
+/* Content area */
+.content {
+  margin-left: 270px;
+  padding: 20px;
+  flex: 1;
+}
+
+.content h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.content p {
+  font-size: 1rem;
+  color: #666;
+}

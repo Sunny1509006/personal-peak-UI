@@ -1,0 +1,193 @@
+:root {
+  --bg-color-dark: linear-gradient(135deg, #1c1c1c, #2e2e2e);
+  --primary-color-dark: #ffd700;
+  --primary-color-light: #ff7043;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background: var(--bg-color-dark);
+  color: #ffffff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 1s ease;
+}
+
+.container {
+  text-align: center;
+  max-width: 1200px;
+  width: 90%;
+  background: #1c1c1c;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+  margin-top: 20px;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: var(--primary-color-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
+      0 0 20px rgba(255, 215, 0, 0.6);
+  }
+  100% {
+    text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8);
+  }
+}
+
+.register-button {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 15px 40px;
+  font-size: 1.5em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--primary-color-dark);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.register-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.7);
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1); /* Ensure visible on open */
+  background: #2e2e2e;
+  color: #fff;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+  overflow: auto; /* Handles long content gracefully */
+  max-height: 90%; /* Prevent it from exceeding viewport height */
+  display: flex; /* Ensure proper layout */
+  flex-direction: column; /* Stack children vertically */
+  align-items: stretch; /* Ensure inputs and form elements stretch */
+}
+
+.popup.active {
+  transform: translate(-50%, -50%) scale(1); /* Show popup */
+  opacity: 1; /* Make sure it's visible */
+}
+
+.popup h2 {
+  margin-top: 0;
+  font-size: 1.8em;
+  color: var(--primary-color-dark);
+}
+
+.popup input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.popup button {
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 1em;
+  color: #fff;
+  background: var(--primary-color-dark);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.popup button:hover {
+  background: var(--primary-color-light);
+}
+
+.popup .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: #fff;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.error {
+  color: #ff7043;
+  font-size: 0.9em;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.interests {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.interest {
+  width: 120px;
+  background: #333;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.interest:hover {
+  background: var(--primary-color-dark);
+  transform: scale(1.05);
+}
+
+.interest.selected {
+  background: var(--primary-color-light);
+}
