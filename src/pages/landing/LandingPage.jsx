@@ -2,6 +2,51 @@ import { useEffect, useState } from "react";
 import "./HealthCountdown.css"; // Assuming styles are placed in a separate CSS file
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.jpg";
+import Ig1 from "../../assets/images/ig1.jpeg";
+import Ig2 from "../../assets/images/ig2.jpeg";
+import Ig3 from "../../assets/images/ig3.jpeg";
+import Ig4 from "../../assets/images/ig4.jpeg";
+import Ig5 from "../../assets/images/ig5.jpeg";
+import Ig6 from "../../assets/images/ig6.jpeg";
+import Ig7 from "../../assets/images/ig7.jpeg";
+import Ig8 from "../../assets/images/ig8.jpeg";
+
+const themes = [
+  {
+    theme: "Mobilität und Schmerzfreiheit",
+    img: Ig1,
+  },
+
+  {
+    theme: "Gewichtsverlust",
+    img: Ig2,
+  },
+  {
+    theme: "Muskelaufbau",
+    img: Ig3,
+  },
+  {
+    theme: "Bessere Schlafqualität",
+    img: Ig6,
+  },
+  {
+    theme: "Mehr Energie",
+    img: Ig4,
+  },
+  {
+    theme: "Stressbewältigung",
+    img: Ig5,
+  },
+  {
+    theme: "Gesundeit und Wohlbefinden",
+    img: Ig1,
+  },
+
+  {
+    theme: "Workshops",
+    img: Ig8,
+  },
+];
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -110,17 +155,14 @@ const LandingPage = () => {
         </div>
 
         <div className="themes">
-          {[
-            "Mobilität und Schmerzfreiheit",
-            "Gewichtsverlust",
-            "Muskelaufbau",
-            "Bessere Schlafqualität",
-            "Mehr Energie",
-            "Stressbewältigung",
-          ].map((theme, index) => (
+          {themes.map(({ theme, img }, index) => (
             <div className="theme" key={index}>
-              <img src="https://via.placeholder.com/200x150" alt={theme} />
-              <span>{theme}</span>
+              <img
+                src={img}
+                style={{ width: "100%", height: "auto" }}
+                alt={theme}
+              />
+              <p>{theme}</p>
             </div>
           ))}
         </div>

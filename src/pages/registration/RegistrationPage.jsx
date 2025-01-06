@@ -1,10 +1,11 @@
 import { useState } from "react";
-import "./Registration.css"; // Assuming styles are moved to a separate CSS file
+import "./Registration.css";
 import { useNavigate } from "react-router-dom";
+import useLoginSubmit from "../../hooks/useLoginSubmit";
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0); // Changed initial value to 0
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -13,11 +14,16 @@ const RegistrationPage = () => {
     city: "",
     email: "",
     phone: "",
+    password: "",
     contactPermission: false,
     interests: [],
     activationCode: "",
   });
-  const [errors, setErrors] = useState({
+
+  const { register, handleSubmit, onRegisterSubmit, onActivationCode } =
+    useLoginSubmit(setStep);
+
+  const [validationErrors, setValidationErrors] = useState({
     fields: false,
     contactPermission: false,
   });
@@ -43,24 +49,25 @@ const RegistrationPage = () => {
       "city",
       "email",
       "phone",
+      "password",
     ];
     const allFilled = requiredFields.every(
       (field) => formData[field].trim() !== ""
     );
 
     if (!allFilled) {
-      setErrors((prev) => ({ ...prev, fields: true }));
+      setValidationErrors((prev) => ({ ...prev, fields: true }));
       return;
     }
 
-    setErrors((prev) => ({ ...prev, fields: false }));
+    setValidationErrors((prev) => ({ ...prev, fields: false }));
 
     if (!formData.contactPermission) {
-      setErrors((prev) => ({ ...prev, contactPermission: true }));
+      setValidationErrors((prev) => ({ ...prev, contactPermission: true }));
       return;
     }
 
-    setErrors((prev) => ({ ...prev, contactPermission: false }));
+    setValidationErrors((prev) => ({ ...prev, contactPermission: false }));
     setStep(2);
   };
 
@@ -70,6 +77,21 @@ const RegistrationPage = () => {
         ? prev.interests.filter((item) => item !== interest)
         : [...prev.interests, interest];
       return { ...prev, interests };
+    });
+  };
+
+  const handleFinalSubmit = () => {
+    const finalData = {
+      ...formData,
+      username: formData.email, // Adding username field required by the API
+    };
+    onRegisterSubmit(finalData);
+  };
+
+  const handleActivationCodeSubmit = () => {
+    onActivationCode({
+      activationCode: formData.activationCode,
+      email: formData.email,
     });
   };
 
@@ -103,11 +125,13 @@ const RegistrationPage = () => {
                     "city",
                     "email",
                     "phone",
+                    "password",
                   ].map((field) => (
                     <input
                       key={field}
                       type={field === "email" ? "email" : "text"}
                       id={field}
+                      {...register(field, { required: true })}
                       placeholder={
                         field === "firstname"
                           ? "Vorname"
@@ -121,7 +145,11 @@ const RegistrationPage = () => {
                           ? "Ort"
                           : field === "email"
                           ? "E-Mail"
-                          : "Telefonnummer"
+                          : field === "phone"
+                          ? "Telefonnummer"
+                          : "Passwort"
+                          ? "Passwort"
+                          : ""
                       }
                       value={formData[field]}
                       onChange={handleInputChange}
@@ -141,12 +169,12 @@ const RegistrationPage = () => {
                     Ich erlaube eine Kontaktaufnahme durch PP360!
                   </label>
                   <br />
-                  {errors.contactPermission && (
+                  {validationErrors.contactPermission && (
                     <span className="error">
                       Bitte erlauben Sie die Kontaktaufnahme, um fortzufahren.
                     </span>
                   )}
-                  {errors.fields && (
+                  {validationErrors.fields && (
                     <span className="error">
                       Bitte füllen Sie alle Felder aus.
                     </span>
@@ -188,7 +216,10 @@ const RegistrationPage = () => {
                   <button type="button" onClick={() => setStep(1)}>
                     Zurück
                   </button>
-                  <button type="button" onClick={() => setStep(3)}>
+                  <button
+                    type="button"
+                    onClick={handleSubmit(handleFinalSubmit)}
+                  >
                     Weiter
                   </button>
                 </div>
@@ -213,7 +244,10 @@ const RegistrationPage = () => {
                   <button type="button" onClick={() => setStep(2)}>
                     Zurück
                   </button>
-                  <button onClick={() => navigate("/login")} type="submit">
+                  <button
+                    onClick={handleSubmit(handleActivationCodeSubmit)}
+                    // type="submit"
+                  >
                     Jetzt registrieren
                   </button>
                 </div>

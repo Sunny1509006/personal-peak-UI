@@ -1,11 +1,20 @@
 import { useState } from "react";
 import "./Login.css";
-import { useNavigate } from "react-router-dom";
+
 import Logo from "../../assets/logo.jpg";
+import useLoginSubmit from "../../hooks/useLoginSubmit";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [theme, setTheme] = useState("dark");
+
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    errors,
+    loading,
+    onLoginSubmit,
+  } = useLoginSubmit();
 
   const switchTheme = () => {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
@@ -34,22 +43,28 @@ const Login = () => {
         ></span>
       </div>
 
-      <div className="login-container">
+      <form onSubmit={handleSubmit(onLoginSubmit)} className="login-container">
         <img
           src={Logo}
           style={{ width: "100px" }}
           alt="Personal Peak 360 Logo"
         />
         <h2>Willkommen bei Personal Peak 360</h2>
-        <input type="text" placeholder="Benutzername oder E-Mail" required />
-        <input type="password" placeholder="Passwort" required />
-        <button
-          onClick={() => {
-            navigate("/dashboard");
-          }}
-        >
-          Anmelden
-        </button>
+        <input
+          id="username"
+          {...register("username")}
+          type="text"
+          placeholder="Benutzername oder E-Mail"
+          required
+        />
+        <input
+          id="password"
+          {...register("password")}
+          type="password"
+          placeholder="Passwort"
+          required
+        />
+        <button>Login</button>
         <label>
           <input type="checkbox" /> Angemeldet bleiben
         </label>
@@ -58,7 +73,7 @@ const Login = () => {
             Passwort vergessen?
           </a>
         </p>
-      </div>
+      </form>
 
       <button className="theme-switcher" onClick={switchTheme}>
         Farbschema wechseln
