@@ -28,6 +28,7 @@ export default function useLoginSubmit(setStep) {
         },
         {
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
           },
         }
@@ -44,7 +45,7 @@ export default function useLoginSubmit(setStep) {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      notifyError(error.detail || error.message);
+      notifyError(error?.response?.data?.detail || error.message);
     }
   };
 
@@ -71,23 +72,28 @@ export default function useLoginSubmit(setStep) {
         },
         {
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
           },
         }
       );
 
       if (res?.error) {
+        console.log(res?.error);
+
         notifyError(res?.error);
       } else {
         notifySuccess("Registered successfully");
-        // navigate("/login");
-        setStep(3);
+        navigate("/login");
+
         //   router.push('/');
       }
       setLoading(false);
     } catch (error) {
+      console.log(error?.response?.data?.detail);
+
       setLoading(false);
-      notifyError(error.detail || error.message);
+      notifyError(error?.response?.data?.detail || error.message);
     }
   };
 
@@ -104,6 +110,7 @@ export default function useLoginSubmit(setStep) {
         },
         {
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
           },
         }
@@ -119,7 +126,7 @@ export default function useLoginSubmit(setStep) {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      notifyError(error.detail || error.message);
+      notifyError(error?.response?.data?.detail || error.message);
     }
   };
 

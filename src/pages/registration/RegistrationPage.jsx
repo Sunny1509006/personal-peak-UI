@@ -49,7 +49,6 @@ const RegistrationPage = () => {
       "city",
       "email",
       "phone",
-      "password",
     ];
     const allFilled = requiredFields.every(
       (field) => formData[field].trim() !== ""
@@ -125,7 +124,6 @@ const RegistrationPage = () => {
                     "city",
                     "email",
                     "phone",
-                    "password",
                   ].map((field) => (
                     <input
                       key={field}
@@ -218,7 +216,10 @@ const RegistrationPage = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={handleSubmit(handleFinalSubmit)}
+                    onClick={() => {
+                      // console.log("activationCode", formData.activationCode);
+                      setStep(3);
+                    }}
                   >
                     Weiter
                   </button>
@@ -235,9 +236,9 @@ const RegistrationPage = () => {
                 </p>
                 <input
                   type="text"
-                  id="activationCode"
+                  id="password"
                   placeholder="Aktivierungscode"
-                  value={formData.activationCode}
+                  value={formData.password}
                   onChange={handleInputChange}
                 />
                 <div style={{ textAlign: "right" }}>
@@ -245,7 +246,7 @@ const RegistrationPage = () => {
                     Zurück
                   </button>
                   <button
-                    onClick={handleSubmit(handleActivationCodeSubmit)}
+                    onClick={handleSubmit(handleFinalSubmit)}
                     // type="submit"
                   >
                     Jetzt registrieren
