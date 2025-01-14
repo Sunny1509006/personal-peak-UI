@@ -14,7 +14,7 @@ import Ig8 from "../../assets/images/ig8.jpeg";
 const themes = [
   {
     theme: "Mobilität und Schmerzfreiheit",
-    img: Ig1,
+    img: Ig7,
   },
 
   {
@@ -155,17 +155,19 @@ const LandingPage = () => {
         </div>
 
         <div className="themes">
-          {themes.map(({ theme, img }, index) => (
-            <div className="theme" key={index}>
-              <img
-                src={img}
-                style={{ width: "100%", height: "auto" }}
-                alt={theme}
-              />
-              <p>{theme}</p>
-            </div>
-          ))}
-        </div>
+  {themes.map(({ theme, img }, index) => (
+    <div className="theme" key={index}>
+      <div className="image-wrapper">
+        <img
+          src={img}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          alt={theme}
+        />
+      </div>
+      <p>{theme}</p>
+    </div>
+  ))}
+</div>
 
         <div className="founders">
           <p>
