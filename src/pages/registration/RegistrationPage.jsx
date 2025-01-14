@@ -14,7 +14,7 @@ const RegistrationPage = () => {
     city: "",
     email: "",
     phone: "",
-    password: "",
+    // password: "",
     contactPermission: false,
     interests: [],
     activationCode: "",
@@ -87,12 +87,12 @@ const RegistrationPage = () => {
     onRegisterSubmit(finalData);
   };
 
-  const handleActivationCodeSubmit = () => {
-    onActivationCode({
-      activationCode: formData.activationCode,
-      email: formData.email,
-    });
-  };
+  // const handleActivationCodeSubmit = () => {
+  //   onActivationCode({
+  //     activationCode: formData.activationCode,
+  //     email: formData.email,
+  //   });
+  // };
 
   return (
     <div className="container">
@@ -236,9 +236,9 @@ const RegistrationPage = () => {
                 </p>
                 <input
                   type="text"
-                  id="password"
+                  id="activationCode"
                   placeholder="Aktivierungscode"
-                  value={formData.password}
+                  value={formData.activationCode}
                   onChange={handleInputChange}
                 />
                 <div style={{ textAlign: "right" }}>

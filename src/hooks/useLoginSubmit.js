@@ -1,4 +1,4 @@
-import axios from "axios";
+import Axios from "../Axios/Axios";
 import React, { useState } from "react";
 
 import { useForm } from "react-hook-form";
@@ -20,8 +20,8 @@ export default function useLoginSubmit(setStep) {
   const onLoginSubmit = async (data) => {
     try {
       setLoading(true);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/login`,
+      const res = await Axios.post(
+        `/users/login`,
         {
           email: data.username,
           password: data.password,
@@ -54,8 +54,8 @@ export default function useLoginSubmit(setStep) {
       console.log(data);
 
       setLoading(true);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/register`,
+      const res = await Axios.post(
+        `/users/pre-registration`,
         {
           first_name: data.firstname,
           last_name: data.lastname,
@@ -64,11 +64,11 @@ export default function useLoginSubmit(setStep) {
           zip_code: data.zipcode,
           location: data.city,
           phone_number: data.phone,
-          allow_contact: data.contactPermission,
+          // allow_contact: data.contactPermission,
           interests: data.interests,
           activation_code: data.activationCode,
           username: data.username,
-          password: data.password,
+          // password: data.password,
         },
         {
           headers: {
