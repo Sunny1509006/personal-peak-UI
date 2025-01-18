@@ -39,8 +39,8 @@ export default function useLoginSubmit(setStep) {
       } else {
         notifySuccess("Logged in successfully");
         // window.location.replace("https://dashboard.your-personal-peak360.de/");
-        window.location.href = "https://dashboard.your-personal-peak360.de/";
-        //   router.push('/');
+        // window.location.href = "https://dashboard.your-personal-peak360.de/";
+          navigate('/dashboard');
       }
       setLoading(false);
     } catch (error) {
