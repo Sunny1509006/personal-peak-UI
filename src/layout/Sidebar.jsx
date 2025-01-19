@@ -1,11 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./../pages/dashboard/AdminSidebar.css"
+import "./../pages/dashboard/AdminSidebar.css";
 
 const Sidebar = () => {
+  const [isToggled, setIsToggled] = useState(false);
+  const [isHovered, setIsHovered] = useState(true);
+
+  const handleToggle = () => {
+    setIsToggled(!isToggled); // Toggle the sidebar state
+    // setIsHovered(!isHovered)
+    const wrapper = document.querySelector(".wrapper");
+    if (isToggled) {
+      wrapper.classList.remove("toggled");
+    } else {
+      wrapper.classList.add("toggled");
+    }
+  };
+
+  const handleMouseEnter = () => { 
+    
+    if (isToggled) {
+      setIsHovered(true);
+      const wrapper = document.querySelector(".wrapper");
+      wrapper.classList.add("sidebar-hovered");
+    }
+  };
+
+  const handleMouseLeave = () => {
+    
+    if (isToggled) {
+      setIsHovered(false);
+      const wrapper = document.querySelector(".wrapper");
+      wrapper.classList.remove("sidebar-hovered");
+    }
+  };
+
   return (
-    <aside className="sidebar-wrapper">
-     <div className="sidebar-wrapper" data-simplebar="true">
+    <aside
+      className="sidebar-wrapper"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="sidebar-wrapper" data-simplebar="true">
         <div className="sidebar-header">
           <div>
             <img
@@ -14,9 +50,20 @@ const Sidebar = () => {
               alt="Logo"
             />
           </div>
-          <a href="#" className="toggle-btn ms-auto">
-            <i className="bx bx-menu"></i>
-          </a>
+          {isHovered  && (
+          <button
+            type="button"
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+            }}
+            onClick={handleToggle}
+          >
+            <i className="bx bx-menu" style={{fontSize: '30px'}}></i>
+          </button>
+        )}
         </div>
         {/* Navigation */}
         <ul className="metismenu" id="menu">
@@ -38,12 +85,12 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="/user">
               <div className="parent-icon icon-color-3">
                 <i className="bx bx-conversation"></i>
               </div>
               <div className="menu-title">User</div>
-            </a>
+            </Link>
           </li>
           <li>
             <a href="chat-box.html">
@@ -332,7 +379,6 @@ const Sidebar = () => {
           <div className="menu-title">Diary</div>
         </a>
       </li>
-          
           {/* Add more menu items as needed */}
         </ul>
         {/* End Navigation */}
@@ -342,3 +388,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

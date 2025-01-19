@@ -11,6 +11,8 @@ const PreRegistration = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [viewDetails, setViewDetails] = useState(null); // State for storing user details
 
   useEffect(() => {
     const rootElement = document.getElementById("root");
@@ -63,6 +65,34 @@ const PreRegistration = () => {
     const query = event.target.value;
     setSearchQuery(query);
     setPage(0); // Reset to the first page when searching
+  };
+
+  const handleDeleteClick = (userId) => {
+    setDeleteUserId(userId); // Open confirmation popup with user ID
+  };
+
+  const confirmDelete = async () => {
+    if (deleteUserId) {
+      try {
+        await Axios.delete(`/users/users/${deleteUserId}`);
+        setData((prevData) => prevData.filter((user) => user._id !== deleteUserId));
+        setDeleteUserId(null); // Close the popup
+      } catch (err) {
+        alert("Failed to delete user. Please try again.");
+      }
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteUserId(null); // Close the popup without deleting
+  };
+
+  const handleViewDetails = (user) => {
+    setViewDetails(user); // Set the user details in state
+  };
+
+  const closeDetailsPopup = () => {
+    setViewDetails(null); // Close the popup
   };
 
   return (
@@ -145,8 +175,18 @@ const PreRegistration = () => {
                     <td>{user.activation_code || "Not specified"}</td>
                     <td>
                       <div style={{ display: "flex" }}>
-                        <button className="btn btn-info">View Details</button>
-                        <button className="btn btn-danger">Delete</button>
+                        <button
+                          className="btn btn-info"
+                          onClick={() => handleViewDetails(user)}
+                        >
+                          View Details
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteClick(user._id)}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -177,6 +217,87 @@ const PreRegistration = () => {
           </button>
         </div>
       </div>
+
+      {/* View Details Popup */}
+      {viewDetails && (
+       <div className="details-popup">
+       <div className="popup-header">
+         <h5>Pre-registration details | #{viewDetails._id.slice(-4)}</h5>
+         <button
+           type="button"
+           className="close-btn"
+           aria-label="Close"
+           onClick={closeDetailsPopup}
+           style={{padding: '15px'}}
+         >
+           &times;
+         </button>
+       </div>
+       <div className="popup-content">
+         <p>
+           {viewDetails.first_name} {viewDetails.last_name} registered for
+           pre-registration on{" "}
+           {new Date(viewDetails.created_at).toLocaleString("en-US", {
+             dateStyle: "long",
+             timeStyle: "short",
+           })}
+           .
+         </p>
+         <h5>Contact details:</h5>
+         <ul>
+           <li>
+             <b>Email:</b>{" "}
+             <a href={`mailto:${viewDetails.email}`}>{viewDetails.email}</a>
+           </li>
+           <li>
+             <b>Telephone number:</b>{" "}
+             <a href={`tel:${viewDetails.phone_number}`}>
+               {viewDetails.phone_number || "N/A"}
+             </a>
+           </li>
+           <li>
+             <b>Address:</b> {viewDetails.address || "Not specified"}
+           </li>
+           <li>
+             <b>Interests:</b> {viewDetails.interests || "Not specified"}
+           </li>
+         </ul>
+       </div>
+       <div className="popup-footer">
+         <button
+           type="button"
+           className="btn btn-secondary"
+           onClick={closeDetailsPopup}
+         >
+           Close
+         </button>
+       </div>
+     </div>
+     
+      )}
+
+      {/* Delete Confirmation Popup */}
+      {deleteUserId && (
+        <div className="delete-popup">
+          <div className="popup-content">
+            <p>Do you want to delete this user?</p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+            >
+              <button className="btn btn-danger" onClick={confirmDelete}>
+                Yes, Delete
+              </button>
+              <button className="btn btn-secondary" onClick={cancelDelete}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
