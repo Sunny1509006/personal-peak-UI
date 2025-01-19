@@ -1266,7 +1266,7 @@ sup {
 
 .menu-label {
 
-	padding: 20px 15px 5px 5px;
+	padding: 10px 0px 5px 5px;
 
 	color: #b0afaf;
 
@@ -1275,6 +1275,10 @@ sup {
 	font-size: 12px;
 
 	letter-spacing: 0.5px;
+	text-align: right;
+	margin-right: 40px;
+
+
 
 }
 
