@@ -5,6 +5,8 @@ const TermsPopup = ({ onAccept }) => {
   const [show, setShow] = useState(true); // Modal visibility state
 
   const handleAccept = () => {
+    // Set agreement status in local storage
+    localStorage.setItem("hasAgreedToTerms", "true");
     setShow(false); // Hide the modal
     onAccept(); // Callback to indicate acceptance
   };

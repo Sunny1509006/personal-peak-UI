@@ -40,6 +40,8 @@ export default function useLoginSubmit(setStep) {
         notifySuccess("Logged in successfully");
         // window.location.replace("https://dashboard.your-personal-peak360.de/");
         // window.location.href = "https://dashboard.your-personal-peak360.de/";
+        // Set agreement status in local storage
+      localStorage.removeItem("hasAgreedToTerms");
           navigate('/dashboard');
       }
       setLoading(false);

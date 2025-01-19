@@ -915,12 +915,13 @@ a:hover {
 .wrapper.toggled .top-header {
 
 	left: 80px;
+	
 
 }
 
 .page-content-wrapper {
 
-	margin-left: 260px;
+	margin-left: 180px;
 
 	transition: all .3s ease-out;
 

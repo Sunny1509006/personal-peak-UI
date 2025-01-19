@@ -1,3 +1,5 @@
 #root.dashboard {
   background-color: #f6f6f6;
+  width: calc(100% - 80px);
+  margin-left: 80px;
 }

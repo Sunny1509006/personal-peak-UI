@@ -1,125 +1,179 @@
 import React from "react";
+import "./../pages/dashboard/AdminSidebar.css"
 
 const Header = () => {
   return (
-    <header className="top-header" id="Parent_Scroll_Div">
-      <nav className="navbar navbar-expand-xl align-items-center gap-3 container px-4 px-lg-0">
-        <div className="logo-header d-none d-xl-flex align-items-center gap-2">
-          <div className="logo-icon">
-            <img
-              src="assets/images/logo-icon.png"
-              className="logo-img"
-              width="45"
-              alt="Logo Icon"
-            />
+    <header className="top-header">
+        <nav className="navbar navbar-expand">
+          <div className="left-topbar d-flex align-items-center">
+            <a href="#" className="toggle-btn">
+              <i className="bx bx-menu"></i>
+            </a>
           </div>
-          <div className="logo-name">
-            <h5 className="mb-0">Maxton</h5>
-          </div>
-        </div>
-        <div
-          className="btn-toggle d-xl-none"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasNavbar"
-        >
-          <button type="button" className="btn">
-            <i className="material-icons-outlined">menu</i>
-          </button>
-        </div>
-
-        <div
-          className="offcanvas offcanvas-start w-260"
-          tabIndex="-1"
-          id="offcanvasNavbar"
-        >
-          <div className="offcanvas-header border-bottom h-70">
-            <div className="d-flex align-items-center gap-2">
-              <div>
-                <img
-                  src="assets/images/logo-icon.png"
-                  className="logo-icon"
-                  width="45"
-                  alt="Logo Icon"
-                />
-              </div>
-              <div>
-                <h4 className="logo-text">Maxton</h4>
-              </div>
+          <div className="flex-grow-1 search-bar">
+            <div className="input-group">
+              <button className="btn btn-search-back search-arrow-back" type="button">
+                <i className="bx bx-arrow-back"></i>
+              </button>
+              <input type="text" className="form-control" placeholder="Search" />
+              <button className="btn btn-search" type="button">
+                <i className="lni lni-search-alt"></i>
+              </button>
             </div>
-            <button
-              type="button"
-              className="primaery-menu-close btn"
-              data-bs-dismiss="offcanvas"
-            >
-              <i className="material-icons-outlined">close</i>
-            </button>
           </div>
-          <div className="offcanvas-body p-0 primary-menu">
-            <ul className="navbar-nav align-items-center mx-auto gap-0 gap-xl-1">
-              {[
-                { href: "#home", icon: "home", title: "Home" },
-                { href: "#About", icon: "info", title: "About" },
-                { href: "#Services", icon: "work_outline", title: "Services" },
-                {
-                  href: "#Portfolio",
-                  icon: "photo_camera",
-                  title: "Portfolio",
-                },
-                { href: "#Team", icon: "people_alt", title: "Team" },
-                { href: "#Pricing", icon: "euro", title: "Pricing" },
-                { href: "#Contact", icon: "call", title: "Contact" },
-              ].map((item, index) => (
-                <li className="nav-item" key={index}>
-                  <a className="nav-link" href={item.href}>
-                    <div className="parent-icon">
-                      <i className="material-icons-outlined">{item.icon}</i>
-                    </div>
-                    <div className="menu-title">{item.title}</div>
-                  </a>
-                </li>
-              ))}
-
-              <li className="nav-item dropdown d-none d-xxl-block">
+          <div className="right-topbar ms-auto">
+            <ul className="navbar-nav">
+              <li className="nav-item search-btn-mobile">
+                <a className="nav-link position-relative" href="#">
+                  <i className="bx bx-search vertical-align-middle"></i>
+                </a>
+              </li>
+              <li className="nav-item dropdown dropdown-lg">
                 <a
-                  className="nav-link dropdown-toggle dropdown-toggle-nocaret"
-                  href="#!"
+                  className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
+                  href="#"
                   data-bs-toggle="dropdown"
                 >
-                  <div className="parent-icon">
-                    <i className="material-icons-outlined">task</i>
-                  </div>
-                  <div className="menu-title">Pages</div>
+                  <span className="msg-count">6</span>
+                  <i className="bx bx-comment-detail vertical-align-middle"></i>
                 </a>
-                <ul className="dropdown-menu">
-                  {[
-                    { icon: "email", title: "Email" },
-                    { icon: "chat", title: "Chat Box" },
-                    { icon: "folder", title: "File Manager" },
-                    { icon: "task", title: "Todo" },
-                    { icon: "description", title: "Invoice" },
-                  ].map((item, index) => (
-                    <li key={index}>
-                      <a className="dropdown-item" href="#!">
-                        <i className="material-icons-outlined">{item.icon}</i>
-                        {item.title}
-                      </a>
-                    </li>
+                <div className="dropdown-menu dropdown-menu-end">
+                <a href="#">
+                  <div className="msg-header">
+                    <h6 className="msg-header-title">6 New</h6>
+                    <p className="msg-header-subtitle">Application Messages</p>
+                  </div>
+                </a>
+                <div className="header-message-list">
+                  {[...Array(6)].map((_, index) => (
+                    <a className="dropdown-item" href="#" key={index}>
+                      <div className="d-flex align-items-center">
+                        <div className="user-online">
+                          <img
+                            src={`assets/images/avatars/avatar-${index + 1}.png`}
+                            className="msg-avatar"
+                            alt="user avatar"
+                          />
+                        </div>
+                        <div className="flex-grow-1">
+                          <h6 className="msg-name">
+                            User {index + 1} <span className="msg-time float-end">{`${index + 1} min ago`}</span>
+                          </h6>
+                          <p className="msg-info">Message preview {index + 1}</p>
+                        </div>
+                      </div>
+                    </a>
                   ))}
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div>
-          <button
-            className="btn btn-grd btn-grd-primary raised d-flex align-items-center rounded-5 gap-2 px-4"
-            type="button"
-          >
-            <i className="material-icons-outlined">account_circle</i>Login
-          </button>
+                </div>
+                <a href="#">
+                  <div className="text-center msg-footer">View All Messages</div>
+                </a>
+              </div>
+            </li>
+
+              {/* Notifications Dropdown */}
+              <li className="nav-item dropdown dropdown-lg">
+              <a
+                className="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                <i className="bx bx-bell vertical-align-middle"></i>
+                <span className="msg-count">8</span>
+              </a>
+              <div className="dropdown-menu dropdown-menu-end">
+                <a href="#">
+                  <div className="msg-header">
+                    <h6 className="msg-header-title">8 New</h6>
+                    <p className="msg-header-subtitle">Application Notifications</p>
+                  </div>
+                </a>
+                <div className="header-notifications-list">
+                  {[...Array(8)].map((_, index) => (
+                    <a className="dropdown-item" href="#" key={index}>
+                      <div className="d-flex align-items-center">
+                        <div className={`notify bg-light-primary text-primary`}>
+                          <i className="bx bx-group"></i>
+                        </div>
+                        <div className="flex-grow-1">
+                          <h6 className="msg-name">
+                            Notification {index + 1} <span className="msg-time float-end">{`${index + 1} hrs ago`}</span>
+                          </h6>
+                          <p className="msg-info">Notification detail {index + 1}</p>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <a href="#">
+                  <div className="text-center msg-footer">View All Notifications</div>
+                </a>
+              </div>
+            </li>
+
+            {/* User Profile Dropdown */}
+            <li className="nav-item dropdown dropdown-user-profile">
+              <a
+                className="nav-link dropdown-toggle dropdown-toggle-nocaret"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                <div className="d-flex user-box align-items-center">
+                  <div className="user-info">
+                    <p className="user-name mb-0">Jessica Doe</p>
+                    <p className="designation mb-0">Available</p>
+                  </div>
+                  <img
+                    src="assets/images/avatars/avatar-1.png"
+                    className="user-img"
+                    alt="user avatar"
+                  />
+                </div>
+              </a>
+              <div className="dropdown-menu dropdown-menu-end">
+                {["Profile", "Settings", "Dashboard", "Earnings", "Downloads"].map((item, index) => (
+                  <a className="dropdown-item" href="#" key={index}>
+                    <i className={`bx bx-${item.toLowerCase()}`}></i>
+                    <span>{item}</span>
+                  </a>
+                ))}
+                <div className="dropdown-divider mb-0"></div>
+                <a className="dropdown-item" href="#">
+                  <i className="bx bx-power-off"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </li>
+
+            {/* Language Dropdown */}
+            <li className="nav-item dropdown dropdown-language">
+              <a
+                className="nav-link dropdown-toggle dropdown-toggle-nocaret"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                <div className="lang d-flex">
+                  <div>
+                    <i className="flag-icon flag-icon-um"></i>
+                  </div>
+                  <div>
+                    <span>En</span>
+                  </div>
+                </div>
+              </a>
+              <div className="dropdown-menu dropdown-menu-end">
+                {["German", "French", "English", "Hindi", "Chinese", "Arabic"].map((lang, index) => (
+                  <a className="dropdown-item" href="#" key={index}>
+                    <i className={`flag-icon flag-icon-${lang.toLowerCase().slice(0, 2)}`}></i>
+                    <span>{lang}</span>
+                  </a>
+                ))}
+              </div>
+            </li>
+          </ul>
         </div>
       </nav>
-    </header>
+      </header>
   );
 };
 

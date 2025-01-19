@@ -5,6 +5,7 @@ import LoginPage from "./pages/login/LoginPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import LandingPage from "./pages/landing/LandingPage";
 import { ToastContainer } from "react-toastify";
+import PreRegistration from "./pages/Admin/PreRegistration";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/pre-registration" element={<PreRegistration />} />
         </Routes>
       </BrowserRouter>
     </>

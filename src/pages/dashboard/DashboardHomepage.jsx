@@ -14,7 +14,7 @@ const DashboardHomepage = () => {
   ];
 
   return (
-    <div className="container-dashboard">
+    <div className="container" style={{backgroundColor: "white"}}>
       {/* Nutzer-Ranking */}
       <div className="card ms-auto me-auto">
             <h1>Welcome to 'Personal-Peak-360'</h1>
