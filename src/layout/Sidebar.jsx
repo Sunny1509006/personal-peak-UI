@@ -3,6 +3,16 @@ import { Link } from "react-router-dom";
 import "./../pages/dashboard/AdminSidebar.css";
 
 const Sidebar = () => {
+  
+  const isAccessible = (roles) => {
+    const userRoles = JSON.parse(localStorage.getItem("user_type")) || [];
+    // If `roles` is a string, convert it to an array for consistency
+    if (typeof roles === "string") roles = [roles];
+  
+    // Check if any of the user roles match the required roles
+    return roles.some((role) => userRoles.includes(role));
+  };
+
   const [isToggled, setIsToggled] = useState(false);
   const [isHovered, setIsHovered] = useState(true);
 
@@ -76,13 +86,25 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="menu-label">Admin Area</li>
-          <li>
+          <li className={`menu-item ${
+            isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+          }`}>
+            {isAccessible(["SSA", "WLA"]) ? (
             <Link to="/pre-registration">
               <div className="parent-icon icon-color-2">
                 <i className="bx bx-envelope"></i>
               </div>
               <div className="menu-title">Pre-registrations</div>
             </Link>
+            ) : (
+              <div className="locked-item">
+              <div className="parent-icon icon-color-2">
+                <i className="bx bx-envelope"></i>
+              </div>
+              <div className="menu-title">Pre-registrations</div>
+              <i className="bx bx-lock lock-icon"></i>
+            </div>
+            )}
           </li>
           <li>
             <Link to="/user">

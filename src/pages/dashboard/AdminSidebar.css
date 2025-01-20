@@ -3,3 +3,27 @@
   width: calc(100% - 80px);
   margin-left: 80px;
 }
+
+/* Slightly transparent and unclickable menu items */
+.transparent-item {
+  opacity: 0.5; /* Make it slightly transparent */
+  pointer-events: none; /* Disable clicks */
+  position: relative;
+  color: black;
+  margin: 0px 20px;
+}
+
+.locked-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lock-icon {
+  color: #999;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+
+

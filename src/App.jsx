@@ -6,6 +6,8 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import LandingPage from "./pages/landing/LandingPage";
 import { ToastContainer } from "react-toastify";
 import PreRegistration from "./pages/Admin/PreRegistration";
+import ProtectedRoute from "./hooks/ProtectedRoutes";
+import Unauthorized from "./hooks/Unauthorized";
 
 function App() {
   return (
@@ -27,7 +29,13 @@ function App() {
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/pre-registration" element={<PreRegistration />} />
+          <Route path="/pre-registration" element={
+            <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+            <PreRegistration />
+            </ProtectedRoute>
+            } />
+            {/* Unauthorized Route */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
       </BrowserRouter>
     </>

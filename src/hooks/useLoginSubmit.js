@@ -33,16 +33,18 @@ export default function useLoginSubmit(setStep) {
           },
         }
       );
-
+  
       if (res?.error) {
         notifyError(res?.error);
       } else {
+        const { user_type, token } = res.data;
+  
+        // Save token and user_type in local storage
+        localStorage.setItem("user_type", JSON.stringify(user_type));
+        localStorage.setItem("token", token);
+  
         notifySuccess("Logged in successfully");
-        // window.location.replace("https://dashboard.your-personal-peak360.de/");
-        // window.location.href = "https://dashboard.your-personal-peak360.de/";
-        // Set agreement status in local storage
-      localStorage.removeItem("hasAgreedToTerms");
-          navigate('/dashboard');
+        navigate("/dashboard");
       }
       setLoading(false);
     } catch (error) {
@@ -50,6 +52,7 @@ export default function useLoginSubmit(setStep) {
       notifyError(error?.response?.data?.detail || error.message);
     }
   };
+  
 
   const onRegisterSubmit = async (data) => {
     try {
