@@ -10,6 +10,8 @@ import ProtectedRoute from "./hooks/ProtectedRoutes";
 import Unauthorized from "./hooks/Unauthorized";
 import KanbanBoard from "./pages/KanbanBoard/KanbanBoard";
 import MobilityStretch from "./pages/landing/MobilityStretch";
+import MobilityAdd from "./pages/Settings/MobilityAdd";
+import MobilityAddForm from "./pages/Settings/MobilityAddForm";
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
             </ProtectedRoute>
             } />
           <Route path="/kanban-board" element={<KanbanBoard />} />
+          <Route path="/mobility-add" element={<MobilityAdd />} />
+          <Route path="/mobility-add/new" element={<MobilityAddForm/>} />
             {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>

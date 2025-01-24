@@ -230,6 +230,11 @@ const Sidebar = () => {
               <i className="bx bx-right-arrow-alt"></i>eCommerce shop
             </a>
           </li>
+          <li>
+            <Link to="/mobility-add">
+              <i className="bx bx-right-arrow-alt"></i>Mobility
+            </Link>
+          </li>
         </ul>
       </li>
 
