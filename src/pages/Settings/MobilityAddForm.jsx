@@ -9,6 +9,7 @@ const MobilityAddForm = () => {
     title: "",
     type: "",
     query: "",
+    content_type: "", // New content_type field
     short_video_or_image: null,
   });
 
@@ -32,6 +33,7 @@ const MobilityAddForm = () => {
     form.append("title", formData.title);
     form.append("type", formData.type);
     form.append("query", formData.query);
+    form.append("content_type", formData.content_type); // Add content_type to the form
     form.append("short_video_or_image", formData.short_video_or_image);
 
     setIsLoading(true); // Start the loader
@@ -94,6 +96,21 @@ const MobilityAddForm = () => {
               onChange={handleInputChange}
               required
             />
+          </label>
+          <label>
+            Content Type:
+            <select
+              name="content_type"
+              value={formData.content_type}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select Content Type
+              </option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
           </label>
           <label>
             Video or Image:

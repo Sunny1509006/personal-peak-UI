@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./HealthCountdown.css"; // Assuming styles are placed in a separate CSS file
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.jpg";
 import Ig1 from "../../assets/images/ig1.jpeg";
 import Ig2 from "../../assets/images/ig2.jpeg";
@@ -10,6 +10,8 @@ import Ig5 from "../../assets/images/ig5.jpeg";
 import Ig6 from "../../assets/images/ig6.jpeg";
 import Ig7 from "../../assets/images/ig7.jpeg";
 import Ig8 from "../../assets/images/ig8.jpeg";
+import mobility from "../../assets/images/mobility.png";
+import { Button } from "react-bootstrap";
 
 const themes = [
   {
@@ -61,7 +63,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     const updateCountdown = () => {
-      const targetDate = new Date("February 15, 2025 00:00:00").getTime();
+      const targetDate = new Date("March 15, 2025 00:00:00").getTime();
       const now = new Date().getTime();
       const difference = targetDate - now;
 
@@ -125,7 +127,7 @@ const LandingPage = () => {
           Klicke auf &quot;Jetzt registrieren&quot; und setze dich kostenfrei
           und unverbindlich auf die Warteliste!
           <br />
-          Die Veröffentlichung erfolgt voraussichtlich am 01.02.2025 um 00:00
+          Die Veröffentlichung erfolgt voraussichtlich am 15.03.2025 um 00:00
           Uhr.
         </p>
         <div className="countdown">
@@ -167,6 +169,18 @@ const LandingPage = () => {
       <p>{theme}</p>
     </div>
   ))}
+  <Link to="/mobility-stretch-power">
+   <div className="theme">
+      <div className="image-wrapper">
+        <img
+          src={mobility}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          alt={theme}
+        />
+      </div>
+      <button style={{width: '100%', background: 'none'}}>Click Here</button>
+    </div>
+    </Link>
 </div>
 
         <div className="founders">
