@@ -61,7 +61,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     const updateCountdown = () => {
-      const targetDate = new Date("February 1, 2025 00:00:00").getTime();
+      const targetDate = new Date("February 15, 2025 00:00:00").getTime();
       const now = new Date().getTime();
       const difference = targetDate - now;
 

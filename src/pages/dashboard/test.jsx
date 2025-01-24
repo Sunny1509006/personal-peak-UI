@@ -1,344 +1,175 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import "./../pages/dashboard/AdminSidebar.css"
+import React, { useState, useEffect } from "react";
+import "./MobilityStretch.css"; // Import stylesheets for CSS
 
-// const Sidebar = () => {
-//   return (
-//     <aside className="sidebar-wrapper">
-//      <div className="sidebar-wrapper" data-simplebar="true">
-//         <div className="sidebar-header">
-//           <div>
-//             <img
-//               src="assets/images/logo.png"
-//               className="logo-icon-2 w-75"
-//               alt="Logo"
-//             />
-//           </div>
-//           <a href="#" className="toggle-btn ms-auto">
-//             <i className="bx bx-menu"></i>
-//           </a>
-//         </div>
-//         {/* Navigation */}
-//         <ul className="metismenu" id="menu">
-//           <li>
-//             <Link to="/dashboard">
-//               <div className="parent-icon icon-color-1">
-//                 <i className="bx bx-home-alt"></i>
-//               </div>
-//               <div className="menu-title">Home Page</div>
-//             </Link>
-//           </li>
-//           <li className="menu-label">Admin Area</li>
-//           <li>
-//             <Link to="/pre-registration">
-//               <div className="parent-icon icon-color-2">
-//                 <i className="bx bx-envelope"></i>
-//               </div>
-//               <div className="menu-title">Pre-registrations</div>
-//             </Link>
-//           </li>
-//           <li>
-//             <a href="#">
-//               <div className="parent-icon icon-color-3">
-//                 <i className="bx bx-conversation"></i>
-//               </div>
-//               <div className="menu-title">User</div>
-//             </a>
-//           </li>
-//           <li>
-//             <a href="chat-box.html">
-//               <div className="parent-icon icon-color-3">
-//                 <i className="bx bx-conversation"></i>
-//               </div>
-//               <div className="menu-title">Live Chat</div>
-//             </a>
-//           </li>
-//                {/* Accounting */}
-//       <li>
-//         <a className="has-arrow" href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-spa"></i>
-//           </div>
-//           <div className="menu-title">Accounting</div>
-//         </a>
-//         <ul>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Invoices
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Offers
-//             </a>
-//           </li>
-//         </ul>
-//       </li>
+const MobilityStretch = () => {
+  const [theme, setTheme] = useState("blue");
+  const [typedText, setTypedText] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [ratings, setRatings] = useState({});
 
-//       {/* Training Hall */}
-//       <li>
-//         <a className="has-arrow" href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-spa"></i>
-//           </div>
-//           <div className="menu-title">Training Hall</div>
-//         </a>
-//         <ul>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Exercises
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Training Plans
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Upload & Analysis
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Fitness Test
-//             </a>
-//           </li>
-//         </ul>
-//       </li>
-//       <li>
-//         <a className="has-arrow" href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-spa"></i>
-//           </div>
-//           <div className="menu-title">Nutrition & Analysis</div>
-//         </a>
-//         <ul>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Nutrition Plans
-//             </a>
-//           </li>
-//         </ul>
-//       </li>
+  const exercises = [
+    {
+      id: 1,
+      title: "Waden-Spannungstest",
+      description: "Ausfallschritt an der Wand, Ferse bleibt unten. Spüre das Ziehen in der Wade.",
+      category: "Spannung",
+      icon: "fa-shoe-prints",
+      customLogic: false,
+    },
+    {
+        id: 2,
+        title: "Waden-Spannungstest",
+        description: "Ausfallschritt an der Wand, Ferse bleibt unten. Spüre das Ziehen in der Wade.",
+        category: "Spannung",
+        icon: "fa-shoe-prints",
+        customLogic: false,
+      },
+      {
+        id: 3,
+        title: "Waden-Spannungstest",
+        description: "Ausfallschritt an der Wand, Ferse bleibt unten. Spüre das Ziehen in der Wade.",
+        category: "Spannung",
+        icon: "fa-shoe-prints",
+        customLogic: false,
+      },
+      {
+        id: 4,
+        title: "Waden-Spannungstest",
+        description: "Ausfallschritt an der Wand, Ferse bleibt unten. Spüre das Ziehen in der Wade.",
+        category: "Spannung",
+        icon: "fa-shoe-prints",
+        customLogic: false,
+      },
+      {
+        id: 5,
+        title: "Waden-Spannungstest",
+        description: "Ausfallschritt an der Wand, Ferse bleibt unten. Spüre das Ziehen in der Wade.",
+        category: "Spannung",
+        icon: "fa-shoe-prints",
+        customLogic: false,
+      },
+    // Add the rest of the exercises here
+  ];
 
-//       {/* Settings */}
-//       <li>
-//         <a className="has-arrow" href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-spa"></i>
-//           </div>
-//           <div className="menu-title">Settings</div>
-//         </a>
-//         <ul>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Generally
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Legal
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Welcome Page
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Awards / Badges
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Accounting
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/pricing">
-//               <i className="bx bx-right-arrow-alt"></i>eCommerce shop
-//             </a>
-//           </li>
-//         </ul>
-//       </li>
+  useEffect(() => {
+    let typedIndex = 0;
+    const typedInterval = setInterval(() => {
+      if (typedIndex < typedTextContent.length) {
+        setTypedText((prev) => prev + typedTextContent.charAt(typedIndex));
+        typedIndex++;
+      } else {
+        clearInterval(typedInterval);
+      }
+    }, 45);
 
-//       {/* Kanban Board */}
-//       <li>
-//         <a href="/kanban">
-//           <div className="parent-icon icon-color-5">
-//             <i className="bx bx-group"></i>
-//           </div>
-//           <div className="menu-title">Kanban Board</div>
-//         </a>
-//       </li>
+    return () => clearInterval(typedInterval);
+  }, []);
 
-//       {/* Todo List */}
-//       <li>
-//         <a href="/to-do">
-//           <div className="parent-icon icon-color-6">
-//             <i className="bx bx-task"></i>
-//           </div>
-//           <div className="menu-title">Todo List</div>
-//         </a>
-//       </li>
+  const typedTextContent =
+    "Spannung, Mobilität & Kraft – teste dich jetzt in neuer Perfektion!";
 
-//       {/* Cockpit Label */}
-//       <li className="menu-label">Cockpit</li>
+  const handleThemeChange = (e) => {
+    setTheme(e.target.value);
+  };
 
-//       {/* My Profile */}
-//       <li>
-//         <a href="/user-profile">
-//           <div className="parent-icon icon-color-4">
-//             <i className="bx bx-user-circle"></i>
-//           </div>
-//           <div className="menu-title">My Profile</div>
-//         </a>
-//       </li>
+  const calculatePlankRating = (sec) => {
+    if (sec <= 20) return 1;
+    if (sec <= 30) return 2;
+    if (sec <= 40) return 3;
+    if (sec <= 50) return 4;
+    if (sec <= 60) return 5;
+    if (sec <= 70) return 6;
+    if (sec <= 90) return 7;
+    if (sec <= 120) return 8;
+    if (sec <= 150) return 9;
+    return 10;
+  };
 
-//       {/* Accounting */}
-//       <li>
-//         <a className="has-arrow" href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-spa"></i>
-//           </div>
-//           <div className="menu-title">Accounting</div>
-//         </a>
-//         <ul>
-//           <li>
-//             <a href="/invoice">
-//               <i className="bx bx-right-arrow-alt"></i>Invoices
-//             </a>
-//           </li>
-//           <li>
-//             <a href="/component-bedges">
-//               <i className="bx bx-right-arrow-alt"></i>Offers
-//             </a>
-//           </li>
-//         </ul>
-//       </li>
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-11">
-//             <i className="bx bx-repeat"></i>
-//           </div>
-//           <div className="menu-title">eCommerce Shop</div>
-//         </a>
-//       </li>
+  const updateProgress = () => {
+    const ratedCount = Object.keys(ratings).length;
+    const total = exercises.length;
+    setProgress((ratedCount / total) * 100);
+  };
 
-//       {/* Live Chat */}
-//       <li>
-//         <a href="/chat-box">
-//           <div className="parent-icon icon-color-3">
-//             <i className="bx bx-conversation"></i>
-//           </div>
-//           <div className="menu-title">Live Chat</div>
-//         </a>
-//       </li>
+  const handleRatingSubmit = (id, value, customLogic) => {
+    let finalScore = 0;
+    if (customLogic === "plank") {
+      finalScore = calculatePlankRating(value);
+    } else {
+      finalScore = Math.min(value, 10);
+    }
+    setRatings((prev) => ({ ...prev, [id]: finalScore }));
+    updateProgress();
+  };
 
-//       {/* Calendar */}
-//       <li>
-//         <a href="/fullcalendar">
-//           <div className="parent-icon icon-color-8">
-//             <i className="bx bx-calendar-check"></i>
-//           </div>
-//           <div className="menu-title">Calendar</div>
-//         </a>
-//       </li>
+  return (
+    <div className={`theme-${theme}`}>
+      {/* Theme Switcher */}
+      <div className="Theme-switcher-mobility">
+        <select onChange={handleThemeChange} value={theme}>
+          <option value="blue">Blau</option>
+          <option value="lime">Grün/Lime</option>
+          <option value="violet">Violett</option>
+        </select>
+      </div>
 
-//       {/* Diary */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-12">
-//             <i className="bx bx-donate-blood"></i>
-//           </div>
-//           <div className="menu-title">Diary</div>
-//         </a>
-//       </li>
+      {/* Header */}
+      <header>
+        <div className="logo-title">
+          <i className="fas fa-dumbbell"></i> MobilityStretchPower
+        </div>
+        <div className="typed-text">{typedText}</div>
+        <div className="progress-container">
+          <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+        </div>
+      </header>
 
-//       {/* Nutrition & Analysis Label */}
-//       <li className="menu-label">Nutrition & Analysis</li>
+      {/* Exercise Grid */}
+      <div className="exercise-container">
+        {exercises.map((ex, index) => (
+          <div className="exercise-card" key={ex.id}>
+            <div className="ribbon-badge">Übung {index + 1} / {exercises.length}</div>
+            <div className="card-header-mobility">
+              <div className="icon-circle">
+                <i className={`fas ${ex.icon}`}></i>
+              </div>
+              <h3>{ex.title}</h3>
+            </div>
+            <div className="video-placeholder">
+              VIDEO-PLATZHALTER: {ex.title}
+            </div>
+            <p>{ex.description}</p>
+            <span className="category-tag">{ex.category}</span>
+            <div className="rating-section">
+              <label className="rating-label">
+                {ex.customLogic === "plank" ? "Deine Zeit (Sek.):" : "Deine Bewertung (1–10):"}
+              </label>
+              {ex.customLogic ? (
+                <input
+                  type="number"
+                  className="time-input"
+                  placeholder="z.B. 90"
+                  onBlur={(e) =>
+                    handleRatingSubmit(ex.id, parseInt(e.target.value, 10), ex.customLogic)
+                  }
+                />
+              ) : (
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  defaultValue="5"
+                  onChange={(e) =>
+                    handleRatingSubmit(ex.id, parseInt(e.target.value, 10))
+                  }
+                />
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-//       {/* Nutrition Tracking */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-1">
-//             <i className="bx bx-comment-edit"></i>
-//           </div>
-//           <div className="menu-title">Nutrition Tracking</div>
-//         </a>
-//       </li>
-
-//       {/* Measurements / Results */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-2">
-//             <i className="bx bx-grid-alt"></i>
-//           </div>
-//           <div className="menu-title">Measurements / Results</div>
-//         </a>
-//       </li>
-
-//       {/* Diary */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-12">
-//             <i className="bx bx-donate-blood"></i>
-//           </div>
-//           <div className="menu-title">Diary</div>
-//         </a>
-//       </li>
-
-//       {/* Training Hall Label */}
-//       <li className="menu-label">Training Hall</li>
-
-//       {/* Exercises */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-9">
-//             <i className="bx bx-line-chart"></i>
-//           </div>
-//           <div className="menu-title">Exercises</div>
-//         </a>
-//       </li>
-
-//       {/* Training Plans */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-map-alt"></i>
-//           </div>
-//           <div className="menu-title">Training Plans</div>
-//         </a>
-//       </li>
-
-//       {/* Upload and Analysis */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-map-alt"></i>
-//           </div>
-//           <div className="menu-title">Upload and Analysis</div>
-//         </a>
-//       </li>
-
-//       {/* Diary */}
-//       <li>
-//         <a href="#">
-//           <div className="parent-icon icon-color-10">
-//             <i className="bx bx-map-alt"></i>
-//           </div>
-//           <div className="menu-title">Diary</div>
-//         </a>
-//       </li>
-          
-//           {/* Add more menu items as needed */}
-//         </ul>
-//         {/* End Navigation */}
-//       </div>
-//     </aside>
-//   );
-// };
-
-// export default Sidebar;
+export default MobilityStretch;

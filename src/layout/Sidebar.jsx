@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./../pages/dashboard/AdminSidebar.css";
 
 const Sidebar = () => {
-  
+
   const isAccessible = (roles) => {
     const userRoles = JSON.parse(localStorage.getItem("user_type")) || [];
     // If `roles` is a string, convert it to an array for consistency
@@ -235,12 +235,12 @@ const Sidebar = () => {
 
       {/* Kanban Board */}
       <li>
-        <a href="/kanban">
+        <Link to="/kanban-board">
           <div className="parent-icon icon-color-5">
             <i className="bx bx-group"></i>
           </div>
           <div className="menu-title">Kanban Board</div>
-        </a>
+        </Link>
       </li>
 
       {/* Todo List */}

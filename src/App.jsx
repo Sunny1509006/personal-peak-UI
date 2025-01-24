@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import PreRegistration from "./pages/Admin/PreRegistration";
 import ProtectedRoute from "./hooks/ProtectedRoutes";
 import Unauthorized from "./hooks/Unauthorized";
+import KanbanBoard from "./pages/KanbanBoard/KanbanBoard";
+import MobilityStretch from "./pages/landing/MobilityStretch";
 
 function App() {
   return (
@@ -28,12 +30,14 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/mobility-stretch-power" element={<MobilityStretch />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/pre-registration" element={
             <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
             <PreRegistration />
             </ProtectedRoute>
             } />
+          <Route path="/kanban-board" element={<KanbanBoard />} />
             {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
