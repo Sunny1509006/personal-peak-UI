@@ -28,12 +28,12 @@ const MobilityAdd = () => {
     <Layout>
       <div className="mobility-add-page">
         {/* Header */}
-        <header className="page-header">
+        <div className="page-header">
           <h1>Mobility Add</h1>
           <a href="/mobility-add/new" className="add-button">
             Mobility Add
           </a>
-        </header>
+        </div> 
 
         {/* List View */}
         <div className="list-view">
