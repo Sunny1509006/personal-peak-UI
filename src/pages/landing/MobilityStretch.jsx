@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "../../Axios/Axios";
 import "./MobilityStretch.css"; // Include CSS styles as required
+import MediaContent from "./MediaContent";
 
 const MobilityStretch = () => {
   const [typedText, setTypedText] = useState("");
@@ -18,12 +19,21 @@ const MobilityStretch = () => {
         const formattedData = response.data.map((item) => ({
           id: item.id,
           title: item.title,
-          description: `Type: ${item.type}, Query: ${item.query}`,
-          category: "Exercise", // You can adjust this field as needed
+          description:  item.query,
+          category: item.type ,// You can adjust this field as needed
           icon: "fa-dumbbell", // Default icon or map based on item.type
           short_video_or_image: item.short_video_or_image,
+          content_type: item.content_type,
         }));
+
+        // Initialize ratings to 5 for all exercises
+        const initialRatings = formattedData.reduce((acc, item) => {
+          // acc[item.id] = 5; // Default rating
+          return acc;
+        }, {});
+
         setExercises(formattedData);
+        setRatings(initialRatings);
       } catch (error) {
         console.error("Error fetching exercises:", error);
       } finally {
@@ -67,7 +77,7 @@ const MobilityStretch = () => {
   return (
     <div className={`theme-${theme}`}>
       {/* Header */}
-      <header>
+      <header className="mobility-stretch-header">
         <div className="logo-title">
           <i className="fas fa-dumbbell"></i> MobilityStretchPower
         </div>
@@ -78,7 +88,7 @@ const MobilityStretch = () => {
       </header>
 
       {/* Theme Switcher */}
-      <div className="theme-switcher">
+      <div className="Theme-switcher-mobility">
         <select onChange={handleThemeChange} value={theme}>
           <option value="blue">Blau</option>
           <option value="lime">Grün/Lime</option>
@@ -91,31 +101,31 @@ const MobilityStretch = () => {
         {exercises.map((exercise, index) => (
           <div key={exercise.id} className="exercise-card">
             <div className="ribbon-badge">Übung {index}/9</div>
-            <div className="card-header">
+            <div className="card-header-mobility">
               <div className="icon-circle">
                 <i className={`fas ${exercise.icon}`}></i>
               </div>
               <h3>{exercise.title}</h3>
             </div>
-            {exercise.short_video_or_image && (
-              <video
-                className="video-placeholder"
-                controls
-                src={exercise.short_video_or_image}
-                alt="Exercise video"
-              />
-            )}
+            <MediaContent exercise={exercise} />
+
+              
+            
             <p>{exercise.description}</p>
             <span className="category-tag">{exercise.category}</span>
+            <p>{ratings[exercise.id]}</p>
             <div className="rating-section">
               <label className="rating-label">Deine Bewertung (1–10):</label>
               <input
                 type="range"
                 min="1"
                 max="10"
+                value={ratings[exercise.id]} // Use the initial rating or updated value
                 onChange={(e) => handleRatingSubmit(exercise.id, e.target.value)}
               />
-              <button onClick={() => alert(`Rating saved for ${exercise.title}`)}>Speichern</button>
+              <button 
+              onClick={() => alert(`Rating saved for ${exercise.title}`)}
+              >Speichern</button>
             </div>
           </div>
         ))}

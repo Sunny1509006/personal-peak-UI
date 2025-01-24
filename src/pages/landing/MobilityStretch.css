@@ -235,17 +235,18 @@
     font-weight: 700;
     text-align: left;
   }
-  .video-placeholder {
+  .video-placeholder-mobility {
     background: #fefefe;
     border: 2px dashed #ccc;
     color: #999;
-    height: 150px;
+    height: 250px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 0.7rem;
     font-size: 0.85rem;
+    width: 100%;
   }
   .category-tag {
     display: inline-block;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "../../Axios/Axios";
 import "./MobilityAdd.css";
 import Layout from "../../layout/Layout";
+import { Link } from "react-router-dom";
 
 const MobilityAdd = () => {
   const [items, setItems] = useState([]);
@@ -101,9 +102,9 @@ const MobilityAdd = () => {
         {/* Header */}
         <div className="page-header">
           <h1>Mobility Add</h1>
-          <a href="/mobility-add/new" className="add-button">
+          <Link to="/mobility-add-new" className="add-button">
             Mobility Add
-          </a>
+          </Link>
         </div>
 
         {/* List View */}

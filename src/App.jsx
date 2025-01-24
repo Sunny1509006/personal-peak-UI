@@ -41,7 +41,7 @@ function App() {
             } />
           <Route path="/kanban-board" element={<KanbanBoard />} />
           <Route path="/mobility-add" element={<MobilityAdd />} />
-          <Route path="/mobility-add/new" element={<MobilityAddForm/>} />
+          <Route path="/mobility-add-new" element={<MobilityAddForm/>} />
             {/* Unauthorized Route */}
       <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
