@@ -158,18 +158,18 @@ const LandingPage = () => {
         </div>
 
         <div className="themes">
-  {themes.map(({ theme, img }, index) => (
-    <div className="theme" key={index}>
-      <div className="image-wrapper">
-        <img
-          src={img}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          alt={theme}
-        />
-      </div>
-      <p>{theme}</p>
-    </div>
-  ))}
+          {themes.map(({ theme, img }, index) => (
+            <div className="theme" key={index}>
+              <div className="image-wrapper">
+                <img
+                  src={img}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  alt={theme}
+                />
+              </div>
+              <p style={{color: 'white'}}>{theme}</p>
+            </div>
+          ))}
   {/* <Link to="/mobility-stretch-power">
    <div className="theme">
       <div className="image-wrapper">

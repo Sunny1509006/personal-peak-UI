@@ -187,7 +187,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     color: var(--color-text);
     position: relative;
-    max-width: 300px;
+    max-width: 25%;
   }
   .exercise-card:hover {
     transform: translateY(-4px);
@@ -470,24 +470,30 @@
   /************************************************************
    * MODAL (nach jeder Übung)
    ************************************************************/
-  .modal-overlay {
+   .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    overflow-y: auto; /* Allow scrolling when modal content exceeds viewport height */
   }
+  
   .modal-box {
     background: #fff;
     border-radius: 12px;
     padding: 1.5rem 2rem;
-    max-width: 400px;
+    max-width: 50%;
+    width: 90%; /* Adjust width for smaller screens */
     text-align: center;
     animation: popScale 0.4s ease;
     position: relative;
+    max-height: 90vh; /* Restrict modal height to 90% of viewport height */
+    overflow-y: auto; /* Make modal content scrollable */
   }
+  
   @keyframes popScale {
     from {
       opacity: 0;

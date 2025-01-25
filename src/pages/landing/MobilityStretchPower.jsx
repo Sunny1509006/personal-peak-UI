@@ -56,7 +56,7 @@ const MobilityStretchPower = () => {
               type="text"
               value={testCode}
               onChange={(e) => setTestCode(e.target.value)}
-              placeholder="z.B. SamuelThomas25"
+              placeholder="z.B. SUPERTEST2025"
             />
             <button className="check-code-btn" onClick={handleCheckCode}>
               Los geht's

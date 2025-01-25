@@ -10,9 +10,18 @@ const MobilityStretch = () => {
   const [typedIndex, setTypedIndex] = useState(0);
   const [theme, setTheme] = useState("blue");
   const [ratings, setRatings] = useState({});
+  const [tempRatings, setTempRatings] = useState({});
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isWowModalOpen, setIsWowModalOpen] = useState(false);
+const [submittedRating, setSubmittedRating] = useState(null);
+const [submittedRatingTitle, setSubmittedRatingTitle] = useState("");
+
+
+
+
+
 
   // Fetch exercises from API using Axios
   useEffect(() => {
@@ -29,14 +38,15 @@ const MobilityStretch = () => {
           content_type: item.content_type,
         }));
 
-        // Initialize ratings to 5 for all exercises
+        // Initialize tempRatings and ratings to 0 for all exercises
         const initialRatings = formattedData.reduce((acc, item) => {
-          acc[item.id] = 5; // Default rating
+          acc[item.id] = 0; // Default rating is 0
           return acc;
         }, {});
 
         setExercises(formattedData);
         setRatings(initialRatings);
+        setTempRatings(initialRatings);
       } catch (error) {
         console.error("Error fetching exercises:", error);
       } finally {
@@ -65,12 +75,34 @@ const MobilityStretch = () => {
     document.body.className = `theme-${e.target.value}`;
   };
 
-  const handleRatingSubmit = (id, value) => {
-    setRatings((prev) => ({ ...prev, [id]: parseInt(value, 10) || 0 }));
+  const handleTempRatingChange = (id, value) => {
+    setTempRatings((prev) => ({ ...prev, [id]: parseInt(value, 10) || 0 }));
   };
 
+  // const handleRatingSubmit = (id) => {
+  //   setRatings((prev) => ({ ...prev, [id]: tempRatings[id] }));
+  // };
+
+  const handleRatingSubmit = (id, title) => {
+    setRatings((prev) => ({
+      ...prev,
+      [id]: { rating: tempRatings[id], title },
+    }));
+    setSubmittedRating(tempRatings[id]); // Set the submitted rating
+    setSubmittedRatingTitle(title); // Set the submitted title
+    setIsWowModalOpen(true); // Open the modal
+  };
+  
+
+  const closeWowModal = () => {
+    setIsWowModalOpen(false);
+    setSubmittedRating(null); // Reset the submitted rating
+  };
+  
+
   const calculateProgress = () => {
-    return (Object.keys(ratings).length / exercises.length) * 100;
+    const ratedExercises = Object.values(ratings).filter((rating) => rating > 0).length;
+    return (ratedExercises / exercises.length) * 100;
   };
 
   const calculateScore = () => {
@@ -128,35 +160,50 @@ const MobilityStretch = () => {
         </select>
       </div>
 
-      {/* Exercise Grid */}
-      <div className="exercise-container">
-        {exercises.map((exercise, index) => (
-          <div key={exercise.id} className="exercise-card">
-            <div className="ribbon-badge">Übung {index + 1} / {exercises.length}</div>
-            <div className="card-header-mobility">
-              <div className="icon-circle">
-                <i className={`fas ${exercise.icon}`}></i>
-              </div>
-              <h3>{exercise.title}</h3>
-            </div>
-            <MediaContent exercise={exercise} />
-            <p>{exercise.description}</p>
-            <span className="category-tag">{exercise.category}</span>
-            <p>{ratings[exercise.id]}</p>
-            <div className="rating-section">
-              <label className="rating-label">Deine Bewertung (1–10):</label>
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={ratings[exercise.id]} // Use the initial rating or updated value
-                onChange={(e) => handleRatingSubmit(exercise.id, e.target.value)}
-              />
-              <button onClick={() => alert(`Rating saved for ${exercise.title}`)}>Speichern</button>
-            </div>
-          </div>
-        ))}
+ {/* Exercise Grid */}
+<div className="exercise-container">
+  {exercises.map((exercise, index) => (
+    <div key={exercise.id} className="exercise-card">
+      <div className="ribbon-badge">Übung {index + 1} / {exercises.length}</div>
+      <div className="card-header-mobility">
+        <div className="icon-circle">
+          <i className={`fas ${exercise.icon}`}></i>
+        </div>
+        <h3>{exercise.title}</h3>
       </div>
+      <MediaContent exercise={exercise} />
+      <p>{exercise.description}</p>
+      <span className="category-tag">{exercise.category}</span>
+      <p>Rating: {tempRatings[exercise.id]}</p>
+      <div className="rating-section">
+        <label className="rating-label">Deine Bewertung (1–10):</label>
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value={tempRatings[exercise.id]} // Temporary rating value
+          onChange={(e) => handleTempRatingChange(exercise.id, e.target.value)}
+        />
+        <button onClick={() => handleRatingSubmit(exercise.id, exercise.title)}>
+          Speichern
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Wow Modal for Confirmation */}
+{isWowModalOpen && (
+  <div id="modalOverlay" className="modal-overlay">
+    <div className="modal-box">
+      <h4 id="modalTitle">Wow!</h4>
+      <p id="modalMessage">Dein Wert: {submittedRating} für "{submittedRatingTitle}" gespeichert!</p>
+      <button id="closeModalBtn" className="close-modal-btn" onClick={closeWowModal}>
+        Okay
+      </button>
+    </div>
+  </div>
+)}
 
 
       {/* Show Results Button */}
@@ -167,10 +214,10 @@ const MobilityStretch = () => {
       {/* Modal for Total Results */}
       {isModalOpen && (
         <ShowResult
-        exercises={exercises}
-        ratings={ratings}
-        onClose={closeModal} // Pass the function to close the modal
-      />
+          exercises={exercises}
+          ratings={ratings}
+          onClose={closeModal} // Pass the function to close the modal
+        />
       )}
     </div>
   );
