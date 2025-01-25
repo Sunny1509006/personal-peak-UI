@@ -161,7 +161,7 @@ const [submittedRatingTitle, setSubmittedRatingTitle] = useState("");
       </div>
 
  {/* Exercise Grid */}
-<div className="exercise-container">
+ <div className="exercise-container">
   {exercises.map((exercise, index) => (
     <div key={exercise.id} className="exercise-card">
       <div className="ribbon-badge">Übung {index + 1} / {exercises.length}</div>
@@ -174,17 +174,47 @@ const [submittedRatingTitle, setSubmittedRatingTitle] = useState("");
       <MediaContent exercise={exercise} />
       <p>{exercise.description}</p>
       <span className="category-tag">{exercise.category}</span>
-      <p>Rating: {tempRatings[exercise.id]}</p>
+      
+        {index === 7 || index === 8 ? (
+          <p>Zeit (Sek.): {tempRatings[exercise.id]}</p>
+        )
+          :
+          (
+            <p>Bewertung: {tempRatings[exercise.id]}</p>
+          )
+
+        }
+        
+        
       <div className="rating-section">
-        <label className="rating-label">Deine Bewertung (1–10):</label>
-        <input
-          type="range"
-          min="1"
-          max="10"
-          value={tempRatings[exercise.id]} // Temporary rating value
-          onChange={(e) => handleTempRatingChange(exercise.id, e.target.value)}
-        />
-        <button onClick={() => handleRatingSubmit(exercise.id, exercise.title)}>
+        {index === 7 || index === 8 ? (
+          <>
+            <label className="rating-label">Deine Zeit (Sek.):</label>
+            <input
+              type="number"
+              className="time-input"
+              placeholder="z.B. 90"
+              value={tempRatings[exercise.id]} // Temporary rating value
+              onChange={(e) => handleTempRatingChange(exercise.id, e.target.value)}
+            />
+            <br />
+          </>
+        ) : (
+          <>
+            <label className="rating-label">Deine Bewertung (1–10):</label>
+            <div className="slider-div">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={tempRatings[exercise.id]} // Temporary rating value
+                onChange={(e) => handleTempRatingChange(exercise.id, e.target.value)}
+              />
+              <span className="slider-label-value">{tempRatings[exercise.id]}</span>
+            </div>
+          </>
+        )}
+        <button onClick={() => handleRatingSubmit(exercise.id, exercise.title)} className="submit-rating-btn">
           Speichern
         </button>
       </div>
