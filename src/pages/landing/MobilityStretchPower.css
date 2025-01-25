@@ -1,0 +1,135 @@
+/* General Reset */
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(130deg, #58c9f3, #185a9d);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+  
+  /* Main Container */
+  .container {
+    text-align: center;
+  }
+  
+  /* Main Button */
+  .big-button {
+    position: fixed;
+    display: inline-block;
+    padding: 10px 30px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff9966, #ff5e62);
+    /* background-size: 200% 200%; */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 94, 98, 0.3);
+    transition: all 0.4s ease-in-out;
+    animation: gradientFlow 3s ease infinite;
+    bottom: 20px;
+    left: 15px;
+  }
+  
+  .big-button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 40px rgba(255, 94, 98, 0.6);
+  }
+  
+  @keyframes gradientFlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .big-button span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: normal;
+    opacity: 0.9;
+  }
+  
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    width: 300px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
+  }
+  
+  .close-modal:hover {
+    color: #333;
+  }
+  
+  .modal-content input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .check-code-btn {
+    background: #28a745;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .check-code-btn:hover {
+    background: #218838;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  

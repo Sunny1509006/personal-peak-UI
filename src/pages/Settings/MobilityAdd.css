@@ -139,6 +139,22 @@
   background-color: #218838;
 }
 
+.update-button {
+  /* background-color: #dc3545; */
+  /* color: white; */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.update-button:hover {
+  background-color: #a5a5a5;
+}
+
+
+
 .cancel-button {
   background-color: #dc3545;
   color: white;
@@ -232,12 +248,14 @@
 }
 
 /* Media Content */
-.media-content {
+.media-content-mobility {
   width: 100%;
-  height: auto;
+  height: 150px;
   margin-bottom: 10px;
   border-radius: 5px;
   object-fit: cover;
+  
+  
 }
 
 /* Play Button */

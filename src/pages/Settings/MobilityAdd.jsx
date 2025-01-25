@@ -7,7 +7,11 @@ import { Link } from "react-router-dom";
 const MobilityAdd = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [playingVideoId, setPlayingVideoId] = useState(null); // Track the currently playing video
+  const [isEditing, setIsEditing] = useState(false); // Track if the update form is open
+  const [editingItem, setEditingItem] = useState(null); // Track the item being edited
+  const [selectedFile, setSelectedFile] = useState(null); // Track uploaded file
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [itemToDelete, setItemToDelete] = useState(null); // Track item to delete
 
   // Fetch items from the API
   useEffect(() => {
@@ -25,73 +29,95 @@ const MobilityAdd = () => {
     fetchItems();
   }, []);
 
-  // Handle video play
-  const handlePlayVideo = async (itemId) => {
+  // Handle delete confirmation
+  const handleDeleteConfirm = async () => {
     try {
-      const response = await Axios.get(`/content/stream/${itemId}`, {
-        responseType: "blob",
-      });
-      const videoUrl = URL.createObjectURL(response.data); // Create Blob URL for the video
+      await Axios.delete(`/content/items/${itemToDelete}`);
       setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === itemId ? { ...item, streamingUrl: videoUrl } : item
-        )
+        prevItems.filter((item) => item.id !== itemToDelete)
       );
-      setPlayingVideoId(itemId); // Set the currently playing video ID
-    } catch (error) {
-      console.error("Error fetching streaming video:", error);
-      alert("Failed to play the video. Please try again.");
-    }
-  };
-
-  // Handle delete
-  const handleDelete = async (itemId) => {
-    try {
-      await Axios.delete(`/content/items/${itemId}`);
-      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       alert("Item deleted successfully!");
     } catch (error) {
       console.error("Error deleting item:", error);
       alert("Failed to delete item. Please try again.");
+    } finally {
+      setIsModalOpen(false);
+      setItemToDelete(null);
     }
+  };
+
+    // Open delete confirmation modal
+    const openDeleteModal = (itemId) => {
+      setItemToDelete(itemId);
+      setIsModalOpen(true);
+    };
+
+
+  // Handle update
+  const handleUpdate = async (updatedItem) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", updatedItem.title);
+      formData.append("type", updatedItem.type);
+      formData.append("query", updatedItem.query);
+      formData.append("content_type", updatedItem.content_type);
+      if (selectedFile) {
+        formData.append("short_video_or_image", selectedFile);
+      }
+
+      await Axios.put(`/content/items/${updatedItem.id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === updatedItem.id ? { ...updatedItem } : item
+        )
+      );
+      alert("Item updated successfully!");
+      setIsEditing(false);
+      setEditingItem(null);
+      setSelectedFile(null);
+    } catch (error) {
+      console.error("Error updating item:", error);
+      alert("Failed to update item. Please try again.");
+    }
+  };
+
+  // Open the update form
+  const openUpdateForm = (item) => {
+    setIsEditing(true);
+    setEditingItem({ ...item });
+    setSelectedFile(null);
   };
 
   // Render content for each card
   const renderContent = (item) => {
     if (item.content_type === "video") {
-      // If it's a video, show the Play button and conditionally render the video
-      console.log(item)
       return (
         <div className="video-container">
-          {item.streamingUrl && playingVideoId === item.id ? (
-            <video
-              className="media-content"
-              controls
-              autoPlay
-              src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
-            />
-          ) : (
-            <button
-              className="play-button"
-              onClick={() => handlePlayVideo(item.id)}
-            >
-              Play
-            </button>
-          )}
+          <video
+            className="media-content-mobility"
+            controls
+            autoPlay
+            loop
+            src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
+          />
         </div>
       );
     } else if (item.content_type === "image") {
-      // If it's an image, display it
-      console.log(item)
       return (
+        <div className="video-container">
         <img
-          className="media-content"
+          className="media-content-mobility"
           src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
           alt={item.title}
         />
+        </div>
       );
     } else {
-      // Default case for unsupported content types
       return <p>Unsupported content type</p>;
     }
   };
@@ -120,13 +146,23 @@ const MobilityAdd = () => {
                 <div className="card-content">
                   {renderContent(item)}
                   <p>Type: {item.type}</p>
-                  <p>Query: {item.query}</p>
-                  <div className="card-actions">
+                  <p>Description: {item.query}</p>
+                  <div className="card-actions" style={{
+                    display: 'flex', 
+                    justifyContent: 'center',
+                    gap: '10px'
+                    }}>
                     <button
                       className="delete-button"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => openDeleteModal(item.id)}
                     >
                       Delete
+                    </button>
+                    <button
+                      className="update-button"
+                      onClick={() => openUpdateForm(item)}
+                    >
+                      Update
                     </button>
                   </div>
                 </div>
@@ -135,6 +171,102 @@ const MobilityAdd = () => {
           )}
         </div>
       </div>
+
+      {/* Update Form Modal */}
+      {isEditing && editingItem && (
+        <div className="modal-overlay">
+          <div className="modal-content" style={{width: '500px', display: 'flex', textAlign: 'left'}}>
+            <h2>Update Item</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdate(editingItem);
+              }}
+            >
+              <label>Title</label>
+              <input
+                type="text"
+                value={editingItem.title}
+                onChange={(e) =>
+                  setEditingItem({ ...editingItem, title: e.target.value })
+                }
+              />
+              <label>Type</label>
+              <input
+                type="text"
+                value={editingItem.type}
+                onChange={(e) =>
+                  setEditingItem({ ...editingItem, type: e.target.value })
+                }
+              />
+              <label>Description</label>
+              <input
+                type="text"
+                value={editingItem.query}
+                onChange={(e) =>
+                  setEditingItem({ ...editingItem, query: e.target.value })
+                }
+              />
+              <label>Content Type</label>
+              <select
+                value={editingItem.content_type}
+                onChange={(e) =>
+                  setEditingItem({ ...editingItem, content_type: e.target.value })
+                }
+                style={{marginLeft: '10px'}}
+              >
+                <option value="placeholder">Placeholder</option>
+                <option value="video">Video</option>
+                <option value="image">Image</option>
+              </select>
+              <br />
+              <br />
+              <label>Upload Video/Image</label>
+              <br />
+              <input
+                type="file"
+                onChange={(e) => setSelectedFile(e.target.files[0])}
+                accept={editingItem.content_type === "video" ? "video/*" : "image/*"}
+              />
+              <button type="submit" className="submit-button">
+                Save
+              </button>
+              <button
+                type="button"
+                className="cancel-button"
+                style={{marginLeft: '10px'}}
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+       {/* Delete Confirmation Modal */}
+       {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+            <div className="modal-actions">
+              <button
+                className="confirm-button"
+                onClick={handleDeleteConfirm}
+              >
+                Confirm
+              </button>
+              <button
+                className="cancel-button"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
