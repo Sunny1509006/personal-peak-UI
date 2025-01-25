@@ -101,7 +101,6 @@ const MobilityAdd = () => {
           <video
             className="media-content-mobility"
             controls
-            autoPlay
             loop
             src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
           />
