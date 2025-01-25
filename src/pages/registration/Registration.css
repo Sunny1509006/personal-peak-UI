@@ -70,7 +70,7 @@ h1 {
   box-shadow: 0 10px 25px rgba(255, 255, 255, 0.7);
 }
 
-.popup {
+.popup-reg {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -91,18 +91,18 @@ h1 {
   align-items: stretch; /* Ensure inputs and form elements stretch */
 }
 
-.popup.active {
+.popup-reg.active-registration {
   transform: translate(-50%, -50%) scale(1); /* Show popup */
   opacity: 1; /* Make sure it's visible */
 }
 
-.popup h2 {
+.popup-reg h2 {
   margin-top: 0;
   font-size: 1.8em;
   color: var(--primary-color-dark);
 }
 
-.popup input {
+.popup-reg input {
   width: 90%;
   padding: 10px;
   margin: 10px 0;
@@ -112,7 +112,7 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.popup button {
+.popup-reg button {
   padding: 10px 20px;
   margin: 10px 5px;
   font-size: 1em;
@@ -124,11 +124,11 @@ h1 {
   transition: background 0.3s ease;
 }
 
-.popup button:hover {
+.popup-reg button:hover {
   background: var(--primary-color-light);
 }
 
-.popup .close {
+.popup-reg .close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -152,7 +152,7 @@ h1 {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.overlay.active {
+.overlay.active-registration {
   opacity: 1;
   visibility: visible;
 }

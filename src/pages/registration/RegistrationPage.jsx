@@ -104,10 +104,10 @@ const RegistrationPage = () => {
       {step > 0 && (
         <>
           <div
-            className={`overlay ${step > 0 ? "active" : ""}`}
+            className={`overlay ${step > 0 ? "active-registration" : ""}`}
             onClick={closePopup}
           ></div>
-          <div className={`popup ${step > 0 ? "active" : ""}`}>
+          <div className={`popup-reg ${step > 0 ? "active-registration" : ""}`}>
             <button className="close" onClick={closePopup}>
               &times;
             </button>
