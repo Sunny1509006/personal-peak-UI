@@ -13,6 +13,7 @@ import Ig8 from "../../assets/images/ig8.jpeg";
 import mobility from "../../assets/images/mobility.png";
 import { Button } from "react-bootstrap";
 import MobilityStretchPower from "./MobilityStretchPower";
+import "./LandingPage.css"
 
 const themes = [
   {

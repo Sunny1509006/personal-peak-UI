@@ -132,4 +132,23 @@
     font-size: 0.9rem;
     margin-top: 10px;
   }
-  
+  @media (max-width: 480px) {
+    .big-button {
+    
+      padding: 5px 10px;
+      font-size: 0.5rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #ff9966, #ff5e62);
+      /* background-size: 200% 200%; */
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 94, 98, 0.3);
+      transition: all 0.4s ease-in-out;
+      animation: gradientFlow 3s ease infinite;
+      bottom: 120px;
+      left: 8px;
+    }
+  }
+    

@@ -67,7 +67,7 @@ const [submittedRatingTitle, setSubmittedRatingTitle] = useState("");
         clearInterval(interval);
       }
     }, 45);
-    return () => clearInterval(interval);
+    return () => clearInterval(interval);1  
   }, [typedIndex]);
 
   const handleThemeChange = (e) => {
