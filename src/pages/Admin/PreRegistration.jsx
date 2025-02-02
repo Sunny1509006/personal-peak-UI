@@ -75,7 +75,9 @@ const PreRegistration = () => {
     if (deleteUserId) {
       try {
         await Axios.delete(`/users/users/${deleteUserId}`);
-        setData((prevData) => prevData.filter((user) => user._id !== deleteUserId));
+        setData((prevData) =>
+          prevData.filter((user) => user._id !== deleteUserId)
+        );
         setDeleteUserId(null); // Close the popup
       } catch (err) {
         alert("Failed to delete user. Please try again.");
@@ -220,60 +222,59 @@ const PreRegistration = () => {
 
       {/* View Details Popup */}
       {viewDetails && (
-       <div className="details-popup">
-       <div className="popup-header">
-         <h5>Pre-registration details | #{viewDetails._id.slice(-4)}</h5>
-         <button
-           type="button"
-           className="close-btn"
-           aria-label="Close"
-           onClick={closeDetailsPopup}
-           style={{padding: '15px'}}
-         >
-           &times;
-         </button>
-       </div>
-       <div className="popup-content">
-         <p>
-           {viewDetails.first_name} {viewDetails.last_name} registered for
-           pre-registration on{" "}
-           {new Date(viewDetails.created_at).toLocaleString("en-US", {
-             dateStyle: "long",
-             timeStyle: "short",
-           })}
-           .
-         </p>
-         <h5>Contact details:</h5>
-         <ul>
-           <li>
-             <b>Email:</b>{" "}
-             <a href={`mailto:${viewDetails.email}`}>{viewDetails.email}</a>
-           </li>
-           <li>
-             <b>Telephone number:</b>{" "}
-             <a href={`tel:${viewDetails.phone_number}`}>
-               {viewDetails.phone_number || "N/A"}
-             </a>
-           </li>
-           <li>
-             <b>Address:</b> {viewDetails.address || "Not specified"}
-           </li>
-           <li>
-             <b>Interests:</b> {viewDetails.interests || "Not specified"}
-           </li>
-         </ul>
-       </div>
-       <div className="popup-footer">
-         <button
-           type="button"
-           className="btn btn-secondary"
-           onClick={closeDetailsPopup}
-         >
-           Close
-         </button>
-       </div>
-     </div>
-     
+        <div className="details-popup">
+          <div className="popup-header">
+            <h5>Pre-registration details | #{viewDetails._id.slice(-4)}</h5>
+            <button
+              type="button"
+              className="close-btn"
+              aria-label="Close"
+              onClick={closeDetailsPopup}
+              style={{ padding: "15px" }}
+            >
+              &times;
+            </button>
+          </div>
+          <div className="popup-content">
+            <p>
+              {viewDetails.first_name} {viewDetails.last_name} registered for
+              pre-registration on{" "}
+              {new Date(viewDetails.created_at).toLocaleString("en-US", {
+                dateStyle: "long",
+                timeStyle: "short",
+              })}
+              .
+            </p>
+            <h5>Contact details:</h5>
+            <ul>
+              <li>
+                <b>Email:</b>{" "}
+                <a href={`mailto:${viewDetails.email}`}>{viewDetails.email}</a>
+              </li>
+              <li>
+                <b>Telephone number:</b>{" "}
+                <a href={`tel:${viewDetails.phone_number}`}>
+                  {viewDetails.phone_number || "N/A"}
+                </a>
+              </li>
+              <li>
+                <b>Address:</b> {viewDetails.address || "Not specified"}
+              </li>
+              <li>
+                <b>Interests:</b> {viewDetails.interests || "Not specified"}
+              </li>
+            </ul>
+          </div>
+          <div className="popup-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={closeDetailsPopup}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Delete Confirmation Popup */}
