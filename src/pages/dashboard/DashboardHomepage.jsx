@@ -1,8 +1,12 @@
 import React from "react";
 import "./DashboardHomepage.css"; // Create a CSS file to include the styles
 import DashboardCard from "./DashboardCard";
+import { useTranslation } from "../../context/LanguageContext";
 
 const DashboardHomepage = () => {
+  const { t } = useTranslation();
+  const component_name = "dashboard"
+
   const rankingData = [
     { name: "PP360 Admin", points: 1051, place: "🏆 Platz 1", avatar: "/assets/images/avatars/01.png" },
     { name: "Lukas Wärner", points: 3, place: "🥈 Platz 2", avatar: "/assets/images/avatars/02.png" },
@@ -17,8 +21,8 @@ const DashboardHomepage = () => {
     <div className="container" style={{backgroundColor: "white"}}>
       {/* Nutzer-Ranking */}
       <div className="card ms-auto me-auto">
-            <h1>Welcome to 'Personal-Peak-360'</h1>
-            <p className="role">PP360 Admin!</p>
+            <h1>{t("Welcome to 'Personal-Peak-360'", component_name)}</h1>
+            <p className="role">{t("PP360 Admin!", component_name)}</p>
             <span className="badge">Super-Admin</span>
             <img
               src="/assets/images/medel.jpg"
