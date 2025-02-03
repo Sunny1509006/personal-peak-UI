@@ -220,12 +220,12 @@ h1 {
 
 .login {
   position: absolute;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   display: flex;
   align-items: center;
-  font-size: 1em;
-  color: var(--primary-color-dark);
+  font-size: 1.6em;
+  color: #ffd900;
   cursor: pointer;
 }
 
