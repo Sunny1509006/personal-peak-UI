@@ -5,57 +5,95 @@
   --primary-color-light: #ff7043;
 }
 
+:root {
+  --font-main: "Montserrat", sans-serif;
+  --font-logo: "Pacifico", cursive;
+
+  /* Standard: Blau (multi-stop Gradient) */
+  --bg-main: linear-gradient(135deg, #6dd5fa 0%, #2980b9 50%, #6dd5fa 100%);
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --color-primary: #348fef;
+  --color-secondary: #649fee;
+  --color-text: #333;
+  --color-accent: #fc4f4f;
+  --color-ribbon: #4f58fc;
+}
+
+/* Thema Blau */
+body.theme-blue {
+  --bg-main: linear-gradient(135deg, #6dd5fa 0%, #2980b9 50%, #6dd5fa 100%);
+  --color-primary: #348fef;
+  --color-secondary: #649fee;
+  --color-text: #333;
+  --color-accent: #fc4f4f;
+  --color-ribbon: #4f58fc;
+  --bg-card: rgba(255, 255, 255, 0.9);
+}
+
+/* Thema Lime (2-stop + Zwischenton) */
+body.theme-lime {
+  --bg-main: linear-gradient(135deg, #a1ffce 0%, #faffd1 50%, #96e6a1 100%);
+  --color-primary: #22b14c;
+  --color-secondary: #6ddc82;
+  --color-text: #224;
+  --color-accent: #ff3f6c;
+  --color-ribbon: #009933;
+  --bg-card: rgba(255, 255, 255, 0.85);
+}
+
+/* Thema Violett (multi-stop) */
+body.theme-violet {
+  --bg-main: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 50%, #a18cd1 100%);
+  --color-primary: #a832ce;
+  --color-secondary: #d583ea;
+  --color-text: #fff;
+  --color-accent: #ffd800;
+  --color-ribbon: #6f0091;
+  --bg-card: rgba(255, 255, 255, 0.1);
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Arial", sans-serif;
-  background: var(--bg-color-dark);
   color: #ffffff;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 100vh;
+  min-height: 10vh;
   overflow-x: hidden;
-  transition: background 1s ease;
-
+  background: var(--bg-main) !important;
+  color: var(--color-text);
 }
 
 .container {
   text-align: center;
   max-width: 1200px;
   width: 90%;
-  background: #1c1c1c;
+  background: var(--bg-card);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
   margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h1 {
   font-size: 3em;
   margin-bottom: 20px;
-  color: var(--primary-color-dark);
+  color: #343434;
   text-transform: uppercase;
   letter-spacing: 2px;
   animation: glow 2s infinite alternate;
 }
 
-@keyframes glow {
-  0% {
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8),
-      0 0 20px rgba(255, 215, 0, 0.6);
-  }
-  100% {
-    text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8);
-  }
-}
-
 .subheading {
   font-size: 1.2em;
   margin-bottom: 30px;
-  color: #e0e0e0;
+  color: #999;
 }
 
 .countdown {
@@ -81,21 +119,6 @@ h1 {
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  }
-}
-
 .countdown span {
   display: block;
   font-size: 3em;
@@ -108,7 +131,7 @@ h1 {
   font-size: 1em;
   margin-top: 5px;
   text-transform: uppercase;
-  color: #aaa;
+  color: #999;
 }
 
 .progress-bar {
@@ -133,7 +156,6 @@ h1 {
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-top: 30px;
-  
 }
 
 .theme {
@@ -159,7 +181,7 @@ h1 {
 
 .theme span {
   font-size: 1.2em;
-  color: #f0f0f0;
+  color: #999;
 }
 
 .register-button {
@@ -198,12 +220,12 @@ h1 {
 
 .login {
   position: absolute;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   display: flex;
   align-items: center;
-  font-size: 1em;
-  color: var(--primary-color-dark);
+  font-size: 1.6em;
+  color: #ffd900;
   cursor: pointer;
 }
 
@@ -217,14 +239,15 @@ h1 {
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 100px;
+  width: 150px;
+  height: 150px;
   animation: logoSpin 4s linear infinite;
 }
 
 .founders {
   margin-top: 40px;
   font-size: 1em;
-  color: #fff;
+  color: #212121;
   text-align: center;
   font-family: "Georgia", serif;
 }
@@ -256,5 +279,94 @@ h1 {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+/* Media Queries for Responsiveness */
+
+/* Small screens (mobile devices) */
+@media (max-width: 768px) {
+  .countdown {
+    flex-direction: row;
+    max-width: 80vw;
+    gap: 1px;
+  }
+  .container {
+    padding-bottom: 70px;
+  }
+
+  .countdown div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .countdown span {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  .countdown label {
+    font-size: 0.6rem;
+    margin-top: 5px;
+  }
+
+  .themes {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .theme-switcher {
+    width: 30%;
+    font-size: 10px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .subheading {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-bottom: 50px !important;
+  }
+  .countdown {
+    flex-direction: row;
+    max-width: 80vw;
+    gap: 1px;
+  }
+  .theme-switcher {
+    width: 30%;
+    font-size: 10px;
+  }
+
+  .countdown div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .countdown span {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  .countdown label {
+    font-size: 0.6rem;
+    margin-top: 5px;
+  }
+  .themes {
+    gap: 10px;
+  }
+  .logo {
+    width: 82px;
+  }
+
+  .theme p {
+    font-size: 12px;
   }
 }
