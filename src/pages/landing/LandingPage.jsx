@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import "./HealthCountdown.css"; // Assuming styles are placed in a separate CSS file
+import "./HealthCountdown.css";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.jpg";
+import MobilityStretchPower from "./MobilityStretchPower";
 import Ig1 from "../../assets/images/ig1.jpeg";
 import Ig2 from "../../assets/images/ig2.jpeg";
 import Ig3 from "../../assets/images/ig3.jpeg";
@@ -10,45 +11,16 @@ import Ig5 from "../../assets/images/ig5.jpeg";
 import Ig6 from "../../assets/images/ig6.jpeg";
 import Ig7 from "../../assets/images/ig7.jpeg";
 import Ig8 from "../../assets/images/ig8.jpeg";
-import mobility from "../../assets/images/mobility.png";
-import { Button } from "react-bootstrap";
-import MobilityStretchPower from "./MobilityStretchPower";
 
 const themes = [
-  {
-    theme: "Mobilität und Schmerzfreiheit",
-    img: Ig7,
-  },
-
-  {
-    theme: "Gewichtsverlust",
-    img: Ig2,
-  },
-  {
-    theme: "Muskelaufbau",
-    img: Ig3,
-  },
-  {
-    theme: "Bessere Schlafqualität",
-    img: Ig6,
-  },
-  {
-    theme: "Mehr Energie",
-    img: Ig4,
-  },
-  {
-    theme: "Stressbewältigung",
-    img: Ig5,
-  },
-  {
-    theme: "Gesundeit und Wohlbefinden",
-    img: Ig1,
-  },
-
-  {
-    theme: "Workshops",
-    img: Ig8,
-  },
+  { theme: "Mobilität und Schmerzfreiheit", img: Ig7 },
+  { theme: "Gewichtsverlust", img: Ig2 },
+  { theme: "Muskelaufbau", img: Ig3 },
+  { theme: "Bessere Schlafqualität", img: Ig6 },
+  { theme: "Mehr Energie", img: Ig4 },
+  { theme: "Stressbewältigung", img: Ig5 },
+  { theme: "Gesundeit und Wohlbefinden", img: Ig1 },
+  { theme: "Workshops", img: Ig8 },
 ];
 
 const LandingPage = () => {
@@ -60,7 +32,12 @@ const LandingPage = () => {
     seconds: 0,
   });
   const [progress, setProgress] = useState(0);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("blue"); // Default theme
+
+  // Update body class when theme changes
+  useEffect(() => {
+    document.body.className = `theme-${theme}`;
+  }, [theme]);
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -87,32 +64,12 @@ const LandingPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const switchTheme = () => {
-    if (theme === "dark") {
-      document.documentElement.style.setProperty(
-        "--bg-color-dark",
-        "linear-gradient(to bottom, #1a237e, #512da8)"
-      );
-      document.documentElement.style.setProperty(
-        "--primary-color-dark",
-        "#FF7043"
-      );
-      setTheme("light");
-    } else {
-      document.documentElement.style.setProperty(
-        "--bg-color-dark",
-        "linear-gradient(135deg, #1c1c1c, #2e2e2e)"
-      );
-      document.documentElement.style.setProperty(
-        "--primary-color-dark",
-        "#FFD700"
-      );
-      setTheme("dark");
-    }
+  const handleThemeChange = (event) => {
+    setTheme(event.target.value);
   };
 
   return (
-    <div className="container" data-theme={theme}>
+    <div className="container">
       <img src={Logo} alt="Logo" className="logo" />
       <div className="login">
         <img
@@ -122,87 +79,79 @@ const LandingPage = () => {
         <span onClick={() => navigate("/login")}>Anmelden</span>
       </div>
 
-      <div>
-        <h1>Pre-Launch Vorteile sichern!</h1>
-        <p className="subheading">
-          Klicke auf &quot;Jetzt registrieren&quot; und setze dich kostenfrei
-          und unverbindlich auf die Warteliste!
-          <br />
-          Die Veröffentlichung erfolgt voraussichtlich am 15.03.2025 um 00:00
-          Uhr.
-        </p>
-        <div className="countdown">
-          <div>
-            <span>{timeLeft.days}</span>
-            <label>Days</label>
-          </div>
-          <div>
-            <span>{timeLeft.hours}</span>
-            <label>Hours</label>
-          </div>
-          <div>
-            <span>{timeLeft.minutes}</span>
-            <label>Minutes</label>
-          </div>
-          <div>
-            <span>{timeLeft.seconds}</span>
-            <label>Seconds</label>
-          </div>
-        </div>
+      <h1>Pre-Launch Vorteile sichern!</h1>
+      <p className="subheading">
+        Klicke auf &quot;Jetzt registrieren&quot; und setze dich kostenfrei und
+        unverbindlich auf die Warteliste! Die Veröffentlichung erfolgt
+        voraussichtlich am 15.03.2025 um 00:00 Uhr.
+      </p>
 
-        <div className="progress-bar">
-          <div
-            className="progress-bar-fill"
-            style={{ width: `${progress}%` }}
-          ></div>
+      <div className="countdown">
+        <div>
+          <span>{timeLeft.days}</span>
+          <label>Days</label>
         </div>
+        <div>
+          <span>{timeLeft.hours}</span>
+          <label>Hours</label>
+        </div>
+        <div>
+          <span>{timeLeft.minutes}</span>
+          <label>Minutes</label>
+        </div>
+        <div>
+          <span>{timeLeft.seconds}</span>
+          <label>Seconds</label>
+        </div>
+      </div>
 
-        <div className="themes">
-          {themes.map(({ theme, img }, index) => (
-            <div className="theme" key={index}>
-              <div className="image-wrapper">
-                <img
-                  src={img}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  alt={theme}
-                />
-              </div>
-              <p style={{ color: "white", marginTop: "10px" }}>{theme}</p>
+      <div className="progress-bar">
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
+
+      <div className="themes">
+        {themes.map(({ theme, img }, index) => (
+          <div className="theme" key={index}>
+            <div className="image-wrapper">
+              <img
+                src={img}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                alt={theme}
+              />
             </div>
-          ))}
-          {/* <Link to="/mobility-stretch-power">
-   <div className="theme">
-      <div className="image-wrapper">
-        <img
-          src={mobility}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          alt={theme}
-        />
+            <p style={{ color: "white", marginTop: "10px" }}>{theme}</p>
+          </div>
+        ))}
       </div>
-      <button style={{width: '100%', background: 'none'}}>Click Here</button>
-    </div>
-    </Link> */}
-        </div>
 
-        <div className="founders">
-          <p>
-            <span className="highlight">Powered by Samuel Hufnagel</span> &
-            Thomas Fischbach
-          </p>
-        </div>
-
-        <button
-          onClick={() => {
-            navigate("/register");
-          }}
-          className="register-button"
-        >
-          Jetzt registrieren
-        </button>
-        <button className="theme-switcher" onClick={switchTheme}>
-          Farbschema wechseln
-        </button>
+      <div className="founders">
+        <p>
+          <span className="highlight">Powered by Samuel Hufnagel</span> & Thomas
+          Fischbach
+        </p>
       </div>
+
+      <button
+        onClick={() => {
+          navigate("/register");
+        }}
+        className="register-button"
+      >
+        Jetzt registrieren
+      </button>
+
+      {/* Theme Switcher */}
+      <div className="Theme-switcher-mobility">
+        <select onChange={handleThemeChange} value={theme}>
+          <option value="blue">Blau</option>
+          <option value="lime">Grün/Lime</option>
+          <option value="violet">Violett</option>
+        </select>
+      </div>
+
       <MobilityStretchPower />
     </div>
   );
