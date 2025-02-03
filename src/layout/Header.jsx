@@ -1,7 +1,28 @@
 import React from "react";
 import "./../pages/dashboard/AdminSidebar.css"
+import { useTranslation } from "../context/LanguageContext";
 
 const Header = () => {
+  const { language } = useTranslation();
+
+  const changeLanguage = (langCode) => {
+    localStorage.setItem("appLanguage", langCode);
+    window.dispatchEvent(new Event("storage")); // Trigger update for all components
+  };
+
+  // Language options
+  const languages = [
+    { code: "de", name: "German", flag: "de" },
+    { code: "en", name: "English", flag: "us" },
+    { code: "es", name: "Spanish", flag: "es" },
+    { code: "ar", name: "Arabic", flag: "sa" },
+    { code: "el", name: "Greek", flag: "gr" },
+    { code: "ru", name: "Russian", flag: "ru" },
+  ];
+
+  const selectedLanguage = languages.find((lang) => lang.code === language) || languages[0]; // Default to English
+
+
   return (
     <header className="top-header">
         <nav className="navbar navbar-expand">
@@ -147,26 +168,25 @@ const Header = () => {
 
             {/* Language Dropdown */}
             <li className="nav-item dropdown dropdown-language">
-              <a
-                className="nav-link dropdown-toggle dropdown-toggle-nocaret"
-                href="#"
-                data-bs-toggle="dropdown"
-              >
+              <a className="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                 <div className="lang d-flex">
                   <div>
-                    <i className="flag-icon flag-icon-um"></i>
+                    <i className={`flag-icon flag-icon-${selectedLanguage.flag}`}></i>
                   </div>
                   <div>
-                    <span>En</span>
+                    <span>{selectedLanguage.code.toUpperCase()}</span>
                   </div>
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-end">
-                {["German", "French", "English", "Hindi", "Chinese", "Arabic"].map((lang, index) => (
-                  <a className="dropdown-item" href="#" key={index}>
-                    <i className={`flag-icon flag-icon-${lang.toLowerCase().slice(0, 2)}`}></i>
-                    <span>{lang}</span>
-                  </a>
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    className="dropdown-item"
+                    onClick={() => changeLanguage(lang.code)}
+                  >
+                    <i className={`flag-icon flag-icon-${lang.flag}`}></i> <span>{lang.name}</span>
+                  </button>
                 ))}
               </div>
             </li>

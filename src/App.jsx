@@ -13,16 +13,17 @@ import MobilityStretch from "./pages/landing/MobilityStretch";
 import MobilityAdd from "./pages/Settings/MobilityAdd";
 import MobilityAddForm from "./pages/Settings/MobilityAddForm";
 import { useState, createContext, useContext } from "react";
+import { TranslationProvider } from "../src/context/LanguageContext";
 
-// Create Context for Access Control
+// Create Access Context
 export const AccessContext = createContext();
 
 function App() {
-  const [hasAccess, setHasAccess] = useState(false); // State to manage access control
+  const [hasAccess, setHasAccess] = useState(false);
 
   return (
     <AccessContext.Provider value={{ hasAccess, setHasAccess }}>
-      <>
+      <TranslationProvider>
         <ToastContainer
           position="top-center"
           autoClose={3000}
@@ -59,18 +60,17 @@ function App() {
             <Route path="/kanban-board" element={<KanbanBoard />} />
             <Route path="/mobility-add" element={<MobilityAdd />} />
             <Route path="/mobility-add-new" element={<MobilityAddForm />} />
-            {/* Unauthorized Route */}
             <Route path="/unauthorized" element={<Unauthorized />} />
           </Routes>
         </BrowserRouter>
-      </>
+      </TranslationProvider>
     </AccessContext.Provider>
   );
 }
 
 // PrivateRoute Component
 const PrivateRoute = ({ children }) => {
-  const { hasAccess } = useContext(AccessContext); // Access the state from context
+  const { hasAccess } = useContext(AccessContext);
   return hasAccess ? children : <Navigate to="/" replace />;
 };
 
