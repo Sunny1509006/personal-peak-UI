@@ -13,7 +13,6 @@ import Ig8 from "../../assets/images/ig8.jpeg";
 import mobility from "../../assets/images/mobility.png";
 import { Button } from "react-bootstrap";
 import MobilityStretchPower from "./MobilityStretchPower";
-import "./LandingPage.css"
 
 const themes = [
   {
@@ -168,10 +167,10 @@ const LandingPage = () => {
                   alt={theme}
                 />
               </div>
-              <p style={{color: 'white'}}>{theme}</p>
+              <p style={{ color: "white", marginTop: "10px" }}>{theme}</p>
             </div>
           ))}
-  {/* <Link to="/mobility-stretch-power">
+          {/* <Link to="/mobility-stretch-power">
    <div className="theme">
       <div className="image-wrapper">
         <img
@@ -183,7 +182,7 @@ const LandingPage = () => {
       <button style={{width: '100%', background: 'none'}}>Click Here</button>
     </div>
     </Link> */}
-</div>
+        </div>
 
         <div className="founders">
           <p>
@@ -203,8 +202,6 @@ const LandingPage = () => {
         <button className="theme-switcher" onClick={switchTheme}>
           Farbschema wechseln
         </button>
-
-        
       </div>
       <MobilityStretchPower />
     </div>
