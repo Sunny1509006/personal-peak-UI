@@ -73,12 +73,12 @@ const DashboardHomepage = () => {
         <div className="dashboard-container">
           {/* Welcome Card */}
           <div className="welcome-card">
-            <h1 className="title">{t("Welcome to 'Personal-Peak-360'")}</h1>
-            <p className="subtitle">{t("PP360 Admin!")}</p>
+            <h1 className="title">{t("Welcome to 'Personal-Peak-360'", component_name)}</h1>
+            <p className="subtitle">{t("PP360 Admin!", component_name)}</p>
 
             <span className="badge">
               <BadgeCheck size={16} />
-              {t("Super-Admin")}
+              {t("Super-Admin", component_name)}
             </span>
 
             <img
@@ -89,11 +89,11 @@ const DashboardHomepage = () => {
 
             <div className="points-container">
               <p className="points-text">
-                {t("You only need -391 points to advance to level 3.")}
+                {t("You only need -391 points to advance to level 3.", component_name)}
               </p>
             </div>
 
-            <p className="stay-tuned">{t("Stay tuned!")}</p>
+            <p className="stay-tuned">{t("Stay tuned!", component_name)}</p>
           </div>
         </div>
 
