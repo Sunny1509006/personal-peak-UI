@@ -10,6 +10,7 @@ const DashboardHomepage = () => {
   const rankingData = [
     { name: "PP360 Admin", points: 1051, place: "🏆 Platz 1", avatar: "/assets/images/avatars/01.png" },
     { name: "Lukas Wärner", points: 3, place: "🥈 Platz 2", avatar: "/assets/images/avatars/02.png" },
+    { name: "PP360 Admin", points: 1051, place: "🏆 Platz 1", avatar: "/assets/images/avatars/01.png" },
   ];
 
   const challenges = [
@@ -39,7 +40,8 @@ const DashboardHomepage = () => {
   return (
     <div className="container" style={{backgroundColor: "white"}}>
       {/* Nutzer-Ranking */}
-      <div className="card ms-auto me-auto">
+      <div style={{display: "flex", gap: '30px'}}>
+      <div className="card ms-auto me-auto" style={{marginBottom: '50px'}}>
             <h1>{t("Welcome to 'Personal-Peak-360'", component_name)}</h1>
             <p className="role">{t("PP360 Admin!", component_name)}</p>
             <span className="badge">{t("Super-Admin", component_name)}</span>
@@ -51,7 +53,7 @@ const DashboardHomepage = () => {
             <p className="points">{t("You only need -391 points to advance to level 3.", component_name)}</p>
             <p className="stay-tuned">{t("Stay tuned!", component_name)}</p>
           </div>
-      <div className="section-dashboard ranking">
+      <div className="section-dashboard ranking" style={{paddingTop: "30px"}}>
         <h2>{t("Nutzer-Ranking", component_name)}</h2>
         {translatedRankingData.map((user, index) => (
           <div className="ranking-item" key={index}>
@@ -65,6 +67,8 @@ const DashboardHomepage = () => {
           </div>
         ))}
       </div>
+      </div>
+     
 
       {/* Video */}
       <div className="section-dashboard video">
