@@ -1,9 +1,13 @@
 import React from "react";
 import "./../pages/dashboard/AdminSidebar.css"
 import { useTranslation } from "../context/LanguageContext";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { language } = useTranslation();
+  const { logout } = useAuth(); // ✅ Get logout function from auth hook
+  const navigate = useNavigate();
 
   const changeLanguage = (langCode) => {
     localStorage.setItem("appLanguage", langCode);
@@ -159,10 +163,18 @@ const Header = () => {
                   </a>
                 ))}
                 <div className="dropdown-divider mb-0"></div>
-                <a className="dropdown-item" href="#">
-                  <i className="bx bx-power-off"></i>
-                  <span>Logout</span>
-                </a>
+                <a
+  className="dropdown-item"
+  href="#"
+  onClick={(e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    logout(); // Call logout function
+    navigate("/login"); // Redirect user to login page
+  }}
+>
+  <i className="bx bx-power-off"></i>
+  <span>Logout</span>
+</a>
               </div>
             </li>
 

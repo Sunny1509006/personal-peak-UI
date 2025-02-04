@@ -4,11 +4,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { notifyError, notifySuccess } from "../utils/toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 export default function useLoginSubmit(setStep) {
   // const router = useRouter();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -20,36 +23,22 @@ export default function useLoginSubmit(setStep) {
   const onLoginSubmit = async (data) => {
     try {
       setLoading(true);
-      const res = await Axios.post(
-        `/users/login`,
-        {
-          email: data.username,
-          password: data.password,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
+      const res = await Axios.post("/users/login", {
+        email: data.username,
+        password: data.password,
+      });
+
       if (res?.error) {
-        notifyError(res?.error);
+        setError(res?.error);
       } else {
         const { user_type, token } = res.data;
-  
-        // Save token and user_type in local storage
-        localStorage.setItem("user_type", JSON.stringify(user_type));
-        localStorage.setItem("token", token);
-  
-        notifySuccess("Logged in successfully");
+        login(token, user_type); // ✅ Use the login function from useAuth()
         navigate("/dashboard");
       }
+    } catch (err) {
+      setError(err?.response?.data?.detail || err.message);
+    } finally {
       setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      notifyError(error?.response?.data?.detail || error.message);
     }
   };
   
