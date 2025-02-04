@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./../pages/dashboard/AdminSidebar.css";
+import { useTranslation } from "../context/LanguageContext";
 
 const Sidebar = () => {
+
+  const { t } = useTranslation();
+  const component_name = "sidebar"
+
   const isAccessible = (roles) => {
     const userRoles = JSON.parse(localStorage.getItem("user_type")) || [];
     // If `roles` is a string, convert it to an array for consistency
@@ -79,15 +84,13 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-1">
                 <i className="bx bx-home-alt"></i>
               </div>
-              <div className="menu-title">Home Page</div>
+              <div className="menu-title">{t("Home Page", component_name)}</div>
             </Link>
           </li>
-          <li className="menu-label">Admin Area</li>
-          <li
-            className={`menu-item ${
-              isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
-            }`}
-          >
+          <li className="menu-label">{t("Admin Area", component_name)}</li>
+          <li className={`menu-item ${
+            isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+          }`}>
             {isAccessible(["SSA", "WLA"]) ? (
               <Link to="/pre-registration">
                 <div className="parent-icon icon-color-2">

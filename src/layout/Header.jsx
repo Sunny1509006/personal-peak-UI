@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./../pages/dashboard/AdminSidebar.css"
 import { useTranslation } from "../context/LanguageContext";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import Axios from "../Axios/Axios";
 
 const Header = () => {
+  const userId = localStorage.getItem("id");
+  const [userLanguages, setUserLanguages] = useState([]);
+  const [availableLanguages, setAvailableLanguages] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
   const { language } = useTranslation();
+  const { logout } = useAuth(); // ✅ Get logout function from auth hook
+  const navigate = useNavigate();
 
-  const changeLanguage = (langCode) => {
-    localStorage.setItem("appLanguage", langCode);
-    window.dispatchEvent(new Event("storage")); // Trigger update for all components
-  };
+  // const changeLanguage = (langCode) => {
+  //   localStorage.setItem("appLanguage", langCode);
+  //   window.dispatchEvent(new Event("storage")); // Trigger update for all components
+  // };
 
   // Language options
-  const languages = [
+  const allLanguages = [
     { code: "de", name: "German", flag: "de" },
     { code: "en", name: "English", flag: "us" },
     { code: "es", name: "Spanish", flag: "es" },
@@ -20,7 +29,60 @@ const Header = () => {
     { code: "ru", name: "Russian", flag: "ru" },
   ];
 
-  const selectedLanguage = languages.find((lang) => lang.code === language) || languages[0]; // Default to English
+  useEffect(() => {
+    // Fetch user languages on component mount
+    Axios
+      .get(`/translations/get_language/${userId}`)
+      .then((response) => {
+        let userLangs = response.data.lang || [];
+
+        // setUserLanguages(userLangs);
+
+        if (userLangs.length === 0) {
+          // If no language, show all and post "de" by default
+          setAvailableLanguages(allLanguages);
+          postLanguage("de"); // Auto-post "de"
+          userLangs = ["de"]; // Set it manually in state logic
+        } else if (userLangs.length === 1) {
+          // If one language, allow selection of any
+          setAvailableLanguages(allLanguages);
+          postLanguage(currentLang);
+        } else {
+          // If two or more, limit selection to existing ones
+          setAvailableLanguages(allLanguages.filter(lang => userLangs.includes(lang.code)));
+        }
+
+        // Set default selected language
+        // Set selected language in localStorage and app state
+        // Always set German ("de") as the default language
+        const currentLang = userLangs.includes("de") ? "de" : userLangs[0];
+        changeLanguage(currentLang);
+        // const currentLang = allLanguages.find(lang => userLangs.includes(lang.code)) || allLanguages[0];
+        // setSelectedLanguage(currentLang);
+      })
+      .catch((error) => console.error("Error fetching languages:", error));
+  }, [userId]);
+
+  const postLanguage = (langCode) => {
+    Axios
+      .patch(`/translations/add_language/${userId}`, { lang: langCode })
+      .then(() => {
+        setUserLanguages((prev) => [...prev, langCode]); // Update user languages state
+        // changeLanguage(langCode);
+      })
+      .catch((error) => console.error("Error adding language:", error));
+  };
+
+  const changeLanguage = (langCode, userLangs = userLanguages) => {
+    if (userLangs.length === 1) {
+      postLanguage(langCode); // Auto-post "de"
+    }
+    localStorage.setItem("appLanguage", langCode);
+    window.dispatchEvent(new Event("storage")); // Trigger update for all components
+    setSelectedLanguage(allLanguages.find(lang => lang.code === langCode) || allLanguages[0]);
+  };
+
+  // const selectedLanguage = languages.find((lang) => lang.code === language) || languages[0]; // Default to German
 
 
   return (
@@ -159,15 +221,23 @@ const Header = () => {
                   </a>
                 ))}
                 <div className="dropdown-divider mb-0"></div>
-                <a className="dropdown-item" href="#">
-                  <i className="bx bx-power-off"></i>
-                  <span>Logout</span>
-                </a>
+                <a
+  className="dropdown-item"
+  href="#"
+  onClick={(e) => {
+    e.preventDefault(); // Prevent default anchor behavior
+    logout(); // Call logout function
+    navigate("/login"); // Redirect user to login page
+  }}
+>
+  <i className="bx bx-power-off"></i>
+  <span>Logout</span>
+</a>
               </div>
             </li>
 
             {/* Language Dropdown */}
-            <li className="nav-item dropdown dropdown-language">
+            {/* <li className="nav-item dropdown dropdown-language">
               <a className="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                 <div className="lang d-flex">
                   <div>
@@ -189,7 +259,31 @@ const Header = () => {
                   </button>
                 ))}
               </div>
-            </li>
+            </li> */}
+            <li className="nav-item dropdown dropdown-language">
+      <a className="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+        <div className="lang d-flex">
+          <div>
+            <i className={`flag-icon flag-icon-${selectedLanguage?.flag}`}></i>
+          </div>
+          <div>
+            <span>{selectedLanguage?.code.toUpperCase()}</span>
+          </div>
+        </div>
+      </a>
+      <div className="dropdown-menu dropdown-menu-end">
+        {availableLanguages.map((lang) => (
+          <button
+            key={lang.code}
+            className="dropdown-item"
+            onClick={() => changeLanguage(lang.code)}
+            disabled={userLanguages.length >= 2 && !userLanguages.includes(lang.code)} // Disable if two languages exist and it's not in the list
+          >
+            <i className={`flag-icon flag-icon-${lang.flag}`}></i> <span>{lang.name}</span>
+          </button>
+        ))}
+      </div>
+    </li>
           </ul>
         </div>
       </nav>

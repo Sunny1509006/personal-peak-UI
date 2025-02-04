@@ -122,7 +122,7 @@ const fetchTranslations = async (componentName, languageCode) => {
     });
     return response.data || {};
   } catch (error) {
-    console.error("Error fetching translations:", error);
+    console.error(`Error fetching translations for ${componentName}:`, error);
     return {}; // Return empty object if an error occurs
   }
 };
@@ -131,17 +131,23 @@ const fetchTranslations = async (componentName, languageCode) => {
 export const TranslationProvider = ({ children }) => {
   const storedLanguage = localStorage.getItem("appLanguage") || "en";
   const [language, setLanguage] = useState(storedLanguage);
-  const [translations, setTranslations] = useState({});
+  const [translations, setTranslations] = useState({}); // Stores translations for multiple components
+  const [loadedComponents, setLoadedComponents] = useState(new Set()); // Tracks loaded components
 
-  // Fetch translations when language changes
+  // Fetch translations for multiple components dynamically
+  const loadTranslations = async (componentName) => {
+    const fetchedTranslations = await fetchTranslations(componentName, language);
+    setTranslations((prev) => ({
+      ...prev,
+      [componentName]: fetchedTranslations, // Store translations per component
+    }));
+    setLoadedComponents((prev) => new Set(prev).add(componentName)); // Mark component as loaded
+  };
+
   useEffect(() => {
-    const loadTranslations = async () => {
-      const componentName = "dashboard"; // Modify dynamically per component
-      const fetchedTranslations = await fetchTranslations(componentName, language);
-      setTranslations(fetchedTranslations);
-    };
-    loadTranslations();
-  }, [language]);
+    // Fetch translations for commonly used components on app load
+    ["dashboard", "sidebar"].forEach((component) => loadTranslations(component));
+  }, [language]); // ✅ Re-fetch translations whenever language changes
 
   useEffect(() => {
     // Detect language changes from `localStorage`
@@ -158,13 +164,18 @@ export const TranslationProvider = ({ children }) => {
     };
   }, [language]);
 
-  // **Updated t() function (Only Fetches, No Store)**
-  const t = (text, componentName = "dashboard") => {
-    return translations[text] || text; // Return translation if available, else return original text
+  // **Updated t() function**
+  const t = (text, componentName) => {
+    if (!loadedComponents.has(componentName)) {
+      loadTranslations(componentName); // Ensure component translations are loaded
+      return text; // Return original text until translations are available
+    }
+
+    return translations[componentName]?.[text] || text; // Return translation if available, else return original text
   };
 
   return (
-    <TranslationContext.Provider value={{ t, language }}>
+    <TranslationContext.Provider value={{ t, language, setLanguage }}>
       {children}
     </TranslationContext.Provider>
   );
@@ -174,3 +185,4 @@ export const TranslationProvider = ({ children }) => {
 export const useTranslation = () => {
   return useContext(TranslationContext);
 };
+
