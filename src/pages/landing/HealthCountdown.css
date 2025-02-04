@@ -227,6 +227,7 @@ h1 {
   font-size: 1.6em;
   color: #ffd900;
   cursor: pointer;
+  z-index: 9999;
 }
 
 .login img {
@@ -322,6 +323,9 @@ h1 {
 
   .logo {
     width: 120px;
+    height: auto;
+    top: 2px;
+    left: 2px;
   }
 
   .subheading {
@@ -364,6 +368,9 @@ h1 {
   }
   .logo {
     width: 82px;
+    height: auto;
+    top: -10px;
+    left: -10px;
   }
 
   .theme p {
