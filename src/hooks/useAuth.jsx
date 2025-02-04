@@ -9,16 +9,18 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
     const userType = JSON.parse(localStorage.getItem("user_type")); // Get stored roles
 
     if (token && userType) {
-      setUser({ token, userType }); // ✅ Store userType (roles)
+      setUser({ id, token, userType }); // ✅ Store userType (roles)
     }
     setLoading(false);
   }, []);
 
   // Login Function (Saves token & roles)
-  const login = (token, userType) => {
+  const login = (id, token, userType) => {
+    localStorage.setItem("id", id);
     localStorage.setItem("token", token);
     localStorage.setItem("user_type", JSON.stringify(userType)); // ✅ Save user roles
     setUser({ token, userType });
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   // Logout Function
   const logout = () => {
+    localStorage.removeItem("id");
     localStorage.removeItem("token");
     localStorage.removeItem("user_type");
     setUser(null);

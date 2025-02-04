@@ -31,8 +31,10 @@ export default function useLoginSubmit(setStep) {
       if (res?.error) {
         setError(res?.error);
       } else {
-        const { user_type, token } = res.data;
-        login(token, user_type); // ✅ Use the login function from useAuth()
+        const { id, user_type, token } = res.data;
+        login(id, token, user_type); // ✅ Use the login function from useAuth()
+        localStorage.setItem("appLanguage", "de");
+        window.dispatchEvent(new Event("storage"))
         navigate("/dashboard");
       }
     } catch (err) {
