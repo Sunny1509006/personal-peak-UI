@@ -3,7 +3,7 @@ import DashboardHomepage from "./DashboardHomepage";
 import ThemeCustomizer from "./ThemeCustomizer";
 import TermsPopup from "./TermsPopup";
 import Layout from "../../layout/Layout";
-import "./AdminSidebar.css"
+import "./AdminSidebar.css";
 
 const DashboardPage = () => {
   const [showTerms, setShowTerms] = useState(false); // Controls popup visibility
@@ -42,8 +42,10 @@ const DashboardPage = () => {
       {/* Show TermsPopup if not agreed */}
       {showTerms && <TermsPopup onAgree={handleAgree} />}
 
-      {/* Dashboard Homepage */}
-      <DashboardHomepage />
+      {/* Centered Dashboard Homepage */}
+      <div className="dashboard-content">
+        <DashboardHomepage />
+      </div>
 
       {/* Theme Customizer */}
       <ThemeCustomizer />
