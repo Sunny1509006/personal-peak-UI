@@ -87,7 +87,21 @@ const Sidebar = () => {
               <div className="menu-title">{t("Home Page", component_name)}</div>
             </Link>
           </li>
-          <li className="menu-label">{t("Admin Area", component_name)}</li>
+          {isAccessible(["SSA", "WLA"]) ? (
+            <Link to="/admin-panel">
+            <li className="menu-label" style={{padding: '0px'}}>
+              {t("Admin Area", component_name)}
+              </li>
+              </Link>
+          ):
+          (
+            <li className="menu-label" style={{padding: '0px'}}>
+              {t("Admin Area", component_name)}
+              </li>
+          )
+        }
+          
+          
           <li className={`menu-item ${
             isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
           }`}>

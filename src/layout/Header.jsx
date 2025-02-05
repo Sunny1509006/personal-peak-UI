@@ -10,15 +10,10 @@ const Header = () => {
   const [userLanguages, setUserLanguages] = useState([]);
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const { language } = useTranslation();
-  const { logout } = useAuth(); // ✅ Get logout function from auth hook
+  const { language, setLanguage } = useTranslation();
+  const { logout } = useAuth();
   const navigate = useNavigate();
-
-  // const changeLanguage = (langCode) => {
-  //   localStorage.setItem("appLanguage", langCode);
-  //   window.dispatchEvent(new Event("storage")); // Trigger update for all components
-  // };
-
+  
   // Language options
   const allLanguages = [
     { code: "de", name: "German", flag: "de" },
@@ -28,62 +23,54 @@ const Header = () => {
     { code: "el", name: "Greek", flag: "gr" },
     { code: "ru", name: "Russian", flag: "ru" },
   ];
-
+  
   useEffect(() => {
     // Fetch user languages on component mount
-    Axios
-      .get(`/translations/get_language/${userId}`)
+    Axios.get(`/translations/get_language/${userId}`)
       .then((response) => {
         let userLangs = response.data.lang || [];
-
-        // setUserLanguages(userLangs);
-
+  
         if (userLangs.length === 0) {
-          // If no language, show all and post "de" by default
+          // First login: default to "de"
+          postLanguage("de");
+          userLangs = ["de"];
+        }
+  
+        setUserLanguages(userLangs);
+  
+        if (userLangs.length === 1) {
+          // If only one language, allow selecting any language
           setAvailableLanguages(allLanguages);
-          postLanguage("de"); // Auto-post "de"
-          userLangs = ["de"]; // Set it manually in state logic
-        } else if (userLangs.length === 1) {
-          // If one language, allow selection of any
-          setAvailableLanguages(allLanguages);
-          postLanguage(currentLang);
         } else {
-          // If two or more, limit selection to existing ones
+          // If 2+ languages, limit selection to available ones
           setAvailableLanguages(allLanguages.filter(lang => userLangs.includes(lang.code)));
         }
-
-        // Set default selected language
-        // Set selected language in localStorage and app state
-        // Always set German ("de") as the default language
-        const currentLang = userLangs.includes("de") ? "de" : userLangs[0];
-        changeLanguage(currentLang);
-        // const currentLang = allLanguages.find(lang => userLangs.includes(lang.code)) || allLanguages[0];
-        // setSelectedLanguage(currentLang);
+  
+        const currentLang = localStorage.getItem("appLanguage") || (userLangs.includes("de") ? "de" : userLangs[0]);
+        setSelectedLanguage(allLanguages.find(lang => lang.code === currentLang));
+        setLanguage(currentLang);
       })
       .catch((error) => console.error("Error fetching languages:", error));
   }, [userId]);
-
+  
   const postLanguage = (langCode) => {
-    Axios
-      .patch(`/translations/add_language/${userId}`, { lang: langCode })
+    Axios.patch(`/translations/add_language/${userId}`, { lang: langCode })
       .then(() => {
         setUserLanguages((prev) => [...prev, langCode]); // Update user languages state
-        // changeLanguage(langCode);
       })
       .catch((error) => console.error("Error adding language:", error));
   };
-
-  const changeLanguage = (langCode, userLangs = userLanguages) => {
-    if (userLangs.length === 1) {
-      postLanguage(langCode); // Auto-post "de"
+  
+  const changeLanguage = (langCode) => {
+    if (userLanguages.length === 1) {
+      postLanguage(langCode); // Auto-post if only one language exists
     }
+  
     localStorage.setItem("appLanguage", langCode);
     window.dispatchEvent(new Event("storage")); // Trigger update for all components
-    setSelectedLanguage(allLanguages.find(lang => lang.code === langCode) || allLanguages[0]);
+    setSelectedLanguage(allLanguages.find(lang => lang.code === langCode));
+    setLanguage(langCode);
   };
-
-  // const selectedLanguage = languages.find((lang) => lang.code === language) || languages[0]; // Default to German
-
 
   return (
     <header className="top-header">
