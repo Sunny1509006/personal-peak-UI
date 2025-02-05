@@ -15,6 +15,7 @@ import MobilityStretch from "./pages/landing/MobilityStretch";
 import MobilityAdd from "./pages/Settings/MobilityAdd";
 import MobilityAddForm from "./pages/Settings/MobilityAddForm";
 import { TranslationProvider } from "./context/LanguageContext";
+import AdminPanel from "./pages/Admin/AdminPanel";
 
 // Create Access Context
 export const AccessContext = createContext();
@@ -38,6 +39,12 @@ function App() {
               {/* Protected Routes (Require Authentication) */}
               <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
               <Route path="/pre-registration" element={<ProtectedRoute requiredRoles={["WLA", "SSA"]}><PreRegistration /></ProtectedRoute>} />
+              <Route path="/admin-panel" element={
+                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <AdminPanel />
+              </ProtectedRoute>
+              } 
+              />
               <Route path="/kanban-board" element={<PrivateRoute><KanbanBoard /></PrivateRoute>} />
               <Route path="/mobility-add" element={<PrivateRoute><MobilityAdd /></PrivateRoute>} />
               <Route path="/mobility-add-new" element={<PrivateRoute><MobilityAddForm /></PrivateRoute>} />
