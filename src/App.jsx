@@ -52,9 +52,13 @@ function App() {
   );
 }
 
-// PrivateRoute Component
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth(); // ✅ Check user authentication
+  const { user, loading } = useAuth(); // ✅ Get loading state
+
+  if (loading) {
+    return <div>Loading...</div>; // ✅ Prevent redirect while checking auth
+  }
+
   return user ? children : <Navigate to="/login" replace />;
 };
 
