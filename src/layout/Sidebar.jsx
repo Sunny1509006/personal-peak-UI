@@ -87,21 +87,11 @@ const Sidebar = () => {
               <div className="menu-title">{t("Home Page", component_name)}</div>
             </Link>
           </li>
-          {isAccessible(["SSA", "WLA"]) ? (
             <Link to="/admin-panel">
             <li className="menu-label" style={{padding: '0px'}}>
               {t("Admin Area", component_name)}
               </li>
               </Link>
-          ):
-          (
-            <li className="menu-label" style={{padding: '0px'}}>
-              {t("Admin Area", component_name)}
-              </li>
-          )
-        }
-          
-          
           <li className={`menu-item ${
             isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
           }`}>
@@ -232,9 +222,9 @@ const Sidebar = () => {
                 </a>
               </li>
               <li>
-                <a href="/component-bedges">
+                <Link to="/medals-award">
                   <i className="bx bx-right-arrow-alt"></i>Awards / Badges
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="/invoice">
