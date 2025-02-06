@@ -16,6 +16,7 @@ import MobilityAdd from "./pages/Settings/MobilityAdd";
 import MobilityAddForm from "./pages/Settings/MobilityAddForm";
 import { TranslationProvider } from "./context/LanguageContext";
 import AdminPanel from "./pages/Admin/AdminPanel";
+import MedalsPage from "./pages/Settings/MedalsPage";
 
 // Create Access Context
 export const AccessContext = createContext();
@@ -45,9 +46,16 @@ function App() {
               </ProtectedRoute>
               } 
               />
+              <Route path="/medals-award" element={
+                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <MedalsPage />
+              </ProtectedRoute>
+              } 
+              />
               <Route path="/kanban-board" element={<PrivateRoute><KanbanBoard /></PrivateRoute>} />
               <Route path="/mobility-add" element={<PrivateRoute><MobilityAdd /></PrivateRoute>} />
               <Route path="/mobility-add-new" element={<PrivateRoute><MobilityAddForm /></PrivateRoute>} />
+
 
               {/* Unauthorized Page */}
               <Route path="/unauthorized" element={<Unauthorized />} />
