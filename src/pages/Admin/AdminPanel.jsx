@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom"; // ✅ Import Link for navigation
 import "./AdminPanel.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 import Layout from "../../layout/Layout";
 
 const AdminPanel = () => {
