@@ -112,13 +112,26 @@ const Sidebar = () => {
               </div>
             )}
           </li>
-          <li>
-            <Link to="/user">
+          <li className={`menu-item ${
+            isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+          }`}>
+            {isAccessible(["SSA", "WLA"]) ? (
+            <Link to="/user-management">
               <div className="parent-icon icon-color-3">
                 <i className="bx bx-conversation"></i>
               </div>
               <div className="menu-title">User</div>
             </Link>
+            ):
+            (
+              <div className="locked-item">
+              <div className="parent-icon icon-color-3">
+                <i className="bx bx-conversation"></i>
+              </div>
+              <div className="menu-title">User</div>
+              <i className="bx bx-lock lock-icon"></i>
+            </div> 
+            )}
           </li>
           <li>
             <a href="chat-box.html">
