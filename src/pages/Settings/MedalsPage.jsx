@@ -10,7 +10,10 @@ const MedalsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, medalId: null });
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    show: false,
+    medalId: null,
+  });
   const [editMedal, setEditMedal] = useState(null);
   const navigate = useNavigate();
 
@@ -50,12 +53,12 @@ const MedalsPage = () => {
     try {
       if (editMedal) {
         await Axios.put(`/rewards/medal/${editMedal.id}`, submitData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "modal-content-Type": "multipart/form-data" },
         });
         setSuccessMessage("Updated successfully!");
       } else {
         await Axios.post("/rewards/medal", submitData, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "modal-content-Type": "multipart/form-data" },
         });
         setSuccessMessage("Medal added successfully!");
       }
@@ -93,7 +96,9 @@ const MedalsPage = () => {
       <div className="medals-page">
         <h2>Medal Management</h2>
         {isLoading && <div className="loader">Submitting...</div>}
-        {successMessage && <div className="success-message">{successMessage}</div>}
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
         <div className="medals-grid">
           {medals.length > 0 ? (
             medals.map((medal) => (
@@ -105,11 +110,16 @@ const MedalsPage = () => {
                 />
                 <p className="medal-text">{medal.text}</p>
                 <p className="medal-type">Type: {medal.type}</p>
-                <button onClick={() => handleEdit(medal)} className="edit-button">
+                <button
+                  onClick={() => handleEdit(medal)}
+                  className="edit-button"
+                >
                   Edit
                 </button>
                 <button
-                  onClick={() => setDeleteConfirm({ show: true, medalId: medal.id })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: true, medalId: medal.id })
+                  }
                   className="delete-button"
                 >
                   Delete
@@ -156,11 +166,19 @@ const MedalsPage = () => {
                 </label>
                 <label>
                   Image:
-                  <input type="file" accept="image/*" onChange={handleFileChange} />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
                 </label>
                 <div className="form-actions">
                   <button type="submit" disabled={isLoading}>
-                    {isLoading ? "Submitting..." : editMedal ? "Update" : "Submit"}
+                    {isLoading
+                      ? "Submitting..."
+                      : editMedal
+                      ? "Update"
+                      : "Submit"}
                   </button>
                   <button type="button" onClick={() => setIsModalOpen(false)}>
                     Cancel
@@ -175,11 +193,16 @@ const MedalsPage = () => {
             <div className="modal-content">
               <h2>Are you sure you want to delete this medal?</h2>
               <div className="form-actions">
-                <button onClick={handleDelete} className="delete-confirm-button">
+                <button
+                  onClick={handleDelete}
+                  className="delete-confirm-button"
+                >
                   Yes, Delete
                 </button>
                 <button
-                  onClick={() => setDeleteConfirm({ show: false, medalId: null })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: false, medalId: null })
+                  }
                   className="cancel-button"
                 >
                   Cancel
