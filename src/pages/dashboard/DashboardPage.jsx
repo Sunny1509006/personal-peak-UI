@@ -59,9 +59,10 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <Layout>
-      {/* Show TermsPopup if not agreed */}
+    <div>
       {showTerms && <TermsPopup onAgree={handleAgree} />}
+      <Layout>
+        {/* Show TermsPopup if not agreed */}
 
       {/* Sliding Text */}
       <div className="sliding-text-container">
@@ -99,9 +100,10 @@ const DashboardPage = () => {
         <DashboardHomepage />
       </div>
 
-      {/* Theme Customizer */}
-      <ThemeCustomizer />
-    </Layout>
+        {/* Theme Customizer */}
+        <ThemeCustomizer />
+      </Layout>
+    </div>
   );
 };
 
