@@ -17,6 +17,7 @@ body {
   font-size: 16px;
   margin-left: 10px;
 }
+
 .transparent-item {
   opacity: 0.5; /* Make it slightly transparent */
   pointer-events: none; /* Disable clicks */
@@ -24,6 +25,7 @@ body {
   color: black;
   margin: 0px 20px;
 }
+
 /* ========== SIDEBAR STYLING ========== */
 .sidebar {
   width: 80px; /* Default collapsed width */
@@ -113,6 +115,19 @@ body {
 /* When sidebar is expanded, shift content accordingly */
 .sidebar.open + .content .dashboard-content {
   left: 250px; /* Adjust this when sidebar is expanded */
+}
+
+/* ========== TERMS POPUP STYLING ========== */
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ========== LOCKING BODY SCROLL WHEN MODAL IS OPEN ========== */
+body.locked {
+  overflow: hidden;
 }
 
 /* ========== RESPONSIVENESS ========== */
