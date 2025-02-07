@@ -38,18 +38,20 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <Layout>
-      {/* Show TermsPopup if not agreed */}
+    <div>
       {showTerms && <TermsPopup onAgree={handleAgree} />}
+      <Layout>
+        {/* Show TermsPopup if not agreed */}
 
-      {/* Centered Dashboard Homepage */}
-      <div className="dashboard-content">
-        <DashboardHomepage />
-      </div>
+        {/* Centered Dashboard Homepage */}
+        <div className="dashboard-content">
+          <DashboardHomepage />
+        </div>
 
-      {/* Theme Customizer */}
-      <ThemeCustomizer />
-    </Layout>
+        {/* Theme Customizer */}
+        <ThemeCustomizer />
+      </Layout>
+    </div>
   );
 };
 
