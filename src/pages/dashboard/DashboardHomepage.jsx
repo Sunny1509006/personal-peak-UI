@@ -1,12 +1,45 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./DashboardHomepage.css"; // Make sure this file is correctly imported
 import DashboardCard from "./DashboardCard";
 import { useTranslation } from "../../context/LanguageContext";
 import { BadgeCheck, Star } from "lucide-react";
+import Axios from "../../Axios/Axios";
 
 const DashboardHomepage = () => {
   const { t } = useTranslation();
   const component_name = "dashboard";
+  const [videos, setVideos] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // Fetch YouTube videos from the API
+    const fetchVideos = async () => {
+      try {
+        const response = await Axios.get("/content/yt-videos/");
+        setVideos(response.data);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % videos.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + videos.length) % videos.length);
+  };
+
+  const getVideoClass = (index) => {
+    if (index === currentIndex) return "active";
+    if (index === (currentIndex - 1 + videos.length) % videos.length) return "prev";
+    if (index === (currentIndex + 1) % videos.length) return "next";
+    return "hidden";
+  };
+
 
   const rankingData = [
     {
@@ -115,14 +148,64 @@ const DashboardHomepage = () => {
         </div>
 
         {/* ✅ Video Section */}
-        <div className="section-dashboard video">
+        {/* <div className="section-dashboard video">
           <h2>{t("Ihr persönliches Dashboard-Video", component_name)}</h2>
           <iframe
             src="https://www.youtube.com/embed/ScMzIvxBSi4"
             title="Dashboard Video"
             allowFullScreen
           ></iframe>
+        </div> */}
+
+        <div className="video-slider-container">
+        <h2>{t("Ihr persönliches Dashboard-Video", component_name)}</h2>
+      {videos.length > 0 ? (
+        <div className="video-slider">
+          {/* Left Arrow */}
+          <button onClick={handlePrev} className="arrow left-arrow">
+            &#8592;
+          </button>
+
+          {/* Video Cards */}
+          <div className="video-cards">
+          {videos.map((video, index) => (
+              <div key={video.id} className={`video-card ${getVideoClass(index)}`}>
+                <iframe
+                  // src={index === currentIndex ? video.youtube_url : ""}
+                  src={video.youtube_url}
+                  title={video.text}
+                  allow={index === currentIndex ? "autoplay; encrypted-media" : ""}
+                  allowFullScreen={index === currentIndex}
+                  className="video-frame"
+                  tabIndex={index === currentIndex ? "0" : "-1"}
+                  style={{
+                    pointerEvents: index === currentIndex ? "auto" : "none", // Disable interaction for non-active videos
+                  }}
+                ></iframe>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          <button onClick={handleNext} className="arrow right-arrow">
+            &#8594;
+          </button>
+
+          {/* Dots Navigation */}
+          <div className="dots">
+            {videos.map((_, index) => (
+              <span
+                key={index}
+                className={`dot ${index === currentIndex ? "active" : ""}`}
+                onClick={() => setCurrentIndex(index)}
+              ></span>
+            ))}
+          </div>
         </div>
+      ) : (
+        <p>Loading videos...</p>
+      )}
+    </div>
 
         {/* ✅ Challenges Section */}
         <div className="section-dashboard challenges">
