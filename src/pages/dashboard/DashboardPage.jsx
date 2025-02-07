@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Axios from "../../Axios/Axios"; // Import Axios instance
 import DashboardHomepage from "./DashboardHomepage";
 import ThemeCustomizer from "./ThemeCustomizer";
 import TermsPopup from "./TermsPopup";
@@ -7,6 +8,7 @@ import "./AdminSidebar.css";
 
 const DashboardPage = () => {
   const [showTerms, setShowTerms] = useState(false); // Controls popup visibility
+  const [userRankData, setUserRankData] = useState(null); // Stores API response data
 
   useEffect(() => {
     // Check local storage for agreement status
@@ -37,10 +39,60 @@ const DashboardPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Fetch user_id from localhost and rank data from the API
+    const fetchRankData = async () => {
+      try {
+        const userId = localStorage.getItem("user_id"); // Assuming user_id is stored in localhost
+        if (!userId) {
+          console.error("No user_id found in local storage");
+          return;
+        }
+        const response = await Axios.get(`/rewards/users/${userId}/rank`);
+        setUserRankData(response.data);
+      } catch (error) {
+        console.error("Error fetching rank data:", error);
+      }
+    };
+
+    fetchRankData();
+  }, []);
+
   return (
     <Layout>
       {/* Show TermsPopup if not agreed */}
       {showTerms && <TermsPopup onAgree={handleAgree} />}
+
+      {/* Sliding Text */}
+      <div className="sliding-text-container">
+        <div className="sliding-text">
+          {userRankData ? (
+            <>
+              <img
+                src={
+                  userRankData.medal_id
+                    ? `https://your-api-url/rewards/medal/${userRankData.medal_id}`
+                    : "https://via.placeholder.com/50" // Placeholder image if no medal
+                }
+                alt="Medal"
+                className="medal-icon"
+              />
+              {userRankData.text}
+              <img
+                src={
+                  userRankData.medal_id
+                    ? `https://your-api-url/rewards/medal/${userRankData.medal_id}`
+                    : "https://via.placeholder.com/50"
+                }
+                alt="Medal"
+                className="medal-icon"
+              />
+            </>
+          ) : (
+            "Loading user rank data..."
+          )}
+        </div>
+      </div>
 
       {/* Centered Dashboard Homepage */}
       <div className="dashboard-content">
