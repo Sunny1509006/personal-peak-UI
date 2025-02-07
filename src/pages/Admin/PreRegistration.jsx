@@ -58,7 +58,7 @@ const PreRegistration = () => {
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPage(0); // Reset to the first page when rows per page changes
   };
 
   const handleSearchChange = (event) => {
@@ -142,59 +142,106 @@ const PreRegistration = () => {
           </div>
         </div>
 
-        {/* Table Section */}
+        {/* Table or List Section */}
         <div className="table-container">
           {loading ? (
             <div>Loading...</div>
           ) : error ? (
             <div className="error">{error}</div>
           ) : (
-            <table className="user-table">
-              <thead>
-                <tr>
-                  <th>First name</th>
-                  <th>Last name</th>
-                  <th>e-mail</th>
-                  <th>Phone number</th>
-                  <th>Date</th>
-                  <th>Activation code</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+            <>
+              {/* Desktop: Table View */}
+              <table className="user-table">
+                <thead>
+                  <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>e-mail</th>
+                    <th>Phone number</th>
+                    <th>Date</th>
+                    <th>Activation code</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((user) => (
+                    <tr key={user._id}>
+                      <td>{user.first_name}</td>
+                      <td>{user.last_name}</td>
+                      <td>{user.email}</td>
+                      <td>{user.phone_number || "N/A"}</td>
+                      <td>
+                        {new Date(user.created_at).toLocaleString("en-US", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </td>
+                      <td>{user.activation_code || "Not specified"}</td>
+                      <td>
+                        <div style={{ display: "flex" }}>
+                          <button
+                            className="btn-view"
+                            onClick={() => handleViewDetails(user)}
+                          >
+                            View Details
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDeleteClick(user._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Mobile: List View */}
+              <div className="mobile-view">
                 {data.map((user) => (
-                  <tr key={user._id}>
-                    <td>{user.first_name}</td>
-                    <td>{user.last_name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.phone_number || "N/A"}</td>
-                    <td>
+                  <div className="user-item" key={user._id}>
+                    <h5>
+                      {user.first_name} {user.last_name}
+                    </h5>
+                    <p>
+                      <strong>Email:</strong>{" "}
+                      <a href={`mailto:${user.email}`}>{user.email}</a>
+                    </p>
+                    <p>
+                      <strong>Phone number:</strong>{" "}
+                      {user.phone_number || "N/A"}
+                    </p>
+                    <p>
+                      <strong>Registered on:</strong>{" "}
                       {new Date(user.created_at).toLocaleString("en-US", {
                         dateStyle: "medium",
                         timeStyle: "short",
                       })}
-                    </td>
-                    <td>{user.activation_code || "Not specified"}</td>
-                    <td>
-                      <div style={{ display: "flex" }}>
-                        <button
-                          className="btn btn-info"
-                          onClick={() => handleViewDetails(user)}
-                        >
-                          View Details
-                        </button>
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => handleDeleteClick(user._id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                    </p>
+                    <p>
+                      <strong>Activation code:</strong>{" "}
+                      {user.activation_code || "Not specified"}
+                    </p>
+                    <div className="actions">
+                      <button
+                        className="btn-view"
+                        onClick={() => handleViewDetails(user)}
+                      >
+                        View Details
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteClick(user._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </>
           )}
         </div>
 
@@ -230,49 +277,41 @@ const PreRegistration = () => {
               className="close-btn"
               aria-label="Close"
               onClick={closeDetailsPopup}
-              style={{ padding: "15px" }}
             >
               &times;
             </button>
           </div>
           <div className="popup-content">
             <p>
-              {viewDetails.first_name} {viewDetails.last_name} registered for
-              pre-registration on{" "}
+              <b>Full Name:</b> {viewDetails.first_name} {viewDetails.last_name}
+            </p>
+            <p>
+              <b>Email:</b>{" "}
+              <a href={`mailto:${viewDetails.email}`}>{viewDetails.email}</a>
+            </p>
+            <p>
+              <b>Phone number:</b>{" "}
+              <a href={`tel:${viewDetails.phone_number}`}>
+                {viewDetails.phone_number || "N/A"}
+              </a>
+            </p>
+            <p>
+              <b>Address:</b> {viewDetails.address || "Not specified"}
+            </p>
+            <p>
+              <b>Interests:</b> {viewDetails.interests || "Not specified"}
+            </p>
+            <p>
+              <b>Registered on:</b>{" "}
               {new Date(viewDetails.created_at).toLocaleString("en-US", {
                 dateStyle: "long",
                 timeStyle: "short",
               })}
-              .
             </p>
-            <h5>Contact details:</h5>
-            <ul>
-              <li>
-                <b>Email:</b>{" "}
-                <a href={`mailto:${viewDetails.email}`}>{viewDetails.email}</a>
-              </li>
-              <li>
-                <b>Telephone number:</b>{" "}
-                <a href={`tel:${viewDetails.phone_number}`}>
-                  {viewDetails.phone_number || "N/A"}
-                </a>
-              </li>
-              <li>
-                <b>Address:</b> {viewDetails.address || "Not specified"}
-              </li>
-              <li>
-                <b>Interests:</b> {viewDetails.interests || "Not specified"}
-              </li>
-            </ul>
-          </div>
-          <div className="popup-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={closeDetailsPopup}
-            >
-              Close
-            </button>
+            <p>
+              <b>Activation code:</b>{" "}
+              {viewDetails.activation_code || "Not specified"}
+            </p>
           </div>
         </div>
       )}
@@ -289,10 +328,10 @@ const PreRegistration = () => {
                 gap: "10px",
               }}
             >
-              <button className="btn btn-danger" onClick={confirmDelete}>
+              <button className="btn-danger" onClick={confirmDelete}>
                 Yes, Delete
               </button>
-              <button className="btn btn-secondary" onClick={cancelDelete}>
+              <button className="btn-secondary" onClick={cancelDelete}>
                 Cancel
               </button>
             </div>
