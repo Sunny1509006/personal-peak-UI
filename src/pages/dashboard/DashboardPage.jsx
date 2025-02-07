@@ -43,9 +43,9 @@ const DashboardPage = () => {
     // Fetch user_id from localhost and rank data from the API
     const fetchRankData = async () => {
       try {
-        const userId = localStorage.getItem("user_id"); // Assuming user_id is stored in localhost
+        const userId = localStorage.getItem("id"); // Assuming user_id is stored in localhost
         if (!userId) {
-          console.error("No user_id found in local storage");
+          console.error("No id found in local storage");
           return;
         }
         const response = await Axios.get(`/rewards/users/${userId}/rank`);
@@ -72,7 +72,7 @@ const DashboardPage = () => {
               <img
                 src={
                   userRankData.medal_id
-                    ? `https://your-api-url/rewards/medal/${userRankData.medal_id}`
+                    ? `https://personalpeak360.biddabuzz.com/api/v1/rewards/medal/${userRankData.medal_id}`
                     : "https://via.placeholder.com/50" // Placeholder image if no medal
                 }
                 alt="Medal"
@@ -82,7 +82,7 @@ const DashboardPage = () => {
               <img
                 src={
                   userRankData.medal_id
-                    ? `https://your-api-url/rewards/medal/${userRankData.medal_id}`
+                    ? `https://personalpeak360.biddabuzz.com/api/v1/rewards/medal/${userRankData.medal_id}`
                     : "https://via.placeholder.com/50"
                 }
                 alt="Medal"
