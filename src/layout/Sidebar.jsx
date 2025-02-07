@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./../pages/dashboard/AdminSidebar.css";
+import "./Sidebar.css";
 import { useTranslation } from "../context/LanguageContext";
 
 const Sidebar = () => {
-
   const { t } = useTranslation();
-  const component_name = "sidebar"
+  const component_name = "sidebar";
 
   const isAccessible = (roles) => {
     const userRoles = JSON.parse(localStorage.getItem("user_type")) || [];
@@ -20,9 +19,20 @@ const Sidebar = () => {
   const [isToggled, setIsToggled] = useState(false);
   const [isHovered, setIsHovered] = useState(true);
 
+  // Add state for managing dropdown toggles
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  // Function to handle toggling the dropdown menu
+  const toggleDropdown = (menu) => {
+    if (activeDropdown === menu) {
+      setActiveDropdown(null); // Close it if already open
+    } else {
+      setActiveDropdown(menu); // Open the selected dropdown
+    }
+  };
+
   const handleToggle = () => {
     setIsToggled(!isToggled); // Toggle the sidebar state
-    // setIsHovered(!isHovered)
     const wrapper = document.querySelector(".wrapper");
     if (isToggled) {
       wrapper.classList.remove("toggled");
@@ -87,14 +97,16 @@ const Sidebar = () => {
               <div className="menu-title">{t("Home Page", component_name)}</div>
             </Link>
           </li>
-            <Link to="/admin-panel">
-            <li className="menu-label" style={{padding: '0px'}}>
+          <Link to="/admin-panel">
+            <li className="menu-label" style={{ padding: "0px" }}>
               {t("Admin Area", component_name)}
-              </li>
-              </Link>
-          <li className={`menu-item ${
-            isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
-          }`}>
+            </li>
+          </Link>
+          <li
+            className={`menu-item ${
+              isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+            }`}
+          >
             {isAccessible(["SSA", "WLA"]) ? (
               <Link to="/pre-registration">
                 <div className="parent-icon icon-color-2">
@@ -112,25 +124,26 @@ const Sidebar = () => {
               </div>
             )}
           </li>
-          <li className={`menu-item ${
-            isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
-          }`}>
+          <li
+            className={`menu-item ${
+              isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+            }`}
+          >
             {isAccessible(["SSA", "WLA"]) ? (
-            <Link to="/user-management">
-              <div className="parent-icon icon-color-3">
-                <i className="bx bx-conversation"></i>
-              </div>
-              <div className="menu-title">User</div>
-            </Link>
-            ):
-            (
+              <Link to="/user-management">
+                <div className="parent-icon icon-color-3">
+                  <i className="bx bx-conversation"></i>
+                </div>
+                <div className="menu-title">User</div>
+              </Link>
+            ) : (
               <div className="locked-item">
-              <div className="parent-icon icon-color-3">
-                <i className="bx bx-conversation"></i>
+                <div className="parent-icon icon-color-3">
+                  <i className="bx bx-conversation"></i>
+                </div>
+                <div className="menu-title">User</div>
+                <i className="bx bx-lock lock-icon"></i>
               </div>
-              <div className="menu-title">User</div>
-              <i className="bx bx-lock lock-icon"></i>
-            </div> 
             )}
           </li>
           <li>
@@ -141,120 +154,146 @@ const Sidebar = () => {
               <div className="menu-title">Live Chat</div>
             </a>
           </li>
-          {/* Accounting */}
+          {/* Accounting Dropdown */}
           <li>
-            <a className="has-arrow" href="#">
+            <a
+              className="has-arrow"
+              href="#"
+              onClick={() => toggleDropdown("accounting")}
+            >
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
               <div className="menu-title">Accounting</div>
             </a>
-            <ul>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Invoices
-                </a>
-              </li>
-              <li>
-                <a href="/component-bedges">
-                  <i className="bx bx-right-arrow-alt"></i>Offers
-                </a>
-              </li>
-            </ul>
+            {activeDropdown === "accounting" && (
+              <ul>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Invoices
+                  </a>
+                </li>
+                <li>
+                  <a href="/component-bedges">
+                    <i className="bx bx-right-arrow-alt"></i>Offers
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
 
-          {/* Training Hall */}
+          {/* Training Hall Dropdown */}
           <li>
-            <a className="has-arrow" href="#">
+            <a
+              className="has-arrow"
+              href="#"
+              onClick={() => toggleDropdown("training-hall")}
+            >
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
               <div className="menu-title">Training Hall</div>
             </a>
-            <ul>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Exercises
-                </a>
-              </li>
-              <li>
-                <a href="/component-bedges">
-                  <i className="bx bx-right-arrow-alt"></i>Training Plans
-                </a>
-              </li>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Upload & Analysis
-                </a>
-              </li>
-              <li>
-                <a href="/component-bedges">
-                  <i className="bx bx-right-arrow-alt"></i>Fitness Test
-                </a>
-              </li>
-            </ul>
+            {activeDropdown === "training-hall" && (
+              <ul>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Exercises
+                  </a>
+                </li>
+                <li>
+                  <a href="/component-bedges">
+                    <i className="bx bx-right-arrow-alt"></i>Training Plans
+                  </a>
+                </li>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Upload & Analysis
+                  </a>
+                </li>
+                <li>
+                  <a href="/component-bedges">
+                    <i className="bx bx-right-arrow-alt"></i>Fitness Test
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
+
+          {/* Nutrition & Analysis Dropdown */}
           <li>
-            <a className="has-arrow" href="#">
+            <a
+              className="has-arrow"
+              href="#"
+              onClick={() => toggleDropdown("nutrition-analysis")}
+            >
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
               <div className="menu-title">Nutrition & Analysis</div>
             </a>
-            <ul>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Nutrition Plans
-                </a>
-              </li>
-            </ul>
+            {activeDropdown === "nutrition-analysis" && (
+              <ul>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Nutrition Plans
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
 
-          {/* Settings */}
+          {/* Settings Dropdown */}
           <li>
-            <a className="has-arrow" href="#">
+            <a
+              className="has-arrow"
+              href="#"
+              onClick={() => toggleDropdown("settings")}
+            >
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
               <div className="menu-title">Settings</div>
             </a>
-            <ul>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Generally
-                </a>
-              </li>
-              <li>
-                <a href="/component-bedges">
-                  <i className="bx bx-right-arrow-alt"></i>Legal
-                </a>
-              </li>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Welcome Page
-                </a>
-              </li>
-              <li>
-                <Link to="/medals-award">
-                  <i className="bx bx-right-arrow-alt"></i>Awards / Badges
-                </Link>
-              </li>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Accounting
-                </a>
-              </li>
-              <li>
-                <a href="/pricing">
-                  <i className="bx bx-right-arrow-alt"></i>eCommerce shop
-                </a>
-              </li>
-              <li>
-                <Link to="/mobility-add">
-                  <i className="bx bx-right-arrow-alt"></i>Mobility
-                </Link>
-              </li>
-            </ul>
+            {activeDropdown === "settings" && (
+              <ul>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Generally
+                  </a>
+                </li>
+                <li>
+                  <a href="/component-bedges">
+                    <i className="bx bx-right-arrow-alt"></i>Legal
+                  </a>
+                </li>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Welcome Page
+                  </a>
+                </li>
+                <li>
+                  <Link to="/medals-award">
+                    <i className="bx bx-right-arrow-alt"></i>Awards / Badges
+                  </Link>
+                </li>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Accounting
+                  </a>
+                </li>
+                <li>
+                  <a href="/pricing">
+                    <i className="bx bx-right-arrow-alt"></i>eCommerce shop
+                  </a>
+                </li>
+                <li>
+                  <Link to="/mobility-add">
+                    <i className="bx bx-right-arrow-alt"></i>Mobility
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
 
           {/* Kanban Board */}
@@ -292,25 +331,32 @@ const Sidebar = () => {
 
           {/* Accounting */}
           <li>
-            <a className="has-arrow" href="#">
+            <a
+              className="has-arrow"
+              href="#"
+              onClick={() => toggleDropdown("accounting")}
+            >
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
               <div className="menu-title">Accounting</div>
             </a>
-            <ul>
-              <li>
-                <a href="/invoice">
-                  <i className="bx bx-right-arrow-alt"></i>Invoices
-                </a>
-              </li>
-              <li>
-                <a href="/component-bedges">
-                  <i className="bx bx-right-arrow-alt"></i>Offers
-                </a>
-              </li>
-            </ul>
+            {activeDropdown === "accounting" && (
+              <ul>
+                <li>
+                  <a href="/invoice">
+                    <i className="bx bx-right-arrow-alt"></i>Invoices
+                  </a>
+                </li>
+                <li>
+                  <a href="/component-bedges">
+                    <i className="bx bx-right-arrow-alt"></i>Offers
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
+
           <li>
             <a href="#">
               <div className="parent-icon icon-color-11">
@@ -382,50 +428,6 @@ const Sidebar = () => {
               <div className="menu-title">Diary</div>
             </a>
           </li>
-
-          {/* Training Hall Label */}
-          <li className="menu-label">Training Hall</li>
-
-          {/* Exercises */}
-          <li>
-            <a href="#">
-              <div className="parent-icon icon-color-9">
-                <i className="bx bx-line-chart"></i>
-              </div>
-              <div className="menu-title">Exercises</div>
-            </a>
-          </li>
-
-          {/* Training Plans */}
-          <li>
-            <a href="#">
-              <div className="parent-icon icon-color-10">
-                <i className="bx bx-map-alt"></i>
-              </div>
-              <div className="menu-title">Training Plans</div>
-            </a>
-          </li>
-
-          {/* Upload and Analysis */}
-          <li>
-            <a href="#">
-              <div className="parent-icon icon-color-10">
-                <i className="bx bx-map-alt"></i>
-              </div>
-              <div className="menu-title">Upload and Analysis</div>
-            </a>
-          </li>
-
-          {/* Diary */}
-          <li>
-            <a href="#">
-              <div className="parent-icon icon-color-10">
-                <i className="bx bx-map-alt"></i>
-              </div>
-              <div className="menu-title">Diary</div>
-            </a>
-          </li>
-          {/* Add more menu items as needed */}
         </ul>
         {/* End Navigation */}
       </div>
