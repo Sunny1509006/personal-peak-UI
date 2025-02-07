@@ -17,6 +17,7 @@ import MobilityAddForm from "./pages/Settings/MobilityAddForm";
 import { TranslationProvider } from "./context/LanguageContext";
 import AdminPanel from "./pages/Admin/AdminPanel";
 import MedalsPage from "./pages/Settings/MedalsPage";
+import UserManagement from "./pages/Admin/UserManagement";
 
 // Create Access Context
 export const AccessContext = createContext();
@@ -49,6 +50,12 @@ function App() {
               <Route path="/medals-award" element={
                 <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
                 <MedalsPage />
+              </ProtectedRoute>
+              } 
+              />
+              <Route path="/user-management" element={
+                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <UserManagement />
               </ProtectedRoute>
               } 
               />
