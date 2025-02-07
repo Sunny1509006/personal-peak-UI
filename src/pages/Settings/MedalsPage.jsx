@@ -53,12 +53,12 @@ const MedalsPage = () => {
     try {
       if (editMedal) {
         await Axios.put(`/rewards/medal/${editMedal.id}`, submitData, {
-          headers: { "modal-content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" },
         });
         setSuccessMessage("Updated successfully!");
       } else {
         await Axios.post("/rewards/medal", submitData, {
-          headers: { "modal-content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" },
         });
         setSuccessMessage("Medal added successfully!");
       }
