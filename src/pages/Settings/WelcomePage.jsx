@@ -7,8 +7,8 @@ export const WelcomePage = () => {
   return (
     <Layout>
       <div className="welcome-page">
-        <Link to="/yt-video-management" className="welcome-card-link">
-          <div className="welcome-card">
+        <Link to="/yt-video-management" className="welcome-page-card-link">
+          <div className="welcome-page-card">
             <h2>Youtube Video Management</h2>
             <p>Manage your YouTube videos effectively.</p>
           </div>

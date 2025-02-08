@@ -96,7 +96,7 @@ const VideoManagement = () => {
                 <iframe
                   src={video.youtube_url}
                   title={video.text}
-                  className="video-frame"
+                  className="video-frame-management"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
@@ -131,8 +131,8 @@ const VideoManagement = () => {
           Add New Video
         </button>
         {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
+          <div className="modal-overlay-management">
+            <div className="modal-content-management">
               <h2>{editVideo ? "Edit Video" : "Add a New Video"}</h2>
               <form onSubmit={handleSubmit} className="video-form">
                 <label>
@@ -172,8 +172,8 @@ const VideoManagement = () => {
           </div>
         )}
         {deleteConfirm.show && (
-          <div className="modal-overlay">
-            <div className="modal-content">
+          <div className="modal-overlay-management">
+            <div className="modal-content-management">
               <h2>Are you sure you want to delete this video?</h2>
               <div className="form-actions">
                 <button
