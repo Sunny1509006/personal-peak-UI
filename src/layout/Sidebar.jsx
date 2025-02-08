@@ -268,9 +268,9 @@ const Sidebar = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="/invoice">
+                  <Link to="/welcome-page-management">
                     <i className="bx bx-right-arrow-alt"></i>Welcome Page
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/medals-award">

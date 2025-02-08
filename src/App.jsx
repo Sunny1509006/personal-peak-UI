@@ -18,6 +18,8 @@ import { TranslationProvider } from "./context/LanguageContext";
 import AdminPanel from "./pages/Admin/AdminPanel";
 import MedalsPage from "./pages/Settings/MedalsPage";
 import UserManagement from "./pages/Admin/UserManagement";
+import { WelcomePage } from "./pages/Settings/WelcomePage";
+import VideoManagement from "./pages/Settings/VideoManagement";
 
 // Create Access Context
 export const AccessContext = createContext();
@@ -56,6 +58,18 @@ function App() {
               <Route path="/user-management" element={
                 <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
                 <UserManagement />
+              </ProtectedRoute>
+              } 
+              />
+              <Route path="/welcome-page-management" element={
+                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <WelcomePage />
+              </ProtectedRoute>
+              } 
+              />
+              <Route path="/yt-video-management" element={
+                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <VideoManagement />
               </ProtectedRoute>
               } 
               />
