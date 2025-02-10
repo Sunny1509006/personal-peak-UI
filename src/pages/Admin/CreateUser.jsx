@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./CreateUser.css";
+import Axios from "../../Axios/Axios";
 
 const CreateUser = ({ onClose, onSubmit }) => {
   const [step, setStep] = useState(1); // Manage steps
+  const id = localStorage.getItem("id")
   const [formData, setFormData] = useState({
+    user_id: id,
     firstName: "",
     lastName: "",
     username: "",
@@ -23,8 +26,21 @@ const CreateUser = ({ onClose, onSubmit }) => {
     favicon: null,
   });
 
+
   const [showAlert, setShowAlert] = useState(true); // Control the visibility of the alert box
 
+  const roleMapping = {
+    "Super-Super-Admin": "super-super-admin",
+    "Lower-Super-Admin": "lower-super-admin",
+    "Super-Admin → White-Label": "super-admin (white-label)",
+    "Lower-Admin → White-Label": "lower-admin (white-label)",
+    "User (Basic)": "user (basic)",
+    "User (Standard)": "user (standard)",
+    "User (Premium)": "user (premium)",
+    "User (Basic) → Trial version": "user-trial (basic)", 
+    "User (Standard) → Trial version": "user-trial (standard)", 
+    "User (Premium) → Trial version": "user-trial (premium)"
+  };
   // List of roles grouped by category
   const roles = [
     { category: "Allgemein", options: ["Super-Super-Admin", "Lower-Super-Admin"] },
@@ -47,6 +63,8 @@ const CreateUser = ({ onClose, onSubmit }) => {
     "Business Suite (businesssuite.org)",
   ];
 
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -68,19 +86,84 @@ const CreateUser = ({ onClose, onSubmit }) => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleSubmit = (e) => {
-    e?.preventDefault(); // Prevent form submission if triggered via event
-    onSubmit(formData);
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault(); // Prevent default form submission
+  
+    if (!formData.firstName || !formData.lastName || !formData.username || !formData.password) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+  
+    const userType = roleMapping[formData.role] || "";
+    let whiteLabelInstance = null;
+    let projectName = null;
+  
+    const formDataToSend = new FormData();
+    
+    // Append required fields
+    formDataToSend.append("user_id", formData.user_id)
+    formDataToSend.append("first_name", formData.firstName);
+    formDataToSend.append("last_name", formData.lastName);
+    formDataToSend.append("user_name", formData.username);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("user_type", userType);
+  
+    // Append avatar if available
+    if (formData.avatar) {
+      formDataToSend.append("avatar", formData.avatar);
+    }
+  
+    // Handle white-label logic
+    if (userType === "super-admin (white-label)" || userType === "lower-admin (white-label)") {
+      if (formData.whiteLabelOption === "Create new WhiteLabel") {
+        whiteLabelInstance = "new";
+        projectName = formData.whiteLabelName;
+  
+        formDataToSend.append("white_label_instance", whiteLabelInstance);
+        formDataToSend.append("project_name", projectName);
+        formDataToSend.append("white_label_details[project_name]", formData.whiteLabelName);
+        formDataToSend.append("white_label_details[subdomain]", formData.subdomain);
+        formDataToSend.append("white_label_details[primary_color]", formData.primaryColor || "#000000");
+        formDataToSend.append("white_label_details[secondary_color]", formData.secondaryColor || "#000000");
+        formDataToSend.append("white_label_details[tertiary_color]", formData.tertiaryColor || "#000000");
+  
+        if (formData.logoLong) formDataToSend.append("white_label_details[long_version_logo]", formData.logoLong);
+        if (formData.logoShort) formDataToSend.append("white_label_details[short_version_logo]", formData.logoShort);
+        if (formData.logoIcon) formDataToSend.append("white_label_details[icon_version]", formData.logoIcon);
+        if (formData.favicon) formDataToSend.append("white_label_details[favicon]", formData.favicon);
+      } else if (formData.whiteLabelOption === "Existing white label") {
+        whiteLabelInstance = "existing";
+        formDataToSend.append("white_label_instance", whiteLabelInstance);
+      }
+    }
+  
+    console.log("Submitting FormData:", Object.fromEntries(formDataToSend.entries()));
+  
+    try {
+      const response = await Axios.post("/users/user-create", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      alert("User created successfully!");
+      console.log("Response:", response.data);
+      onClose();
+    } catch (error) {
+      console.error("Error creating user:", error.response ? error.response.data : error);
+      alert("Failed to create user. Please check the required fields.");
+    }
   };
+  
 
   const handleCloseAlert = () => {
     setShowAlert(false); // Hide the alert box
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="modal-header">
+    <div className="modal-overlay-create-user">
+      <div className="modal-content-create-user">
+        <div className="modal-header-create-user">
           <h2>Create Users</h2>
           <button className="close-button" onClick={onClose}>
             &times;
