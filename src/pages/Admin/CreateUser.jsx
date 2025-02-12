@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CreateUser.css";
 import Axios from "../../Axios/Axios";
 
-const CreateUser = ({ onClose, onSubmit }) => {
+const CreateUser = ({ onClose, onSubmit, onUserCreated  }) => {
   const [step, setStep] = useState(1); // Manage steps
   const id = localStorage.getItem("id")
   const [formData, setFormData] = useState({
@@ -148,6 +148,9 @@ const CreateUser = ({ onClose, onSubmit }) => {
   
       alert("User created successfully!");
       console.log("Response:", response.data);
+      if (onUserCreated) {
+        onUserCreated();  // Call fetchData from parent
+      }
       onClose();
     } catch (error) {
       console.error("Error creating user:", error.response ? error.response.data : error);
