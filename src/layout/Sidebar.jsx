@@ -104,10 +104,12 @@ const Sidebar = () => {
           </Link>
           <li
             className={`menu-item ${
-              isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+              isAccessible(["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]) ? "" : "transparent-item"
             }`}
           >
-            {isAccessible(["SSA", "WLA"]) ? (
+            {isAccessible(["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]) ? (
               <Link to="/pre-registration">
                 <div className="parent-icon icon-color-2">
                   <i className="bx bx-envelope"></i>
@@ -126,10 +128,12 @@ const Sidebar = () => {
           </li>
           <li
             className={`menu-item ${
-              isAccessible(["SSA", "WLA"]) ? "" : "transparent-item"
+              isAccessible(["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]) ? "" : "transparent-item"
             }`}
           >
-            {isAccessible(["SSA", "WLA"]) ? (
+            {isAccessible(["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]) ? (
               <Link to="/user-management">
                 <div className="parent-icon icon-color-3">
                   <i className="bx bx-conversation"></i>

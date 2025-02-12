@@ -42,33 +42,39 @@ function App() {
 
               {/* Protected Routes (Require Authentication) */}
               <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-              <Route path="/pre-registration" element={<ProtectedRoute requiredRoles={["WLA", "SSA"]}><PreRegistration /></ProtectedRoute>} />
+              <Route path="/pre-registration" element={<ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}><PreRegistration /></ProtectedRoute>} />
               <Route path="/admin-panel" element={
-                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}>
                 <AdminPanel />
               </ProtectedRoute>
               } 
               />
               <Route path="/medals-award" element={
-                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}>
                 <MedalsPage />
               </ProtectedRoute>
               } 
               />
               <Route path="/user-management" element={
-                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}>
                 <UserManagement />
               </ProtectedRoute>
               } 
               />
               <Route path="/welcome-page-management" element={
-                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}>
                 <WelcomePage />
               </ProtectedRoute>
               } 
               />
               <Route path="/yt-video-management" element={
-                <ProtectedRoute requiredRoles={["WLA", "SSA"]}>
+                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
+    "super-admin (white-label)", "lower-admin (white-label)"]}>
                 <VideoManagement />
               </ProtectedRoute>
               } 
