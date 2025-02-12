@@ -97,7 +97,7 @@ const DashboardPage = () => {
 
       {/* Centered Dashboard Homepage */}
       <div className="dashboard-content">
-        <DashboardHomepage />
+        <DashboardHomepage userRankData={userRankData} />
       </div>
 
         {/* Theme Customizer */}

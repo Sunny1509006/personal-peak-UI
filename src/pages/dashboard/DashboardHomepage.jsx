@@ -5,7 +5,8 @@ import { useTranslation } from "../../context/LanguageContext";
 import { BadgeCheck, Star } from "lucide-react";
 import Axios from "../../Axios/Axios";
 
-const DashboardHomepage = () => {
+const DashboardHomepage = ({userRankData}) => {
+  console.log(userRankData  )
   const { t } = useTranslation();
   const component_name = "dashboard";
   const [videos, setVideos] = useState([]);
@@ -111,18 +112,22 @@ const DashboardHomepage = () => {
 
             <span className="badge">
               <BadgeCheck size={16} />
-              {t("Super-Admin", component_name)}
+              {t(localStorage.getItem("user_type").replace(/"/g, ''), component_name)}
             </span>
 
             <img
-              src="/assets/images/medel.jpg"
+              src={
+                userRankData?.medal_id
+              ? `https://personalpeak360.biddabuzz.com/api/v1/rewards/medal/${userRankData?.medal_id}`
+              : "https://via.placeholder.com/50" // Placeholder image if no medal
+              }
               alt="Medal"
               className="ms-auto me-auto"
             />
 
             <div className="points-container">
               <p className="points-text">
-                {t("You only need -391 points to advance to level 3.", component_name)}
+                {t(`You only need ${userRankData?.points_needed_for_next_rank} points to advance to level ${userRankData?.next_rank}.`, component_name)}
               </p>
             </div>
 
