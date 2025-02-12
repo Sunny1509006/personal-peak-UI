@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Axios from "../../Axios/Axios";
-import "./PreRegistration.css"; // Add your custom CSS styles
+import "./UserManagement.css"; // Add your custom CSS styles
 import Layout from "../../layout/Layout";
 import CreateUser from "./CreateUser";
 
 const UserManagement = () => {
+  const BASE_URL = "https://personalpeak360.biddabuzz.com/api/v1";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);
@@ -16,9 +17,16 @@ const UserManagement = () => {
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [viewDetails, setViewDetails] = useState(null);
 
+  const handleCreateUserSuccess = () => {
+    console.log("User created successfully, fetching updated users...");
+    fetchData();  // Refresh user list
+  };
+
   const handleCreateUser = (formData) => {
     console.log("User data submitted:", formData);
     setIsModalOpen(false);
+    // Fetch updated user list after successful user creation
+    fetchData();
   };
 
   useEffect(() => {
@@ -28,29 +36,54 @@ const UserManagement = () => {
   const fetchData = async () => {
     setLoading(true);
     setError("");
-
+  
     try {
-      const response = await Axios.get("/users", {
+      const userId = localStorage.getItem("id"); 
+      if (!userId) {
+        console.error("No id found in local storage");
+        return;
+      }
+  
+      const response = await Axios.get("/users/user-users", {
         params: {
-          skip: page * rowsPerPage,
-          limit: rowsPerPage,
-          query: searchQuery,
+          user_id: userId
         },
       });
-      setUsers(response.data.users);
-      setTotal(response.data.total);
+  
+      let filteredUsers = response.data;
+  
+      // Apply search filter
+      if (searchQuery) {
+        filteredUsers = filteredUsers.filter(user =>
+          user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          user.user_type.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+  
+      // Paginate results
+      const startIndex = page * rowsPerPage;
+      const paginatedUsers = filteredUsers.slice(startIndex, startIndex + rowsPerPage);
+  
+      console.log("Filtered & Paginated Users:", paginatedUsers);
+  
+      setUsers(paginatedUsers);
+      setTotal(filteredUsers.length); // Update total to reflect filtered users
+  
     } catch (err) {
       setError("Failed to fetch users.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < Math.ceil(total / rowsPerPage)) {
       setPage(newPage);
     }
   };
+  
 
   const handleRowsPerPageChange = (e) => {
     setRowsPerPage(parseInt(e.target.value, 10));
@@ -93,20 +126,21 @@ const UserManagement = () => {
   return (
     <Layout>
       <div className="user-management-container">
-        <div className="header">
+        <div className="user-management-header">
           <h3>Overview of Users</h3>
           <div>
-      <button onClick={() => setIsModalOpen(true)} className="btn btn-primary">Create Users</button>
+      <button onClick={() => setIsModalOpen(true)} className="user-management-btn btn-primary">Create Users</button>
       {isModalOpen && (
         <CreateUser
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleCreateUser}
+          onUserCreated={handleCreateUserSuccess} // Pass fetchData trigger
         />
       )}
     </div>
         </div>
 
-        <div className="controls">
+        <div className="user-management-controls">
           <div>
             <label>
               Show
@@ -130,7 +164,7 @@ const UserManagement = () => {
           </div>
         </div>
 
-        <div className="table-container">
+        <div className="user-management-table-container">
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -149,25 +183,25 @@ const UserManagement = () => {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.name}</td>
+                    <td>{user.first_name+" "+user.last_name}</td>
                     <td>
                       <img
-                        src={user.profile_picture || "/default-avatar.png"}
+                       src={user.avatar ? `${BASE_URL}/users/view-image/${user.avatar.replace("/uploads/", "")}` : "/default-avatar.png"} 
                         alt="Profile"
-                        className="profile-picture"
+                        className="user-management-profile-picture"
                       />
                     </td>
-                    <td>{user.role}</td>
+                    <td>{user.user_type}</td>
                     <td>{user.level}</td>
                     <td>
                       <button
-                        className="btn btn-info"
+                        className="user-management-btn btn-info"
                         onClick={() => handleViewDetails(user)}
                       >
                         View / Edit
                       </button>
                       <button
-                        className="btn btn-danger"
+                        className="user-management-btn btn-danger"
                         onClick={() => handleDeleteClick(user.id)}
                       >
                         Delete
@@ -180,7 +214,7 @@ const UserManagement = () => {
           )}
         </div>
 
-        <div className="pagination">
+        <div className="user-management-pagination">
           <button
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 0}
@@ -199,23 +233,23 @@ const UserManagement = () => {
         </div>
 
         {deleteUserId && (
-          <div className="popup">
+          <div className="user-management-popup">
             <p>Are you sure you want to delete this user?</p>
-            <button onClick={confirmDelete} className="btn btn-danger">
+            <button onClick={confirmDelete} className="user-management-btn user-management-btn-danger">
               Yes
             </button>
-            <button onClick={cancelDelete} className="btn btn-secondary">
+            <button onClick={cancelDelete} className="user-management-btn btn-secondary">
               No
             </button>
           </div>
         )}
 
         {viewDetails && (
-          <div className="popup">
+          <div className="user-management-popup">
             <h4>User Details</h4>
             <p>Name: {viewDetails.name}</p>
             <p>Email: {viewDetails.email}</p>
-            <button onClick={closeDetailsPopup} className="btn btn-secondary">
+            <button onClick={closeDetailsPopup} className="user-management-btn btn-secondary">
               Close
             </button>
           </div>
