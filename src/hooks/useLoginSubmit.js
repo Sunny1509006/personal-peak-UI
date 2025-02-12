@@ -24,7 +24,7 @@ export default function useLoginSubmit(setStep) {
     try {
       setLoading(true);
       const res = await Axios.post("/users/login", {
-        email: data.username,
+        user_name: data.username,
         password: data.password,
       });
 
