@@ -1,82 +1,84 @@
-* General Styles */
-.mobility-add-page {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: #f4f4f9;
-    display: flex;
-    flex-direction: column;
-    /* margin-left: 80px; */
-    /* min-width: 90%; */
-  }
-  
-  .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0px 100px;
-  }
-  
-  .page-header h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .add-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* List View */
-  .list-view {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-  }
-  
-  .card-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-  }
-  
-  .card-content {
-    margin-top: 10px;
-  }
-  
-  .card-content p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .video-placeholder {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
+* General Styles */ .mobility-add-page {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f4f4f9;
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  /* margin-left: 80px; */
+  /* min-width: 90%; */
+}
+.container {
+  width: 70vw;
+}
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0px 100px;
+}
 
-  /* Modal Styles */
+.page-header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.add-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+/* List View */
+.list-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.card-content {
+  margin-top: 10px;
+}
+
+.card-content p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.video-placeholder {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -152,8 +154,6 @@
 .update-button:hover {
   background-color: #a5a5a5;
 }
-
-
 
 .cancel-button {
   background-color: #dc3545;
@@ -254,8 +254,6 @@
   margin-bottom: 10px;
   border-radius: 5px;
   object-fit: cover;
-  
-  
 }
 
 /* Play Button */

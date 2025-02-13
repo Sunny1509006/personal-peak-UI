@@ -52,7 +52,7 @@ const DashboardCard = () => {
     <div className="my-5">
       <div className="row g-4 justify-content-center">
         {cards.map((card, index) => (
-          <div className="col-md-2 col-sm-4 col-6" key={index}>
+          <div className="col-md-2 col-sm-4 col-8" key={index}>
             <div className="dashboard-card">
               {/* ✅ Icon inside a circular background */}
               <div className="card-icon-wrapper">{card.icon}</div>

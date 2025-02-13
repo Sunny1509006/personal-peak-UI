@@ -100,7 +100,7 @@ const PreRegistration = () => {
   return (
     <Layout>
       <div
-        className="container"
+        className="container1"
         style={{ backgroundColor: "white", color: "#212529" }}
       >
         {/* Header Section */}

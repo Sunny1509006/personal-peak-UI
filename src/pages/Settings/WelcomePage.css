@@ -1,43 +1,45 @@
 /* General page styling */
 .welcome-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* height: 100vh; */
-    background-color: #f7f7f7;
-  }
-  
-  /* Card styling */
-  .welcome-page-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .welcome-page-card h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .welcome-page-card p {
-    font-size: 1rem;
-    color: #666;
-  }
-  
-  .welcome-page-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Link styling */
-  .welcome-page-card-link {
-    text-decoration: none;
-    color: inherit;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+  background-color: #f7f7f7;
+}
+
+.container {
+  width: 70vw;
+}
+/* Card styling */
+.welcome-page-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.welcome-page-card h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.welcome-page-card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.welcome-page-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Link styling */
+.welcome-page-card-link {
+  text-decoration: none;
+  color: inherit;
+}

@@ -13,7 +13,7 @@ body {
 
 /* Section Styling */
 .section-dashboard {
-  min-width: 90%; /* Fix: Now exactly 90% of the container */
+  min-width: 68vw;
   max-width: 1080px; /* Ensuring it never exceeds 90% of max-width 1200px */
   margin-bottom: 30px;
   color: #212529;
@@ -24,6 +24,8 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   transition: transform 0.3s, box-shadow 0.3s;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Hover Effect */
@@ -124,57 +126,6 @@ body {
   transform: scale(1.1);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
-
-/* ✅ Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-    padding: 15px;
-  }
-
-  .section-dashboard {
-    width: 100%; /* Ensures full width on smaller screens */
-    padding: 15px;
-  }
-
-  /* Stack sections into a column */
-  .ranking,
-  .video,
-  .challenges {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  /* Ranking items should be column-based */
-  .ranking-item {
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .ranking-item img {
-    margin-bottom: 10px;
-  }
-
-  .ranking-item .details {
-    text-align: center;
-  }
-
-  .video iframe {
-    height: 250px;
-  }
-
-  .challenges .challenge-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .challenges .challenge-item button {
-    width: 100%;
-  }
-}
-
 /* Dashboard Container */
 .dashboard-container {
   display: flex;
@@ -184,8 +135,6 @@ body {
   width: 100%;
   padding: 20px;
 }
-
-/* Welcome Card */
 .welcome-card {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -226,6 +175,10 @@ body {
   justify-content: center;
   margin-bottom: 14px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.container1 {
+  width: 80vw;
+  background-color: "white";
 }
 
 /* Medal Image */
@@ -402,4 +355,33 @@ body {
 /* Background effect for the slider */
 .video-slider-container {
   background: linear-gradient(to bottom, #2b8ba6, #1e5d75);
+}
+@media (max-width: 576px) {
+  .section-dashboard {
+    padding: 10px;
+    width: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 60vw;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .medal {
+    width: 40%;
+  }
+  .container1 {
+    margin-right: auto;
+    width: 80vw;
+  }
+
+  .video-cards {
+    width: 30px;
+  }
 }

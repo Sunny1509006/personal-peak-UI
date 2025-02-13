@@ -46,12 +46,11 @@ const MobilityAdd = () => {
     }
   };
 
-    // Open delete confirmation modal
-    const openDeleteModal = (itemId) => {
-      setItemToDelete(itemId);
-      setIsModalOpen(true);
-    };
-
+  // Open delete confirmation modal
+  const openDeleteModal = (itemId) => {
+    setItemToDelete(itemId);
+    setIsModalOpen(true);
+  };
 
   // Handle update
   const handleUpdate = async (updatedItem) => {
@@ -109,11 +108,11 @@ const MobilityAdd = () => {
     } else if (item.content_type === "image") {
       return (
         <div className="video-container">
-        <img
-          className="media-content-mobility"
-          src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
-          alt={item.title}
-        />
+          <img
+            className="media-content-mobility"
+            src={`https://personalpeak360.biddabuzz.com/api/v1/content/stream/${item.id}`}
+            alt={item.title}
+          />
         </div>
       );
     } else {
@@ -123,7 +122,7 @@ const MobilityAdd = () => {
 
   return (
     <Layout>
-      <div className="mobility-add-page">
+      <div className="container mobility-add-page">
         {/* Header */}
         <div className="page-header">
           <h1>Mobility Add</h1>
@@ -146,11 +145,14 @@ const MobilityAdd = () => {
                   {renderContent(item)}
                   <p>Type: {item.type}</p>
                   <p>Description: {item.query}</p>
-                  <div className="card-actions" style={{
-                    display: 'flex', 
-                    justifyContent: 'center',
-                    gap: '10px'
-                    }}>
+                  <div
+                    className="card-actions"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "10px",
+                    }}
+                  >
                     <button
                       className="delete-button"
                       onClick={() => openDeleteModal(item.id)}
@@ -174,7 +176,10 @@ const MobilityAdd = () => {
       {/* Update Form Modal */}
       {isEditing && editingItem && (
         <div className="modal-overlay">
-          <div className="modal-content" style={{width: '500px', display: 'flex', textAlign: 'left'}}>
+          <div
+            className="modal-content"
+            style={{ width: "500px", display: "flex", textAlign: "left" }}
+          >
             <h2>Update Item</h2>
             <form
               onSubmit={(e) => {
@@ -210,9 +215,12 @@ const MobilityAdd = () => {
               <select
                 value={editingItem.content_type}
                 onChange={(e) =>
-                  setEditingItem({ ...editingItem, content_type: e.target.value })
+                  setEditingItem({
+                    ...editingItem,
+                    content_type: e.target.value,
+                  })
                 }
-                style={{marginLeft: '10px'}}
+                style={{ marginLeft: "10px" }}
               >
                 <option value="placeholder">Placeholder</option>
                 <option value="video">Video</option>
@@ -225,7 +233,9 @@ const MobilityAdd = () => {
               <input
                 type="file"
                 onChange={(e) => setSelectedFile(e.target.files[0])}
-                accept={editingItem.content_type === "video" ? "video/*" : "image/*"}
+                accept={
+                  editingItem.content_type === "video" ? "video/*" : "image/*"
+                }
               />
               <button type="submit" className="submit-button">
                 Save
@@ -233,7 +243,7 @@ const MobilityAdd = () => {
               <button
                 type="button"
                 className="cancel-button"
-                style={{marginLeft: '10px'}}
+                style={{ marginLeft: "10px" }}
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -243,17 +253,17 @@ const MobilityAdd = () => {
         </div>
       )}
 
-       {/* Delete Confirmation Modal */}
-       {isModalOpen && (
+      {/* Delete Confirmation Modal */}
+      {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Confirm Delete</h3>
-            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+            <p>
+              Are you sure you want to delete this item? This action cannot be
+              undone.
+            </p>
             <div className="modal-actions">
-              <button
-                className="confirm-button"
-                onClick={handleDeleteConfirm}
-              >
+              <button className="confirm-button" onClick={handleDeleteConfirm}>
                 Confirm
               </button>
               <button

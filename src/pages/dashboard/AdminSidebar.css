@@ -95,6 +95,7 @@ body.locked {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 }
 
 /* Sliding Text */
@@ -124,5 +125,14 @@ body.locked {
   }
   100% {
     transform: translateX(100%);
+  }
+}
+@media (max-width: 768px) {
+  .sliding-text-container {
+    width: 80vw;
+    height: 60px;
+
+    margin-right: auto;
+    margin-left: auto;
   }
 }
