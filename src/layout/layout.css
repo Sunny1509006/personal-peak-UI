@@ -1,0 +1,18 @@
+/* Page content wrapper - Used to wrap the main content of the page */
+.page-content {
+  margin-top: 20px; /* Space at the top */
+  background-color: #f8f9fa; /* Light background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  overflow: hidden; /* Ensure content doesn’t overflow */
+  margin-left: 100px;
+  width: 100%;
+  min-height: 100%;
+}
+
+/* Responsive design - Ensure the wrapper is responsive */
+@media (max-width: 768px) {
+  .page-content {
+    padding: 15px; /* Slightly less padding on smaller screens */
+  }
+}

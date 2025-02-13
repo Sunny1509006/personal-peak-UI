@@ -83,7 +83,7 @@ const VideoManagement = () => {
 
   return (
     <Layout>
-      <div className="video-management">
+      <div className="container video-management">
         <h2>Video Management</h2>
         {isLoading && <div className="loader">Submitting...</div>}
         {successMessage && (
