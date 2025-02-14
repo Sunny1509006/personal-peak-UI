@@ -94,7 +94,7 @@ const DashboardHomepage = ({ userRankData }) => {
   return (
     <div className="container1">
       {/* ✅ Ensure sections are inside a properly structured div */}
-      <div className="container">
+      <div>
         <div>
           <div className="dashboard-container">
             {/* Welcome Card */}
