@@ -28,7 +28,9 @@ function App() {
   const [hasAccess, setHasAccess] = useState(false);
 
   return (
-    <AuthProvider> {/* ✅ Wrap everything inside AuthProvider */}
+    <AuthProvider>
+      {" "}
+      {/* ✅ Wrap everything inside AuthProvider */}
       <AccessContext.Provider value={{ hasAccess, setHasAccess }}>
         <TranslationProvider>
           <ToastContainer position="top-center" autoClose={3000} />
@@ -38,51 +40,134 @@ function App() {
               <Route path="/" element={<LandingPage />} />
               <Route path="/register" element={<RegistrationPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/mobility-stretch-power" element={<MobilityStretch />} />
+              <Route
+                path="/mobility-stretch-power"
+                element={<MobilityStretch />}
+              />
 
               {/* Protected Routes (Require Authentication) */}
-              <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-              <Route path="/pre-registration" element={<ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}><PreRegistration /></ProtectedRoute>} />
-              <Route path="/admin-panel" element={
-                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}>
-                <AdminPanel />
-              </ProtectedRoute>
-              } 
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute>
+                    <DashboardPage />
+                  </PrivateRoute>
+                }
               />
-              <Route path="/medals-award" element={
-                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}>
-                <MedalsPage />
-              </ProtectedRoute>
-              } 
+              <Route
+                path="/pre-registration"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <PreRegistration />
+                  </ProtectedRoute>
+                }
               />
-              <Route path="/user-management" element={
-                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}>
-                <UserManagement />
-              </ProtectedRoute>
-              } 
+              <Route
+                path="/admin-panel"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <AdminPanel />
+                  </ProtectedRoute>
+                }
               />
-              <Route path="/welcome-page-management" element={
-                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}>
-                <WelcomePage />
-              </ProtectedRoute>
-              } 
+              <Route
+                path="/medals-award"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <MedalsPage />
+                  </ProtectedRoute>
+                }
               />
-              <Route path="/yt-video-management" element={
-                <ProtectedRoute requiredRoles={["super-super-admin", "lower-super-admin", 
-    "super-admin (white-label)", "lower-admin (white-label)"]}>
-                <VideoManagement />
-              </ProtectedRoute>
-              } 
+              <Route
+                path="/user-management"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <UserManagement />
+                  </ProtectedRoute>
+                }
               />
-              <Route path="/kanban-board" element={<PrivateRoute><KanbanBoard /></PrivateRoute>} />
-              <Route path="/mobility-add" element={<PrivateRoute><MobilityAdd /></PrivateRoute>} />
-              <Route path="/mobility-add-new" element={<PrivateRoute><MobilityAddForm /></PrivateRoute>} />
-
+              <Route
+                path="/welcome-page-management"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <WelcomePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/yt-video-management"
+                element={
+                  <ProtectedRoute
+                    requiredRoles={[
+                      "super-super-admin",
+                      "lower-super-admin",
+                      "super-admin (white-label)",
+                      "lower-admin (white-label)",
+                    ]}
+                  >
+                    <VideoManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/kanban-board"
+                element={
+                  <PrivateRoute>
+                    <KanbanBoard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/mobility-add"
+                element={
+                  <PrivateRoute>
+                    <MobilityAdd />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/mobility-add-new"
+                element={
+                  <PrivateRoute>
+                    <MobilityAddForm />
+                  </PrivateRoute>
+                }
+              />
 
               {/* Unauthorized Page */}
               <Route path="/unauthorized" element={<Unauthorized />} />
