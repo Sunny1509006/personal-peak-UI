@@ -1,11 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
-import { useTranslation } from "../context/LanguageContext";
+import { fetchTranslations, fetchTranslationIfMissing } from "../utils/fetchTranslations";
 
 const Sidebar = () => {
-  const { t } = useTranslation();
   const component_name = "sidebar";
+
+  const [languageCode, setLanguageCode] = useState(() => {
+    return localStorage.getItem("appLanguage") || "de";
+  });
+
+const [translations, setTranslations] = useState({});
+const [textsToTranslate, setTextsToTranslate] = useState(new Set());
+const [isTranslationLoaded, setIsTranslationLoaded] = useState(false);
+
+  // Fetch translations when languageCode changes
+  useEffect(() => {
+    const fetchComponentTranslations = async () => {
+      setIsTranslationLoaded(false);
+      const fetchedTranslations = await fetchTranslations(component_name, languageCode);
+      setTranslations(fetchedTranslations);
+      setIsTranslationLoaded(true);
+    };
+
+    fetchComponentTranslations();
+  }, [languageCode]);
+
+  // Listen to localStorage changes for language updates
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedLanguage = localStorage.getItem("appLanguage") || "de";
+      if (storedLanguage !== languageCode) {
+        setLanguageCode(storedLanguage);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [languageCode]);
+
+
+    // Function to fetch missing translation immediately and update state
+    const fetchAndUpdateTranslation = async (text) => {
+      if (!translations[text]) {
+        const translatedText = await fetchTranslationIfMissing(component_name, text);
+        setTranslations((prev) => ({ ...prev, [text]: translatedText }));
+      }
+    };
+  
+    // Function to check if translation exists, if not, queue it for fetching
+    const checkAndFetchTranslation = (text) => {
+      if (!isTranslationLoaded) return "Loading...";
+  
+      if (!translations[text] && !textsToTranslate.has(text)) {
+        setTextsToTranslate((prev) => new Set(prev).add(text));
+        fetchAndUpdateTranslation(text);
+      }
+  
+      return translations[text] || text;
+    };
 
   const isAccessible = (roles) => {
     const userRoles = JSON.parse(localStorage.getItem("user_type")) || [];
@@ -94,12 +149,12 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-1">
                 <i className="bx bx-home-alt"></i>
               </div>
-              <div className="menu-title">{t("Home Page", component_name)}</div>
+              <div className="menu-title">{checkAndFetchTranslation("Home Page")}</div>
             </Link>
           </li>
           <Link to="/admin-panel">
             <li className="menu-label" style={{ padding: "0px" }}>
-              {t("Admin Area", component_name)}
+              {checkAndFetchTranslation("Admin Area")}
             </li>
           </Link>
           <li
@@ -114,14 +169,14 @@ const Sidebar = () => {
                 <div className="parent-icon icon-color-2">
                   <i className="bx bx-envelope"></i>
                 </div>
-                <div className="menu-title">Pre-registrations</div>
+                <div className="menu-title">{checkAndFetchTranslation("Pre-registrations")}</div>
               </Link>
             ) : (
               <div className="locked-item">
                 <div className="parent-icon icon-color-2">
                   <i className="bx bx-envelope"></i>
                 </div>
-                <div className="menu-title">Pre-registrations</div>
+                <div className="menu-title">{checkAndFetchTranslation("Pre-registrations")}</div>
                 <i className="bx bx-lock lock-icon"></i>
               </div>
             )}
@@ -138,14 +193,14 @@ const Sidebar = () => {
                 <div className="parent-icon icon-color-3">
                   <i className="bx bx-conversation"></i>
                 </div>
-                <div className="menu-title">User</div>
+                <div className="menu-title">{checkAndFetchTranslation("User")}</div>
               </Link>
             ) : (
               <div className="locked-item">
                 <div className="parent-icon icon-color-3">
                   <i className="bx bx-conversation"></i>
                 </div>
-                <div className="menu-title">User</div>
+                <div className="menu-title">{checkAndFetchTranslation("User")}</div>
                 <i className="bx bx-lock lock-icon"></i>
               </div>
             )}
@@ -155,7 +210,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-3">
                 <i className="bx bx-conversation"></i>
               </div>
-              <div className="menu-title">Live Chat</div>
+              <div className="menu-title">{checkAndFetchTranslation("Live Chat")}</div>
             </a>
           </li>
           {/* Accounting Dropdown */}
@@ -168,18 +223,18 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
-              <div className="menu-title">Accounting</div>
+              <div className="menu-title">{checkAndFetchTranslation("Accounting")}</div>
             </a>
             {activeDropdown === "accounting" && (
               <ul>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Invoices
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Invoices")}
                   </a>
                 </li>
                 <li>
                   <a href="/component-bedges">
-                    <i className="bx bx-right-arrow-alt"></i>Offers
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Offers")}
                   </a>
                 </li>
               </ul>
@@ -196,28 +251,28 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
-              <div className="menu-title">Training Hall</div>
+              <div className="menu-title">{checkAndFetchTranslation("Training Hall")}</div>
             </a>
             {activeDropdown === "training-hall" && (
               <ul>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Exercises
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Exercises")}
                   </a>
                 </li>
                 <li>
                   <a href="/component-bedges">
-                    <i className="bx bx-right-arrow-alt"></i>Training Plans
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Training Plans")}
                   </a>
                 </li>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Upload & Analysis
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Upload & Analysis")}
                   </a>
                 </li>
                 <li>
                   <a href="/component-bedges">
-                    <i className="bx bx-right-arrow-alt"></i>Fitness Test
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Fitness Test")}
                   </a>
                 </li>
               </ul>
@@ -234,13 +289,13 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
-              <div className="menu-title">Nutrition & Analysis</div>
+              <div className="menu-title">{checkAndFetchTranslation("Nutrition & Analysis")}</div>
             </a>
             {activeDropdown === "nutrition-analysis" && (
               <ul>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Nutrition Plans
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Nutrition Plans")}
                   </a>
                 </li>
               </ul>
@@ -257,43 +312,43 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
-              <div className="menu-title">Settings</div>
+              <div className="menu-title">{checkAndFetchTranslation("Settings")}</div>
             </a>
             {activeDropdown === "settings" && (
               <ul>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Generally
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Generally")}
                   </a>
                 </li>
                 <li>
                   <a href="/component-bedges">
-                    <i className="bx bx-right-arrow-alt"></i>Legal
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Legal")}
                   </a>
                 </li>
                 <li>
                   <Link to="/welcome-page-management">
-                    <i className="bx bx-right-arrow-alt"></i>Welcome Page
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Welcome Page")}
                   </Link>
                 </li>
                 <li>
                   <Link to="/medals-award">
-                    <i className="bx bx-right-arrow-alt"></i>Awards / Badges
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Awards / Badges")}
                   </Link>
                 </li>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Accounting
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Accounting")}
                   </a>
                 </li>
                 <li>
                   <a href="/pricing">
-                    <i className="bx bx-right-arrow-alt"></i>eCommerce shop
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("eCommerce shop")}
                   </a>
                 </li>
                 <li>
                   <Link to="/mobility-add">
-                    <i className="bx bx-right-arrow-alt"></i>Mobility
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Mobility")}
                   </Link>
                 </li>
               </ul>
@@ -306,7 +361,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-5">
                 <i className="bx bx-group"></i>
               </div>
-              <div className="menu-title">Kanban Board</div>
+              <div className="menu-title">{checkAndFetchTranslation("Kanban Board")}</div>
             </Link>
           </li>
 
@@ -316,12 +371,12 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-6">
                 <i className="bx bx-task"></i>
               </div>
-              <div className="menu-title">Todo List</div>
+              <div className="menu-title">{checkAndFetchTranslation("Todo List")}</div>
             </a>
           </li>
 
           {/* Cockpit Label */}
-          <li className="menu-label">Cockpit</li>
+          <li className="menu-label">{checkAndFetchTranslation("Cockpit")}</li>
 
           {/* My Profile */}
           <li>
@@ -329,7 +384,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-4">
                 <i className="bx bx-user-circle"></i>
               </div>
-              <div className="menu-title">My Profile</div>
+              <div className="menu-title">{checkAndFetchTranslation("My Profile")}</div>
             </a>
           </li>
 
@@ -343,18 +398,18 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-10">
                 <i className="bx bx-spa"></i>
               </div>
-              <div className="menu-title">Accounting</div>
+              <div className="menu-title">{checkAndFetchTranslation("Accounting")}</div>
             </a>
             {activeDropdown === "accounting" && (
               <ul>
                 <li>
                   <a href="/invoice">
-                    <i className="bx bx-right-arrow-alt"></i>Invoices
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Invoices")}
                   </a>
                 </li>
                 <li>
                   <a href="/component-bedges">
-                    <i className="bx bx-right-arrow-alt"></i>Offers
+                    <i className="bx bx-right-arrow-alt"></i>{checkAndFetchTranslation("Offers")}
                   </a>
                 </li>
               </ul>
@@ -366,7 +421,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-11">
                 <i className="bx bx-repeat"></i>
               </div>
-              <div className="menu-title">eCommerce Shop</div>
+              <div className="menu-title">{checkAndFetchTranslation("eCommerce Shop")}</div>
             </a>
           </li>
 
@@ -376,7 +431,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-3">
                 <i className="bx bx-conversation"></i>
               </div>
-              <div className="menu-title">Live Chat</div>
+              <div className="menu-title">{checkAndFetchTranslation("Live Chat")}</div>
             </a>
           </li>
 
@@ -386,7 +441,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-8">
                 <i className="bx bx-calendar-check"></i>
               </div>
-              <div className="menu-title">Calendar</div>
+              <div className="menu-title">{checkAndFetchTranslation("Calendar")}</div>
             </a>
           </li>
 
@@ -396,12 +451,12 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-12">
                 <i className="bx bx-donate-blood"></i>
               </div>
-              <div className="menu-title">Diary</div>
+              <div className="menu-title">{checkAndFetchTranslation("Diary")}</div>
             </a>
           </li>
 
           {/* Nutrition & Analysis Label */}
-          <li className="menu-label">Nutrition & Analysis</li>
+          <li className="menu-label">{checkAndFetchTranslation("Nutrition & Analysis")}</li>
 
           {/* Nutrition Tracking */}
           <li>
@@ -409,7 +464,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-1">
                 <i className="bx bx-comment-edit"></i>
               </div>
-              <div className="menu-title">Nutrition Tracking</div>
+              <div className="menu-title">{checkAndFetchTranslation("Nutrition Tracking")}</div>
             </a>
           </li>
 
@@ -419,7 +474,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-2">
                 <i className="bx bx-grid-alt"></i>
               </div>
-              <div className="menu-title">Measurements / Results</div>
+              <div className="menu-title">{checkAndFetchTranslation("Measurements / Results")}</div>
             </a>
           </li>
 
@@ -429,7 +484,7 @@ const Sidebar = () => {
               <div className="parent-icon icon-color-12">
                 <i className="bx bx-donate-blood"></i>
               </div>
-              <div className="menu-title">Diary</div>
+              <div className="menu-title">{checkAndFetchTranslation("Diary")}</div>
             </a>
           </li>
         </ul>
