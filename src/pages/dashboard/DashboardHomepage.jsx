@@ -1,16 +1,74 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardHomepage.css"; // Make sure this file is correctly imported
 import DashboardCard from "./DashboardCard";
-import { useTranslation } from "../../context/LanguageContext";
 import { BadgeCheck, Star } from "lucide-react";
 import Axios from "../../Axios/Axios";
+import { fetchTranslations, fetchTranslationIfMissing } from "../../utils/fetchTranslations";
 
 const DashboardHomepage = ({ userRankData }) => {
+
+  // Get language from localStorage OR default to "de"
+    const [languageCode, setLanguageCode] = useState(() => {
+      return localStorage.getItem("appLanguage") || "de";
+    });
+
   console.log(userRankData);
-  const { t } = useTranslation();
   const component_name = "dashboard";
   const [videos, setVideos] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [translations, setTranslations] = useState({});
+  const [textsToTranslate, setTextsToTranslate] = useState(new Set());
+  const [isTranslationLoaded, setIsTranslationLoaded] = useState(false);
+  
+    // Fetch translations when languageCode changes
+    useEffect(() => {
+      const fetchComponentTranslations = async () => {
+        setIsTranslationLoaded(false);
+        const fetchedTranslations = await fetchTranslations(component_name, languageCode);
+        setTranslations(fetchedTranslations);
+        setIsTranslationLoaded(true);
+      };
+  
+      fetchComponentTranslations();
+    }, [languageCode]);
+  
+    // Listen to localStorage changes for language updates
+    useEffect(() => {
+      const handleStorageChange = () => {
+        const storedLanguage = localStorage.getItem("appLanguage") || "de";
+        if (storedLanguage !== languageCode) {
+          setLanguageCode(storedLanguage);
+        }
+      };
+  
+      window.addEventListener("storage", handleStorageChange);
+      return () => {
+        window.removeEventListener("storage", handleStorageChange);
+      };
+    }, [languageCode]);
+
+
+      // Function to fetch missing translation immediately and update state
+      const fetchAndUpdateTranslation = async (text) => {
+        if (!translations[text]) {
+          const translatedText = await fetchTranslationIfMissing(component_name, text);
+          setTranslations((prev) => ({ ...prev, [text]: translatedText }));
+        }
+      };
+    
+      // Function to check if translation exists, if not, queue it for fetching
+      const checkAndFetchTranslation = (text) => {
+        if (!isTranslationLoaded) return "Loading...";
+    
+        if (!translations[text] && !textsToTranslate.has(text)) {
+          setTextsToTranslate((prev) => new Set(prev).add(text));
+          fetchAndUpdateTranslation(text);
+        }
+    
+        return translations[text] || text;
+      };
+
 
   useEffect(() => {
     // Fetch YouTube videos from the API
@@ -79,15 +137,15 @@ const DashboardHomepage = ({ userRankData }) => {
   ];
 
   const translatedRankingData = rankingData.map((user) => ({
-    name: t(user.name, component_name),
+    name: checkAndFetchTranslation(user.name),
     points: user.points,
-    place: t(user.place, component_name),
+    place: checkAndFetchTranslation(user.place),
     avatar: user.avatar,
   }));
 
   const translatedChallenges = challenges.map((challenge) => ({
-    title: t(challenge.title, component_name),
-    buttonText: t(challenge.buttonText, component_name),
+    title: checkAndFetchTranslation(challenge.title),
+    buttonText: checkAndFetchTranslation(challenge.buttonText),
     link: challenge.link,
   }));
 
@@ -100,15 +158,14 @@ const DashboardHomepage = ({ userRankData }) => {
             {/* Welcome Card */}
             <div className="welcome-card">
               <h1 className="title">
-                {t("Welcome to 'Personal-Peak-360'", component_name)}
+                {checkAndFetchTranslation("Welcome to 'Personal-Peak-360'")}
               </h1>
-              <p className="subtitle">{t("PP360 Admin!", component_name)}</p>
+              <p className="subtitle">{checkAndFetchTranslation("PP360 Admin!")}</p>
 
               <span className="badge">
                 <BadgeCheck size={16} />
-                {t(
-                  localStorage.getItem("user_type").replace(/"/g, ""),
-                  component_name
+                {checkAndFetchTranslation(
+                  localStorage.getItem("user_type").replace(/"/g, "")
                 )}
               </span>
 
@@ -124,27 +181,26 @@ const DashboardHomepage = ({ userRankData }) => {
 
               <div className="points-container">
                 <p className="points-text">
-                  {t(
-                    `You only need ${userRankData?.points_needed_for_next_rank} points to advance to level ${userRankData?.next_rank}.`,
-                    component_name
+                  {checkAndFetchTranslation(
+                    `You only need ${userRankData?.points_needed_for_next_rank} points to advance to level ${userRankData?.next_rank}.`
                   )}
                 </p>
               </div>
 
-              <p className="stay-tuned">{t("Stay tuned!", component_name)}</p>
+              <p className="stay-tuned">{checkAndFetchTranslation("Stay tuned!")}</p>
             </div>
           </div>
 
           {/* ✅ Nutzer-Ranking */}
           <div className="section-dashboard ranking">
-            <h2>{t("Nutzer-Ranking", component_name)}</h2>
+            <h2>{checkAndFetchTranslation("Nutzer-Ranking")}</h2>
             {translatedRankingData.map((user, index) => (
               <div className="ranking-item" key={index}>
                 <img src={user.avatar} alt="Avatar" />
                 <div className="details">
                   <strong>{user.name}</strong>
                   <br />
-                  {t("Punkte:", component_name)}{" "}
+                  {checkAndFetchTranslation("Punkte:")}{" "}
                   <span className="points">{user.points}</span>
                 </div>
                 <span>{user.place}</span>
@@ -163,7 +219,7 @@ const DashboardHomepage = ({ userRankData }) => {
         </div> */}
 
           <div className="video-slider-container">
-            <h2>{t("Ihr persönliches Dashboard-Video", component_name)}</h2>
+            <h2>{checkAndFetchTranslation("Ihr persönliches Dashboard-Video")}</h2>
             {videos.length > 0 ? (
               <div className="video-slider">
                 {/* Left Arrow */}
@@ -224,7 +280,7 @@ const DashboardHomepage = ({ userRankData }) => {
 
           {/* ✅ Challenges Section */}
           <div className="section-dashboard challenges">
-            <h2>{t("Challenges", component_name)}</h2>
+            <h2>{checkAndFetchTranslation("Challenges")}</h2>
             {translatedChallenges.map((challenge, index) => (
               <div className="challenge-item" key={index}>
                 <span>{challenge.title}</span>
