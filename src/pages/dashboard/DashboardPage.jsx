@@ -5,10 +5,71 @@ import ThemeCustomizer from "./ThemeCustomizer";
 import TermsPopup from "./TermsPopup";
 import Layout from "../../layout/Layout";
 import "./AdminSidebar.css";
+import { fetchTranslations, fetchTranslationIfMissing } from "../../utils/fetchTranslations";
 
 const DashboardPage = () => {
   const [showTerms, setShowTerms] = useState(false); // Controls popup visibility
   const [userRankData, setUserRankData] = useState(null); // Stores API response data
+  const component_name = "dashboard";
+
+ // Get language from localStorage OR default to "de"
+  const [languageCode, setLanguageCode] = useState(() => {
+   return localStorage.getItem("appLanguage") || "de";
+ });
+ 
+ // Load translations from sessionStorage for this specific component
+ const [translations, setTranslations] = useState(() => {
+   const savedTranslations = JSON.parse(sessionStorage.getItem(`translations_${component_name}_${languageCode}`));
+   return savedTranslations || {};
+ });
+ 
+ const [textsToTranslate, setTextsToTranslate] = useState(new Set());
+ const [isTranslationLoaded, setIsTranslationLoaded] = useState(
+   sessionStorage.getItem(`translations_${component_name}_${languageCode}`) !== null
+ );
+ 
+ useEffect(() => {
+   const fetchComponentTranslations = async () => {
+     if (!isTranslationLoaded) {
+       setIsTranslationLoaded(false);
+       const fetchedTranslations = await fetchTranslations(component_name, languageCode);
+       setTranslations(fetchedTranslations);
+       sessionStorage.setItem(`translations_${component_name}_${languageCode}`, JSON.stringify(fetchedTranslations));
+       setIsTranslationLoaded(true);
+     }
+   };
+   fetchComponentTranslations();
+ }, [languageCode]);
+ 
+ useEffect(() => {
+   const handleStorageChange = () => {
+     const storedLanguage = localStorage.getItem("appLanguage") || "de";
+     if (storedLanguage !== languageCode) {
+       setLanguageCode(storedLanguage);
+       setTranslations({}); // Reset translations when language changes
+       setIsTranslationLoaded(false);
+     }
+   };
+   window.addEventListener("storage", handleStorageChange);
+   return () => window.removeEventListener("storage", handleStorageChange);
+ }, [languageCode]);
+ 
+ const checkAndFetchTranslation = (text) => {
+   if (!isTranslationLoaded) return "Loading...";
+ 
+   if (!translations[text] && !textsToTranslate.has(text)) {
+     setTextsToTranslate((prev) => new Set(prev).add(text));
+     fetchTranslationIfMissing(component_name, text).then((translatedText) => {
+       setTranslations((prev) => {
+         const updatedTranslations = { ...prev, [text]: translatedText };
+         sessionStorage.setItem(`translations_${component_name}_${languageCode}`, JSON.stringify(updatedTranslations));
+         return updatedTranslations;
+       });
+     });
+   }
+   return translations[text] || text;
+ };
+
 
   useEffect(() => {
     // Check local storage for agreement status
@@ -78,7 +139,7 @@ const DashboardPage = () => {
                 alt="Medal"
                 className="medal-icon"
               />
-              {userRankData.text}
+              {checkAndFetchTranslation(userRankData.text)}
               <img
                 src={
                   userRankData.medal_id

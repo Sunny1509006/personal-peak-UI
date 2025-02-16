@@ -7,67 +7,68 @@ import { fetchTranslations, fetchTranslationIfMissing } from "../../utils/fetchT
 
 const DashboardHomepage = ({ userRankData }) => {
 
-  // Get language from localStorage OR default to "de"
-    const [languageCode, setLanguageCode] = useState(() => {
-      return localStorage.getItem("appLanguage") || "de";
-    });
-
-  console.log(userRankData);
   const component_name = "dashboard";
   const [videos, setVideos] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [translations, setTranslations] = useState({});
-  const [textsToTranslate, setTextsToTranslate] = useState(new Set());
-  const [isTranslationLoaded, setIsTranslationLoaded] = useState(false);
-  
-    // Fetch translations when languageCode changes
-    useEffect(() => {
-      const fetchComponentTranslations = async () => {
-        setIsTranslationLoaded(false);
-        const fetchedTranslations = await fetchTranslations(component_name, languageCode);
-        setTranslations(fetchedTranslations);
-        setIsTranslationLoaded(true);
-      };
-  
-      fetchComponentTranslations();
-    }, [languageCode]);
-  
-    // Listen to localStorage changes for language updates
-    useEffect(() => {
-      const handleStorageChange = () => {
-        const storedLanguage = localStorage.getItem("appLanguage") || "de";
-        if (storedLanguage !== languageCode) {
-          setLanguageCode(storedLanguage);
-        }
-      };
-  
-      window.addEventListener("storage", handleStorageChange);
-      return () => {
-        window.removeEventListener("storage", handleStorageChange);
-      };
-    }, [languageCode]);
+ // Get language from localStorage OR default to "de"
+ const [languageCode, setLanguageCode] = useState(() => {
+  return localStorage.getItem("appLanguage") || "de";
+});
 
+// Load translations from sessionStorage for this specific component
+const [translations, setTranslations] = useState(() => {
+  const savedTranslations = JSON.parse(sessionStorage.getItem(`translations_${component_name}_${languageCode}`));
+  return savedTranslations || {};
+});
 
-      // Function to fetch missing translation immediately and update state
-      const fetchAndUpdateTranslation = async (text) => {
-        if (!translations[text]) {
-          const translatedText = await fetchTranslationIfMissing(component_name, text);
-          setTranslations((prev) => ({ ...prev, [text]: translatedText }));
-        }
-      };
-    
-      // Function to check if translation exists, if not, queue it for fetching
-      const checkAndFetchTranslation = (text) => {
-        if (!isTranslationLoaded) return "Loading...";
-    
-        if (!translations[text] && !textsToTranslate.has(text)) {
-          setTextsToTranslate((prev) => new Set(prev).add(text));
-          fetchAndUpdateTranslation(text);
-        }
-    
-        return translations[text] || text;
-      };
+const [textsToTranslate, setTextsToTranslate] = useState(new Set());
+const [isTranslationLoaded, setIsTranslationLoaded] = useState(
+  sessionStorage.getItem(`translations_${component_name}_${languageCode}`) !== null
+);
+
+useEffect(() => {
+  const fetchComponentTranslations = async () => {
+    if (!isTranslationLoaded) {
+      setIsTranslationLoaded(false);
+      const fetchedTranslations = await fetchTranslations(component_name, languageCode);
+      setTranslations(fetchedTranslations);
+      sessionStorage.setItem(`translations_${component_name}_${languageCode}`, JSON.stringify(fetchedTranslations));
+      setIsTranslationLoaded(true);
+    }
+  };
+  fetchComponentTranslations();
+}, [languageCode]);
+
+useEffect(() => {
+  const handleStorageChange = () => {
+    const storedLanguage = localStorage.getItem("appLanguage") || "de";
+    if (storedLanguage !== languageCode) {
+      setLanguageCode(storedLanguage);
+      setTranslations({}); // Reset translations when language changes
+      setIsTranslationLoaded(false);
+    }
+  };
+  window.addEventListener("storage", handleStorageChange);
+  return () => window.removeEventListener("storage", handleStorageChange);
+}, [languageCode]);
+
+const checkAndFetchTranslation = (text) => {
+  if (!isTranslationLoaded) return "Loading...";
+
+  if (!translations[text] && !textsToTranslate.has(text)) {
+    setTextsToTranslate((prev) => new Set(prev).add(text));
+    fetchTranslationIfMissing(component_name, text).then((translatedText) => {
+      setTranslations((prev) => {
+        const updatedTranslations = { ...prev, [text]: translatedText };
+        sessionStorage.setItem(`translations_${component_name}_${languageCode}`, JSON.stringify(updatedTranslations));
+        return updatedTranslations;
+      });
+    });
+  }
+  return translations[text] || text;
+};
+
 
 
   useEffect(() => {
