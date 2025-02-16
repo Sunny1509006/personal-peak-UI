@@ -9,6 +9,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import "./DashboardCard.css";
+import { Link } from "react-router-dom";
 
 const DashboardCard = () => {
   const component_name = "dashboard";
@@ -78,6 +79,7 @@ const DashboardCard = () => {
       key: "Admin Panel",
       text: "Access to administrative functions",
       icon: <Settings size={30} color="#007bff" />,
+      link: "/admin-panel",
     },
     {
       key: "Nutrition & Analysis",
@@ -111,15 +113,21 @@ const DashboardCard = () => {
       <div className="row g-4 justify-content-center">
         {cards.map((card, index) => (
           <div className="col-md-4 col-sm-4 col-8" key={index}>
-            <div className="dashboard-card">
-              <div className="card-icon-wrapper">{card.icon}</div>
-              <h5 className="card-title">
-                {checkAndFetchTranslation(card.key)}
-              </h5>
-              <p className="card-text">
-                {checkAndFetchTranslation(card.text)}
-              </p>
-            </div>
+            {card.link ? (
+              <Link to={card.link} className="dashboard-card-link">
+                <div className="dashboard-card">
+                  <div className="card-icon-wrapper">{card.icon}</div>
+                  <h5 className="card-title">{checkAndFetchTranslation(card.key)}</h5>
+                  <p className="card-text">{checkAndFetchTranslation(card.text)}</p>
+                </div>
+              </Link>
+            ) : (
+              <div className="dashboard-card">
+                <div className="card-icon-wrapper">{card.icon}</div>
+                <h5 className="card-title">{checkAndFetchTranslation(card.key)}</h5>
+                <p className="card-text">{checkAndFetchTranslation(card.text)}</p>
+              </div>
+            )}
           </div>
         ))}
       </div>

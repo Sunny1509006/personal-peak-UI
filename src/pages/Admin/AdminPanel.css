@@ -18,4 +18,11 @@
     font-size: 30px;
     margin-bottom: 10px;
   }
+
+  .transparent-item-admin-panel {
+    opacity: 0.5; /* Make it slightly transparent */
+    pointer-events: none; /* Disable clicks */
+    position: relative;
+    color: black;
+  }
   
